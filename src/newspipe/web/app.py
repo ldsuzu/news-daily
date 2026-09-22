@@ -89,7 +89,9 @@ def create_app(config: Config | None = None) -> FastAPI:
             + [{"id": d.id, "name": d.name} for d in cfg.domains],
             "source_map": repo.sources_map(),
             "picks_per_domain": int(cfg.settings.get("selection.picks_per_domain", 10)),
-            "picks_min_score": float(cfg.settings.get("selection.picks_min_score", 8)),
+            "picks_min_score": float(cfg.settings.get("selection.picks_min_score", 0)),
+            "llm_spend": repo.llm_spend(),
+            "llm_on": bool(cfg.settings.get("llm.enabled", False)),
         }
         ctx.update(extra)
         return ctx

@@ -32,8 +32,11 @@ CREATE TABLE IF NOT EXISTS items (
     excerpt       TEXT NOT NULL DEFAULT '',
     content_text  TEXT NOT NULL DEFAULT '',
     summary_cn    TEXT NOT NULL DEFAULT '',
+    title_cn      TEXT NOT NULL DEFAULT '',   -- LLM 翻译/精简后的中文标题
     points_json   TEXT NOT NULL DEFAULT '[]',
-    score         REAL NOT NULL DEFAULT 0,
+    score         REAL NOT NULL DEFAULT 0,    -- 规则分（源权重 + 时效 + 关键词）
+    llm_score     REAL,                       -- LLM 给的热度分 0-10；有就优先用它排序
+    llm_at        TEXT,                       -- 什么时候被 LLM 处理过（NULL = 还没处理）
     cluster_id    INTEGER,
     cluster_size  INTEGER NOT NULL DEFAULT 1,
     origin        TEXT NOT NULL DEFAULT 'local',   -- local | remote（海外分身）
@@ -82,6 +85,22 @@ CREATE TABLE IF NOT EXISTS fetch_log (
 );
 
 CREATE INDEX IF NOT EXISTS idx_fetch_log_source ON fetch_log(source_id, started_at DESC);
+
+-- LLM 用量账本：每次调用记一笔，界面据此把 token 消耗换算成人民币
+CREATE TABLE IF NOT EXISTS llm_usage (
+    id            INTEGER PRIMARY KEY,
+    ts            TEXT NOT NULL,
+    model         TEXT NOT NULL,
+    items_count   INTEGER NOT NULL DEFAULT 0,
+    input_tokens  INTEGER NOT NULL DEFAULT 0,   -- 未命中缓存的输入
+    cached_tokens INTEGER NOT NULL DEFAULT 0,   -- 命中缓存的输入（便宜得多）
+    output_tokens INTEGER NOT NULL DEFAULT 0,
+    cost_cny      REAL NOT NULL DEFAULT 0,      -- 按配置单价换算出来的人民币
+    ok            INTEGER NOT NULL DEFAULT 1,
+    note          TEXT NOT NULL DEFAULT ''
+);
+
+CREATE INDEX IF NOT EXISTS idx_llm_usage_ts ON llm_usage(ts DESC);
 
 -- @@SPLIT@@
 -- 以上是核心表。下面这段是全文检索：单独执行，失败也不影响其它功能。

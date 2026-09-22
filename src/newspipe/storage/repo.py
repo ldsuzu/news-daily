@@ -164,7 +164,12 @@ class Repo:
             # 否则重复条目会白占「精选每领域 N 条」的名额。
             where.append("(cluster_id IS NULL OR cluster_id = id)")
 
-        order_sql = "score DESC, published_at DESC" if order == "score" else "COALESCE(published_at, fetched_at) DESC"
+        # 排序：LLM 给的热度分优先，没被 LLM 处理过的回退到规则分
+        order_sql = (
+            "COALESCE(llm_score, score) DESC, COALESCE(published_at, fetched_at) DESC"
+            if order == "score"
+            else "COALESCE(published_at, fetched_at) DESC"
+        )
         clause = ("WHERE " + " AND ".join(where)) if where else ""
         rows = self.conn.execute(
             f"SELECT * FROM items {clause} ORDER BY {order_sql} LIMIT ? OFFSET ?",
@@ -262,6 +267,95 @@ class Repo:
             (limit,),
         ).fetchall()
         return [dict(r) for r in rows]
+
+    # ───────────────────────────── LLM 加工与记账 ─────────────────────────────
+
+    def pending_for_llm(self, limit: int = 300, *, days: int = 3) -> list[dict[str, Any]]:
+        """还没被 LLM 处理过的条目。
+
+        只取最近几天的 —— 首次打开时不该把几千条历史一口气送给模型。
+        """
+        rows = self.conn.execute(
+            """
+            SELECT * FROM items
+            WHERE llm_at IS NULL
+              AND COALESCE(published_at, fetched_at) >= datetime('now', ?)
+            ORDER BY COALESCE(published_at, fetched_at) DESC
+            LIMIT ?
+            """,
+            (f"-{int(days)} days", limit),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def apply_enrichment(
+        self,
+        item_id: int,
+        *,
+        title_cn: str,
+        summary_cn: str,
+        heat: float | None,
+        ts: str,
+    ) -> None:
+        self.conn.execute(
+            """
+            UPDATE items SET
+                title_cn   = CASE WHEN ? <> '' THEN ? ELSE title_cn END,
+                summary_cn = CASE WHEN ? <> '' THEN ? ELSE summary_cn END,
+                llm_score  = COALESCE(?, llm_score),
+                llm_at     = ?
+            WHERE id = ?
+            """,
+            (title_cn, title_cn, summary_cn, summary_cn, heat, ts, item_id),
+        )
+
+    def record_llm_usage(self, usage: Any, ts: str) -> None:
+        self.conn.execute(
+            """
+            INSERT INTO llm_usage
+                (ts, model, items_count, input_tokens, cached_tokens, output_tokens, cost_cny, ok, note)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                ts, usage.model, usage.items, usage.input_tokens, usage.cached_tokens,
+                usage.output_tokens, usage.cost_cny, int(usage.ok), usage.note[:200],
+            ),
+        )
+        self.conn.commit()
+
+    def llm_spend(self) -> dict[str, Any]:
+        """今天 / 累计 的 token 与花费，界面据此显示成本。"""
+
+        def _sum(where: str = "") -> dict[str, Any]:
+            row = self.conn.execute(
+                f"""
+                SELECT COUNT(*) AS calls,
+                       COALESCE(SUM(items_count), 0)  AS items,
+                       COALESCE(SUM(input_tokens), 0) AS input_tokens,
+                       COALESCE(SUM(cached_tokens), 0) AS cached_tokens,
+                       COALESCE(SUM(output_tokens), 0) AS output_tokens,
+                       COALESCE(SUM(cost_cny), 0)     AS cost_cny,
+                       COALESCE(SUM(CASE WHEN ok = 0 THEN 1 ELSE 0 END), 0) AS failures
+                FROM llm_usage {where}
+                """,
+            ).fetchone()
+            return dict(row)
+
+        return {
+            "today": _sum("WHERE date(ts, 'localtime') = date('now', 'localtime')"),
+            "total": _sum(),
+        }
+
+    def reset_llm_markers(self, *, days: int = 7) -> int:
+        """把最近几天的 llm_at 清掉，让它们重新排队（改完提示词后重跑用）。"""
+        cur = self.conn.execute(
+            """
+            UPDATE items SET llm_at = NULL WHERE llm_at IS NOT NULL
+              AND COALESCE(published_at, fetched_at) >= datetime('now', ?)
+            """,
+            (f"-{int(days)} days",),
+        )
+        self.conn.commit()
+        return int(cur.rowcount)
 
     # ───────────────────────────── 阅读状态 ─────────────────────────────
 

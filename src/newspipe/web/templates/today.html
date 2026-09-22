@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import meta_line, local_body, masthead %}
+{% from "macros.html" import meta_line, local_body, masthead, headline, original_title, summary_of %}
 
 {% block title %}{{ date|date_label }} · {{ site_name }}{% endblock %}
 
@@ -49,11 +49,9 @@
     <section class="A-lead">
       <div>
         {{ meta_line(lead, source_map) }}
-        <h2><a href="{{ lead.url }}" target="_blank" rel="noreferrer">{{ lead.title }}</a></h2>
-        {% if lead.title_en and lead.title_en != lead.title %}
-          <div class="en">{{ lead.title_en }}</div>
-        {% endif %}
-        <p class="sum">{{ lead.summary_cn or lead.excerpt|excerpt(360) }}</p>
+        <h2><a href="{{ lead.url }}" target="_blank" rel="noreferrer">{{ headline(lead) }}</a></h2>
+        {{ original_title(lead) }}
+        <p class="sum">{{ summary_of(lead, 360) }}</p>
       </div>
       <aside class="body-card">
         <b>本地正文 · 离线可读</b>
@@ -73,9 +71,9 @@
         {% for it in secondary %}
           <article>
             {{ meta_line(it, source_map) }}
-            <h3><a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ it.title }}</a></h3>
-            {% if it.title_en and it.title_en != it.title %}<div class="en">{{ it.title_en }}</div>{% endif %}
-            <p>{{ (it.summary_cn or it.excerpt)|excerpt(180) }}</p>
+            <h3><a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ headline(it) }}</a></h3>
+            {{ original_title(it) }}
+            <p>{{ summary_of(it, 180) }}</p>
             {{ local_body(it) }}
           </article>
         {% endfor %}
@@ -114,7 +112,10 @@
         {%- if shown_count < total_today %}（当天共 {{ total_today }} 条）{% endif %}
       {% endif %}
     </div>
-    <div style="display:flex;gap:10px;align-items:center">
+    <div style="display:flex;gap:12px;align-items:center">
+      {% if llm_on %}
+        <span class="time" title="LLM 花费（今日 / 累计）">LLM ¥{{ '%.3f'|format(llm_spend.today.cost_cny) }} / ¥{{ '%.3f'|format(llm_spend.total.cost_cny) }}</span>
+      {% endif %}
       {% if view == 'picks' %}
         <a class="more-btn" href="/?domain={{ domain }}&view=all&date={{ date }}">查看全部 →</a>
       {% else %}

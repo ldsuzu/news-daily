@@ -3,12 +3,34 @@
 {% macro meta_line(item, source_map) %}
 <div class="meta">
   <span class="src"><span class="dot {{ item.domain }}"></span>{{ source_map.get(item.source_id, {}).get('name', item.source_id) }}</span>
+  {% if item.lang and not item.lang.startswith('zh') %}
+    <span class="badge foreign">外网</span>
+  {% endif %}
   <span class="time">{{ item.published_at|hhmm }}</span>
-  <span class="score {{ item.score|score_class }}">{{ '%.1f'|format(item.score or 0) }}</span>
+  <span class="score {{ item.score|score_class }}" title="{{ 'LLM 热度分' if item.llm_score is not none else '规则分（源权重+时效+关键词）' }}">{{ '%.1f'|format(item.llm_score if item.llm_score is not none else (item.score or 0)) }}</span>
   {% if item.cluster_size and item.cluster_size > 1 %}
     <span class="cluster-note">同事件另有 {{ item.cluster_size - 1 }} 条已折叠</span>
   {% endif %}
 </div>
+{% endmacro %}
+
+{# 标题：有中文翻译就用它当主标题，原文降为副标题 —— 这正是「中文为主、保留原文」 #}
+{% macro headline(item) %}
+  {{ item.title_cn or item.title }}
+{% endmacro %}
+
+{% macro original_title(item) %}
+  {% set original = item.title %}
+  {% if item.title_cn and item.title_cn != original %}
+    <div class="en">{{ original }}</div>
+  {% elif item.title_en and item.title_en != original %}
+    <div class="en">{{ item.title_en }}</div>
+  {% endif %}
+{% endmacro %}
+
+{% macro summary_of(item, limit=200) %}
+  {% set text = item.summary_cn or item.excerpt or '' %}
+  {{ text|excerpt(limit) }}
 {% endmacro %}
 
 {% macro local_body(item, label='本地正文 · 离线可读') %}

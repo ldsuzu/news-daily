@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import meta_line, local_body, masthead %}
+{% from "macros.html" import meta_line, local_body, masthead, headline, original_title, summary_of %}
 
 {% block title %}历史 · {{ site_name }}{% endblock %}
 
@@ -55,15 +55,9 @@
       <div class="H-row">
         <div class="d">{{ it.pub_date }}</div>
         <div class="t">
-          <a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ it.title }}</a>
-          {% if it.title_en and it.title_en != it.title %}
-            <div class="en">{{ it.title_en }}</div>
-          {% endif %}
-          {% if it.summary_cn %}
-            <div class="sub">{{ it.summary_cn|excerpt(180) }}</div>
-          {% elif it.excerpt %}
-            <div class="sub">{{ it.excerpt|excerpt(180) }}</div>
-          {% endif %}
+          <a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ headline(it) }}</a>
+          {{ original_title(it) }}
+          <div class="sub">{{ summary_of(it, 180) }}</div>
           {{ local_body(it) }}
         </div>
         <div class="r">{{ meta_line(it, source_map) }}</div>

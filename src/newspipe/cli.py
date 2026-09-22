@@ -9,6 +9,7 @@
     newspipe digest   生成 Markdown 日报到 archive/
     newspipe schedule 注册每日定时任务（Windows 任务计划 / crontab）
     newspipe process  补正文 + 去重聚类（加工都在这，抓取只负责拿回来）
+    newspipe enrich   LLM 翻译标题 + 中文摘要 + 热度评分（要配 api_key）
     newspipe serve    打开本地阅读界面（今日 / 历史 / 信息源 / 设置）
     newspipe doctor   源健康检查
     newspipe stats    看看库里有什么
@@ -29,10 +30,12 @@ from pathlib import Path
 from .config import load_config
 from .collectors import collect_source
 from .collectors.base import http_from_config
+from .models import RawItem
 from .pipeline.bundle import items_from_payload, write_bundle
 from .pipeline.dedupe import cluster_items
 from .pipeline.digest import write_digests
 from .pipeline.extract import extract_for_url, trafilatura_available
+from .pipeline.llm import LlmClient
 from .pipeline.normalize import now_utc_iso, to_local_date, utc_today
 from .pipeline.score import score_items
 from .storage.db import connect, init_db, sqlite_version
@@ -301,6 +304,92 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return 0
 
 
+# ───────────────────────────── enrich（LLM 翻译 + 热度） ─────────────────────────────
+
+def cmd_enrich(args: argparse.Namespace) -> int:
+    """给还没处理过的新条目做：中文标题 + 一句话摘要 + 热度评分，并记账。"""
+    config, conn, repo, _ = _open(args)
+    client = LlmClient(config)
+
+    if not client.available:
+        reason = "llm.enabled 是 false" if not client.enabled else "没配 api_key"
+        print(f"LLM 未启用（{reason}），跳过这步。")
+        print("  在 config/settings.yaml 的 llm 段填 api_key、把 enabled 改成 true；")
+        print("  或者设环境变量 NEWSPIPE_LLM_KEY。")
+        conn.close()
+        return 0
+
+    if args.reset:
+        n = repo.reset_llm_markers(days=args.days)
+        print(f"已把最近 {args.days} 天的 {n} 条重新排进队列。")
+
+    max_items = int(config.settings.get("llm.max_items_per_run", 300))
+    pending = repo.pending_for_llm(limit=max_items, days=args.days)
+    spend = repo.llm_spend()
+
+    print(f"模型 {client.model} · 每批 {client.batch_size} 条 · 今日已花 ¥{spend['today']['cost_cny']:.4f}")
+    if not pending:
+        print("没有需要处理的新条目。")
+        conn.close()
+        return 0
+    print(f"待处理 {len(pending)} 条\n")
+
+    done = 0
+    failed = 0
+    for start in range(0, len(pending), client.batch_size):
+        batch_rows = pending[start : start + client.batch_size]
+        items = [
+            RawItem(
+                source_id=r["source_id"], domain=r["domain"], url=r["url"],
+                title=r["title"], excerpt=r["excerpt"], content_text=r["content_text"],
+            )
+            for r in batch_rows
+        ]
+
+        results, usage = client.enrich_batch(items)
+        repo.record_llm_usage(usage, now_utc_iso())
+
+        if not usage.ok:
+            failed += 1
+            print(f"  [FAIL] 第 {start // client.batch_size + 1} 批：{usage.note}")
+        else:
+            ts = now_utc_iso()
+            for idx, res in results.items():
+                repo.apply_enrichment(
+                    batch_rows[idx]["id"],
+                    title_cn=res.title_cn,
+                    summary_cn=res.summary_cn,
+                    heat=res.heat,
+                    ts=ts,
+                )
+            conn.commit()
+            done += len(results)
+            print(
+                f"  [ OK ] 第 {start // client.batch_size + 1} 批 "
+                f"{len(results)}/{len(batch_rows)} 条 · "
+                f"in {usage.input_tokens}+{usage.cached_tokens}(缓存) out {usage.output_tokens} · "
+                f"¥{usage.cost_cny:.4f}"
+            )
+
+        # 花超预算就停手 —— 宁可少翻几条，也不能一晚上烧穿
+        if client.daily_budget:
+            spent = repo.llm_spend()["today"]["cost_cny"]
+            if spent >= client.daily_budget:
+                print(f"\n今日累计 ¥{spent:.4f} 已达上限 ¥{client.daily_budget}，停手。")
+                break
+
+    spend = repo.llm_spend()
+    t, tot = spend["today"], spend["total"]
+    print(
+        f"\n本轮处理 {done} 条，失败 {failed} 批\n"
+        f"今日：{t['items']} 条 · in {t['input_tokens']}+{t['cached_tokens']}(缓存) "
+        f"out {t['output_tokens']} · ¥{t['cost_cny']:.4f}\n"
+        f"累计：{tot['items']} 条 · ¥{tot['cost_cny']:.4f}（{tot['calls']} 次调用）"
+    )
+    conn.close()
+    return 0
+
+
 # ───────────────────────────── digest / run / schedule ─────────────────────────────
 
 def cmd_digest(args: argparse.Namespace) -> int:
@@ -345,7 +434,12 @@ def cmd_run(args: argparse.Namespace) -> int:
              argparse.Namespace(**shared, limit=args.limit, min_chars=400, window_days=14,
                                 no_extract=False, no_cluster=False))
         )
-    steps.append(("④ 生成日报", cmd_digest, argparse.Namespace(**shared)))
+    if not args.no_enrich:
+        steps.append(
+            ("④ LLM 翻译 + 热度评分", cmd_enrich,
+             argparse.Namespace(**shared, days=3, reset=False))
+        )
+    steps.append(("⑤ 生成日报", cmd_digest, argparse.Namespace(**shared)))
 
     failed: list[str] = []
     for name, func, ns in steps:
@@ -403,23 +497,40 @@ def cmd_schedule(args: argparse.Namespace) -> int:
     )
 
     if action == "install":
+        # 用 PowerShell 的 ScheduledTasks 而不是 schtasks：只有它能开出 StartWhenAvailable
+        # （错过计划时间就尽快补跑）—— 这条直接决定"某天没开机会不会漏新闻"。
+        ps_file = config.settings.path("data_dir") / "install-task.ps1"
+        ps_file.write_text(
+            "$ErrorActionPreference = 'Stop'\n"
+            f'$action = New-ScheduledTaskAction -Execute "{script}"\n'
+            f'$trigger = New-ScheduledTaskTrigger -Daily -At "{at}"\n'
+            "$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable "
+            "-AllowStartIfOnBatteries -DontStopIfGoingOnBatteries "
+            "-ExecutionTimeLimit (New-TimeSpan -Hours 2)\n"
+            f'Register-ScheduledTask -TaskName "{TASK_NAME}" -Action $action '
+            "-Trigger $trigger -Settings $settings -Force | Out-Null\n"
+            "Write-Output 'OK'\n",
+            encoding="utf-8-sig",   # 带 BOM，否则 PowerShell 读中文任务名会乱码
+        )
+
         result = subprocess.run(
-            ["schtasks", "/Create", "/F", "/SC", "DAILY", "/ST", at,
-             "/TN", TASK_NAME, "/TR", str(script)],
+            ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps_file)],
             capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
-        out = (result.stdout or "") + (result.stderr or "")
-        if result.returncode == 0:
+        out = ((result.stdout or "") + (result.stderr or "")).strip()
+
+        if result.returncode == 0 and "OK" in out:
             print(f"已注册：每天 {at} 自动跑一次 `newspipe run`")
             print(f"  任务名  {TASK_NAME}")
             print(f"  执行    {script}")
             print(f"  日志    {config.settings.path('data_dir') / 'run.log'}")
+            print("  错过补跑：已开启（关机错过时间点，开机后会尽快跑一次）")
             print("\n查看状态：newspipe schedule status")
             print("取消任务：newspipe schedule uninstall")
         else:
             print("注册失败：")
-            print(out.strip()[:400])
-            print("\n可以手动在「任务计划程序」里新建一个每日任务，执行上面那个 .cmd 文件。")
+            print(out[:400])
+            print(f"\n可以手动在「任务计划程序」里新建每日任务，执行：{script}")
         conn.close()
         return result.returncode
 
@@ -693,6 +804,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_sync.add_argument("--date", help="要拉哪天的 bundle（默认今天）")
     p_sync.set_defaults(func=cmd_sync)
 
+    p_enrich = sub.add_parser("enrich", help="LLM 翻译 + 热度评分（要配 api_key）")
+    p_enrich.add_argument("--days", type=int, default=3, help="只处理最近几天的条目")
+    p_enrich.add_argument("--reset", action="store_true", help="先把最近几天的 llm_at 清掉，重新排队")
+    p_enrich.set_defaults(func=cmd_enrich)
+
     p_remote = sub.add_parser("remote", help="海外分身链路诊断")
     p_remote.add_argument("--date", help="要检查哪天的 bundle（默认今天）")
     p_remote.set_defaults(func=cmd_remote)
@@ -713,6 +829,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--no-sync", action="store_true", help="跳过海外 bundle 同步")
     p_run.add_argument("--no-fetch", action="store_true", help="跳过本地源抓取")
     p_run.add_argument("--no-process", action="store_true", help="跳过正文与聚类")
+    p_run.add_argument("--no-enrich", action="store_true", help="跳过 LLM 翻译与评分")
     p_run.set_defaults(func=cmd_run)
 
     p_sched = sub.add_parser("schedule", help="注册每日定时任务")

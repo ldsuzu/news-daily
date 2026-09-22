@@ -31,10 +31,20 @@ def _trigram_available(conn: sqlite3.Connection) -> bool:
 
 def _migrate(conn: sqlite3.Connection) -> None:
     """给老库补列 —— schema 用的是 CREATE TABLE IF NOT EXISTS，加列得显式做。"""
-    columns = {row[1] for row in conn.execute("PRAGMA table_info(sources)")}
-    if "extract" not in columns:
+    source_cols = {row[1] for row in conn.execute("PRAGMA table_info(sources)")}
+    if "extract" not in source_cols:
         conn.execute("ALTER TABLE sources ADD COLUMN extract INTEGER NOT NULL DEFAULT 1")
-        conn.commit()
+
+    item_cols = {row[1] for row in conn.execute("PRAGMA table_info(items)")}
+    for name, ddl in (
+        ("title_cn", "ALTER TABLE items ADD COLUMN title_cn TEXT NOT NULL DEFAULT ''"),
+        ("llm_score", "ALTER TABLE items ADD COLUMN llm_score REAL"),
+        ("llm_at", "ALTER TABLE items ADD COLUMN llm_at TEXT"),
+    ):
+        if name not in item_cols:
+            conn.execute(ddl)
+
+    conn.commit()
 
 
 def init_db(conn: sqlite3.Connection) -> str:

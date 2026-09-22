@@ -184,6 +184,7 @@ details.local-body .text {
 .S-table .name { font-weight: 600; }
 .S-table .type { font-family: var(--mono); font-size: 11px; color: var(--fg3); }
 .badge { font-size: 11px; padding: 1px 7px; border-radius: 20px; border: 1px solid currentColor; }
+.badge.foreign { color: var(--mid); font-size: 10px; padding: 0 5px; letter-spacing: .04em; }
 .badge.local { color: var(--ai); }
 .badge.remote { color: var(--game); }
 .badge.err { color: var(--hi); }

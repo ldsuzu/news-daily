@@ -40,6 +40,44 @@
     </div>
 
     <div class="S-card">
+      <h3>LLM 花费</h3>
+      {% if llm_on %}
+        <p class="hint">翻译 + 热度评分。省 token 的三个手段：批量送、只给摘要不给全文、只处理新条目。</p>
+        <div class="S-knob">
+          <span class="v">¥{{ '%.4f'|format(llm_spend.today.cost_cny) }}</span>
+          <span class="l">今日花费</span>
+          <span class="h">{{ llm_spend.today.items }} 条</span>
+        </div>
+        <div class="S-knob">
+          <span class="v">¥{{ '%.4f'|format(llm_spend.total.cost_cny) }}</span>
+          <span class="l">累计花费</span>
+          <span class="h">{{ llm_spend.total.items }} 条 · {{ llm_spend.total.calls }} 次调用</span>
+        </div>
+        <div class="S-knob">
+          <span class="v">{{ '{:,}'.format(llm_spend.today.input_tokens + llm_spend.today.cached_tokens) }}</span>
+          <span class="l">今日输入 tokens</span>
+          <span class="h">缓存命中 {{ '{:,}'.format(llm_spend.today.cached_tokens) }}</span>
+        </div>
+        <div class="S-knob">
+          <span class="v">{{ '{:,}'.format(llm_spend.today.output_tokens) }}</span>
+          <span class="l">今日输出 tokens</span>
+          <span class="h">输出单价是输入的 4 倍</span>
+        </div>
+        {% if llm_spend.total.failures %}
+          <p class="S-empty">有 {{ llm_spend.total.failures }} 次调用失败（记在账本里了，不影响其它功能）</p>
+        {% endif %}
+      {% else %}
+        <p class="S-empty">
+          LLM 还没启用。<br><br>
+          在 <code>config/settings.yaml</code> 的 <code>llm</code> 段填上 <code>api_key</code>、
+          把 <code>enabled</code> 改成 <code>true</code>，再跑一次 <code>newspipe enrich</code>。<br><br>
+          开启之后：外网条目会有中文标题和中文摘要（原文标题保留在下面），
+          排序改用 LLM 判断的热度而不是关键词匹配，这里的数字就是真实花费。
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="S-card">
       <h3>数据在哪</h3>
       <p class="hint">全部在你自己的机器上，没有任何第三方持有你的阅读记录。</p>
       <dl>
