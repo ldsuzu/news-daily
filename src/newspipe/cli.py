@@ -406,7 +406,7 @@ def cmd_schedule(args: argparse.Namespace) -> int:
         result = subprocess.run(
             ["schtasks", "/Create", "/F", "/SC", "DAILY", "/ST", at,
              "/TN", TASK_NAME, "/TR", str(script)],
-            capture_output=True, text=True,
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
         out = (result.stdout or "") + (result.stderr or "")
         if result.returncode == 0:
@@ -425,7 +425,7 @@ def cmd_schedule(args: argparse.Namespace) -> int:
 
     if action == "uninstall":
         result = subprocess.run(
-            ["schtasks", "/Delete", "/F", "/TN", TASK_NAME], capture_output=True, text=True
+            ["schtasks", "/Delete", "/F", "/TN", TASK_NAME], capture_output=True, text=True, encoding="utf-8", errors="replace"
         )
         print(((result.stdout or "") + (result.stderr or "")).strip()[:300])
         conn.close()
@@ -434,7 +434,7 @@ def cmd_schedule(args: argparse.Namespace) -> int:
     # status
     result = subprocess.run(
         ["schtasks", "/Query", "/TN", TASK_NAME, "/FO", "LIST"],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     text = ((result.stdout or "") + (result.stderr or "")).strip()
     if result.returncode != 0:
