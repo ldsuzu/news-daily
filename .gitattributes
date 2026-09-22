@@ -1,0 +1,5 @@
+# Windows 批处理必须是 CRLF：存成 LF 的话，cmd.exe 解析多行 if ( ) 块会失败
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+* text=auto
