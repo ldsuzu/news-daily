@@ -11,8 +11,12 @@
 
 | 通道 | 负责 | 跑在哪 |
 |---|---|---|
-| 本地直连 | 机核 / 游研社 / 量子位 / Steam 公告… | 你机器上的 `newspipe fetch` |
-| 海外分身 | IGN / PC Gamer / arXiv / OpenAI / HN… | GitHub Actions 定时任务，产出 bundle JSON |
+| 本地直连 | **23 个源**：机核 / 游研社 / 游民星空 / 3DM / 量子位 / 雷峰网 / InfoQ … 以及 GameSpot / Eurogamer / PC Gamer / RPS / Gematsu / VGC / Nintendo Life / OpenAI Blog / The Verge AI / TechCrunch AI / arXiv / Hacker News | 你机器上的 `newspipe fetch` |
+| 海外分身 | 只剩 7 个真需要代理的：IGN / Hugging Face / Google Research / Import AI / DeepMind / Anthropic | GitHub Actions（可选） |
+
+> **注意**：最初我以为"外网源都得走代理"，逐个实测后发现有 13 个能直连 ——
+> 之前那个结论是被真正被墙的站点拖累的误判。所以**不接 GitHub、不开 VPN，
+> 也已经能读到当天的大部分外网新闻**（含正文）。海外分身现在是可选项，不是必需品。
 
 两边抓到的条目在本地 SQLite 合并去重（靠 `url_hash`），正文一并落库 —— 之后读的时候
 完全不需要网络。

@@ -28,7 +28,7 @@ sources:
     domain: game
     type: rss
     url: https://www.gamespot.com/feeds/mashup/
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -37,7 +37,7 @@ sources:
     domain: game
     type: rss
     url: https://www.eurogamer.net/feed
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -46,7 +46,7 @@ sources:
     domain: game
     type: rss
     url: https://www.pcgamer.com/rss/
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -55,7 +55,7 @@ sources:
     domain: game
     type: rss
     url: https://www.rockpapershotgun.com/feed
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 0.9
     enabled: true
 
@@ -64,7 +64,7 @@ sources:
     domain: game
     type: rss
     url: https://www.gematsu.com/feed
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.1
     enabled: true
 
@@ -73,7 +73,7 @@ sources:
     domain: game
     type: rss
     url: https://www.videogameschronicle.com/feed/
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -82,7 +82,7 @@ sources:
     domain: game
     type: rss
     url: https://www.nintendolife.com/feeds/latest
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 0.8
     enabled: true
 
@@ -93,7 +93,8 @@ sources:
     url: https://www.famitsu.com/feed
     needs_proxy: true
     weight: 0.9
-    enabled: true
+    enabled: false          # 实测 /rss、/feed、/rss/new.xml 等候选全部 404 —— 它没有 RSS，
+                            # 要接得走 HTML 采集或 RSSHub
 
   - id: steam_news
     name: Steam 官方公告
@@ -186,7 +187,7 @@ sources:
       sortBy: submittedDate
       sortOrder: descending
       max_results: 40
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -201,7 +202,7 @@ sources:
       sortBy: submittedDate
       sortOrder: descending
       max_results: 40
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -214,7 +215,7 @@ sources:
     params:
       top: 60
       keywords: ["AI", "LLM", "model", "GPT", "neural", "agent", "inference", "training"]
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 0.8
     enabled: true
 
@@ -223,7 +224,7 @@ sources:
     domain: ai
     type: rss
     url: https://openai.com/blog/rss.xml
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.4
     enabled: true
 
@@ -259,7 +260,7 @@ sources:
     domain: ai
     type: rss
     url: https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 1.0
     enabled: true
 
@@ -268,7 +269,7 @@ sources:
     domain: ai
     type: rss
     url: https://techcrunch.com/category/artificial-intelligence/feed/
-    needs_proxy: true
+    needs_proxy: false     # 实测本地可直连（见技术框架 §9）
     weight: 0.9
     enabled: true
 

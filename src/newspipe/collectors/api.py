@@ -137,9 +137,13 @@ def _bilibili(source: Source, http: Http) -> list[RawItem]:
         "rid": source.params.get("rid", 4),
         "type": source.params.get("type", "all"),
     }
-    data = http.get_json(source.url, params=params)
-    # 注意：这里**不要**加 Referer —— 实测带上它会触发 B站风控返回 -352，
-    # 而不带任何自定义头反而稳定返回 code=0。
+    # 风控这块是实测出来的：带 Referer 会被拒（-352），什么都不带时好时坏，
+    # 带一个匿名 buvid3 Cookie 最稳。
+    data = http.get_json(
+        source.url,
+        params=params,
+        headers={"Cookie": "buvid3=A1B2C3D4-1234-5678-9ABC-DEF012345678infoc; b_nut=1700000000"},
+    )
 
     code = (data or {}).get("code")
     if code != 0:

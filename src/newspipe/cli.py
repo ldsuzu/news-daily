@@ -2,6 +2,7 @@
 
     newspipe fetch    抓本地可达源并入库
     newspipe collect  海外模式：只抓墙外源，产出 bundle JSON（给 GitHub Actions 用）
+    newspipe catchup  开着 VPN 跑一次：抓墙外源并入库（不需要 GitHub）
     newspipe sync     拉取海外分身的 bundle 并合并入库（四层镜像回退）
     newspipe remote   海外分身链路诊断（配置 / 镜像可达性 / 下一步）
     newspipe run      跑完整流水线：sync → fetch → process → digest（定时任务用它）
@@ -113,6 +114,27 @@ def cmd_fetch(args: argparse.Namespace) -> int:
     return 0
 
 
+# ───────────────────────────── catchup ─────────────────────────────
+
+def cmd_catchup(args: argparse.Namespace) -> int:
+    """开着 VPN 时跑一次：抓所有墙外源并入库。
+
+    这是**不接 GitHub 也能让外网内容进本地库**的办法 —— 抓完就存下来了，
+    之后读的时候不需要任何网络。代价是你得在某个时刻开着代理跑一次。
+
+    想要"睡着的时候自动抓"，那就接 GitHub Actions（`newspipe remote` 有步骤）。
+    """
+    return cmd_fetch(
+        argparse.Namespace(
+            root=getattr(args, "root", None),
+            source=args.source,
+            mode="collector",
+            out=args.out,
+            date=args.date,
+        )
+    )
+
+
 # ───────────────────────────── doctor ─────────────────────────────
 
 def cmd_doctor(args: argparse.Namespace) -> int:
@@ -134,6 +156,19 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 url = base.rstrip("/") + "/" + src.url.lstrip("/")
 
             t0 = time.monotonic()
+
+            # api / html 类型的源没法用一个裸 URL 探测：api 要带查询参数、html 要走解析。
+            # 之前这里把 arXiv 报成 400、把 Hacker News 报成超时，全是误报。
+            if src.type in ("api", "html"):
+                result = collect_source(src, http, config)
+                ms = int((time.monotonic() - t0) * 1000)
+                if result.ok:
+                    print(f"[ OK ] {src.id:<16} {result.count:>4} 条   {ms:>6}ms")
+                    ok += 1
+                else:
+                    print(f"[FAIL] {src.id:<16} {ms:>6}ms   {result.error[:64]}")
+                continue
+
             try:
                 resp = http.get(url)
                 ms = int((time.monotonic() - t0) * 1000)
@@ -240,7 +275,9 @@ def cmd_sync(args: argparse.Namespace) -> int:
     if payload is None:
         path, why = fallback_local(bundles_dir, date)
         if path is None:
-            print("没有可用的 bundle —— 海外分身还没跑过，或者仓库地址没配好。")
+            print("没有可用的 bundle。两条路：")
+            print("  · 开着 VPN / 代理跑一次 newspipe catchup（立刻可用，不需要 GitHub）")
+            print("  · 或者接 GitHub Actions：newspipe remote 看步骤")
             conn.close()
             return 1
         payload = read_payload(path)
@@ -443,12 +480,17 @@ def cmd_remote(args: argparse.Namespace) -> int:
                 print(f"   [FAIL] {probe:30s} {ms:>5}ms  {type(exc).__name__}: {str(exc)[:46]}")
 
         if not repo_name:
-            print("\n三步接上海外分身：")
-            print("  1. 在 GitHub 建一个仓库（私有也行），把本项目推上去：")
+            print("\n让外网内容进本地库，有两条路：\n")
+            print("  ① 立刻可用，不需要 GitHub —— 开着 VPN / 代理跑一次：")
+            print("       newspipe catchup")
+            print("     抓到的条目的正文直接入库，之后读的时候完全不需要网络。")
+            print("     代理不是全局模式的话，先在 config/settings.yaml 里填 network.proxy。\n")
+            print("  ② 全自动，你睡着的时候也在抓 —— 接 GitHub Actions：")
             print("       git remote add origin https://github.com/<你>/<仓库>.git")
             print("       git push -u origin main")
-            print("  2. 在 config/settings.yaml 里填 bundle.repo，形如 yourname/news-bundles")
-            print("  3. 在 Actions 里手动触发一次 collect，然后本地跑 newspipe sync")
+            print("     然后在 config/settings.yaml 填 bundle.repo，")
+            print("     在仓库的 Actions 页手动触发一次 collect，本地再跑 newspipe sync。")
+            print("     之后每天北京时间 06:30 自动抓。")
             conn.close()
             return 1
 
@@ -624,6 +666,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_collect.add_argument("--out", help="bundle 输出目录（默认 bundles/）")
     p_collect.add_argument("--date", help="bundle 日期（默认今天）")
     p_collect.set_defaults(func=cmd_fetch)
+
+    p_catchup = sub.add_parser("catchup", help="开 VPN 时抓墙外源并入库（不需要 GitHub）")
+    p_catchup.add_argument("--source", action="append", help="只处理指定源 id")
+    p_catchup.add_argument("--out", help="bundle 输出目录")
+    p_catchup.add_argument("--date", help="日期（默认今天）")
+    p_catchup.set_defaults(func=cmd_catchup)
 
     p_doctor = sub.add_parser("doctor", help="源健康检查")
     add_common(p_doctor)
