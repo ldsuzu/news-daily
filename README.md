@@ -39,6 +39,7 @@ python -m venv .venv
 | `newspipe fetch` | 抓本地可达源并入库（`--source <id>` 可只跑某几个） |
 | `newspipe collect` | 海外模式：只抓墙外源，产出 `bundles/<date>.json`（给 GitHub Actions 用） |
 | `newspipe sync` | 拉取海外分身的 bundle 并合并入库（镜像 → 本地留存 → 最近一次） |
+| `newspipe remote` | 海外链路诊断：配置、GitHub 可达性、每层镜像逐层测试 |
 | `newspipe process` | 补正文（trafilatura）+ 去重聚类 |
 | `newspipe serve` | 本地阅读界面 |
 | `newspipe doctor` | 源健康检查：可达性、耗时、体积 |

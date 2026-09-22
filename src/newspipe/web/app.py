@@ -113,12 +113,20 @@ def create_app(config: Config | None = None) -> FastAPI:
 
             if view == "picks":
                 # 精选 = 按重要度取前 N 条（不是"够 N 分才进来"），阈值只是可选下界
-                shown = repo.list_items(domain=dom, date=target, limit=picks_n, order="score")
+                shown = repo.list_items(
+                    domain=dom,
+                    date=target,
+                    limit=picks_n,
+                    order="score",
+                    representatives_only=True,
+                )
                 if picks_min > 0:
                     shown = [r for r in shown if (r["score"] or 0) >= picks_min]
                 picks_count = len(shown)
             else:
-                shown = repo.list_items(domain=dom, date=target, limit=500, order="time")
+                shown = repo.list_items(
+                    domain=dom, date=target, limit=500, order="time", representatives_only=True
+                )
                 picks_count = (
                     repo.count_items(domain=dom, date=target, min_score=picks_min)
                     if picks_min > 0

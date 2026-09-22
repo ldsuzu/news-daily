@@ -129,8 +129,57 @@ def _steam(source: Source, http: Http) -> list[RawItem]:
     return out
 
 
+# ─────────────────────────── B站 ───────────────────────────
+
+def _bilibili(source: Source, http: Http) -> list[RawItem]:
+    """B站排行榜（rid=4 是游戏区）。用来补游戏侧——国内游戏媒体基本没有 RSS。"""
+    params = {
+        "rid": source.params.get("rid", 4),
+        "type": source.params.get("type", "all"),
+    }
+    data = http.get_json(
+        source.url, params=params, headers={"Referer": "https://www.bilibili.com/"}
+    )
+
+    code = (data or {}).get("code")
+    if code != 0:
+        raise RuntimeError(f"B站接口返回 code={code}：{(data or {}).get('message', '')}")
+
+    out: list[RawItem] = []
+    for entry in ((data.get("data") or {}).get("list") or [])[:50]:
+        title = normalize_title(entry.get("title"))
+        bvid = entry.get("bvid")
+        if not title or not bvid:
+            continue
+
+        ts = entry.get("pubdate")
+        published = (
+            datetime.fromtimestamp(int(ts), tz=timezone.utc) if isinstance(ts, (int, float)) else None
+        )
+        stat = entry.get("stat") or {}
+
+        out.append(
+            RawItem(
+                source_id=source.id,
+                domain=source.domain,
+                url=f"https://www.bilibili.com/video/{bvid}",
+                title=title,
+                published_at=to_iso_utc(published),
+                excerpt=truncate(clean_text(entry.get("desc") or ""), 600),
+                lang="zh",
+                extra={
+                    "bvid": bvid,
+                    "up": (entry.get("owner") or {}).get("name", ""),
+                    "views": stat.get("view"),
+                },
+            )
+        )
+    return out
+
+
 ADAPTERS = {
     "arxiv": _arxiv,
     "hackernews": _hackernews,
     "steam": _steam,
+    "bilibili": _bilibili,
 }

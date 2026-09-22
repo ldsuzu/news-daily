@@ -139,6 +139,7 @@ class Repo:
         limit: int = 100,
         offset: int = 0,
         order: str = "time",
+        representatives_only: bool = False,
     ) -> list[dict[str, Any]]:
         where, args = [], []
         if domain:
@@ -153,6 +154,10 @@ class Repo:
         if min_score is not None:
             where.append("score >= ?")
             args.append(min_score)
+        if representatives_only:
+            # 同一事件被多家（或同一家的两个入口）报道时，只出代表条目，
+            # 否则重复条目会白占「精选每领域 N 条」的名额。
+            where.append("(cluster_id IS NULL OR cluster_id = id)")
 
         order_sql = "score DESC, published_at DESC" if order == "score" else "COALESCE(published_at, fetched_at) DESC"
         clause = ("WHERE " + " AND ".join(where)) if where else ""

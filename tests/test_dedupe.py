@@ -138,3 +138,23 @@ def test_old_items_outside_window_are_ignored():
 
     stats = cluster_items(conn, window_days=14)
     assert stats["scanned"] == 0
+
+
+def test_representatives_only_keeps_duplicates_out_of_picks():
+    """重复条目不该白占「精选每领域 N 条」的名额。
+
+    真实案例：雷峰网给同一篇文章发两个不同的 slug URL，URL 指纹抓不到，
+    只能靠标题 SimHash 聚类 —— 但聚类之后还得把非代表条目从精选里挡掉。
+    """
+    conn = _conn()
+    repo = Repo(conn)
+    repo.upsert_items(
+        [
+            _item("leiphone", "https://leiphone.com/a/one.html", "Same headline, two entry points", hours_ago=1),
+            _item("leiphone", "https://leiphone.com/a/two.html", "Same headline, two entry points", hours_ago=1),
+        ]
+    )
+    cluster_items(conn)
+
+    assert len(repo.list_items(representatives_only=False)) == 2
+    assert len(repo.list_items(representatives_only=True)) == 1

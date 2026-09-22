@@ -6,7 +6,7 @@
   <span class="time">{{ item.published_at|hhmm }}</span>
   <span class="score {{ item.score|score_class }}">{{ '%.1f'|format(item.score or 0) }}</span>
   {% if item.cluster_size and item.cluster_size > 1 %}
-    <span class="cluster-note">另有 {{ item.cluster_size - 1 }} 家报道</span>
+    <span class="cluster-note">同事件另有 {{ item.cluster_size - 1 }} 条已折叠</span>
   {% endif %}
 </div>
 {% endmacro %}

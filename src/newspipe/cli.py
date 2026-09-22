@@ -3,6 +3,7 @@
     newspipe fetch    抓本地可达源并入库
     newspipe collect  海外模式：只抓墙外源，产出 bundle JSON（给 GitHub Actions 用）
     newspipe sync     拉取海外分身的 bundle 并合并入库（四层镜像回退）
+    newspipe remote   海外分身链路诊断（配置 / 镜像可达性 / 下一步）
     newspipe process  补正文 + 去重聚类（加工都在这，抓取只负责拿回来）
     newspipe serve    打开本地阅读界面（今日 / 历史 / 信息源 / 设置）
     newspipe doctor   源健康检查
@@ -15,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -29,7 +31,14 @@ from .pipeline.normalize import now_utc_iso, to_local_date
 from .pipeline.score import score_items
 from .storage.db import connect, init_db, sqlite_version
 from .storage.repo import Repo
-from .sync import fallback_local, pull_remote, read_payload
+from .sync import (
+    MIRROR_LABELS,
+    fallback_local,
+    github_headers,
+    mirror_urls,
+    pull_remote,
+    read_payload,
+)
 
 
 def _force_utf8_stdout() -> None:
@@ -228,6 +237,94 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return 0
 
 
+# ───────────────────────────── remote（海外链路诊断） ─────────────────────────────
+
+def cmd_remote(args: argparse.Namespace) -> int:
+    """海外分身链路诊断：配置对不对、每层镜像通不通、下一步该做什么。"""
+    config, conn, repo, _ = _open(args)
+    s = config.settings
+
+    repo_name = s.get("bundle.repo") or ""
+    branch = s.get("bundle.branch", "main")
+    path = s.get("bundle.path", "bundles")
+    token = s.get("bundle.token") or os.environ.get("NEWSPIPE_GH_TOKEN") or ""
+    date = args.date or to_local_date(now_utc_iso()) or ""
+
+    print("海外采集分身 · 链路诊断")
+    print(f"  仓库       {repo_name or '（未配置 bundle.repo）'}")
+    print(f"  分支 / 目录 {branch} / {path}")
+    print(f"  token      {'已配置' if token else '未配置（公开仓库不需要）'}")
+    print(f"  查询日期    {date}\n")
+
+    if not repo_name:
+        print("（还没配置 bundle.repo，先看 GitHub 通不通，再按下面三步接上它）\n")
+
+    with http_from_config(config) as http:
+        print("① GitHub 是否可达（只影响你 push 那一次；日常 sync 不需要）")
+        for probe in ("https://github.com", "https://api.github.com"):
+            t0 = time.monotonic()
+            try:
+                resp = http.get(probe)
+                ms = int((time.monotonic() - t0) * 1000)
+                print(f"   [ OK ] {probe:30s} {resp.status_code}  {ms:>5}ms")
+            except Exception as exc:  # noqa: BLE001
+                ms = int((time.monotonic() - t0) * 1000)
+                print(f"   [FAIL] {probe:30s} {ms:>5}ms  {type(exc).__name__}: {str(exc)[:46]}")
+
+        if not repo_name:
+            print("\n三步接上海外分身：")
+            print("  1. 在 GitHub 建一个仓库（私有也行），把本项目推上去：")
+            print("       git remote add origin https://github.com/<你>/<仓库>.git")
+            print("       git push -u origin main")
+            print("  2. 在 config/settings.yaml 里填 bundle.repo，形如 yourname/news-bundles")
+            print("  3. 在 Actions 里手动触发一次 collect，然后本地跑 newspipe sync")
+            conn.close()
+            return 1
+
+        print(f"\n② 镜像逐层测试（取 {date} 的 bundle）")
+        urls = mirror_urls(config, date)
+        if not urls:
+            print("   没有配置任何镜像 URL")
+        for i, url in enumerate(urls):
+            label = MIRROR_LABELS[i] if i < len(MIRROR_LABELS) else f"镜像 {i + 1}"
+            t0 = time.monotonic()
+            try:
+                text = http.get_text(url, headers=github_headers(config, url))
+                ms = int((time.monotonic() - t0) * 1000)
+                try:
+                    payload = json.loads(text)
+                except json.JSONDecodeError:
+                    payload = None
+                if isinstance(payload, dict) and "items" in payload:
+                    print(f"   [ OK ] {label:22s} {ms:>5}ms  {len(payload.get('items', []))} 条")
+                else:
+                    print(f"   [BAD ] {label:22s} {ms:>5}ms  响应不是 bundle（这天可能还没产出）")
+            except Exception as exc:  # noqa: BLE001
+                ms = int((time.monotonic() - t0) * 1000)
+                print(f"   [FAIL] {label:22s} {ms:>5}ms  {type(exc).__name__}: {str(exc)[:46]}")
+
+    print("\n③ 本地留存")
+    bundles_dir = s.path("bundles")
+    kept = sorted(bundles_dir.glob("*.json"), reverse=True)
+    if kept:
+        print(f"   已有 {len(kept)} 份，最近：{kept[0].name}")
+    else:
+        print("   还没有任何 bundle —— 说明海外分身还没成功跑过一次")
+
+    print("\n④ 最近的抓取记录")
+    rows = conn.execute(
+        "SELECT source_id, started_at, ok, count FROM fetch_log ORDER BY started_at DESC LIMIT 6"
+    ).fetchall()
+    if not rows:
+        print("   （还没有任何抓取记录）")
+    for r in rows:
+        mark = "OK " if r["ok"] else "ERR"
+        print(f"   [{mark}] {r['source_id']:16s} {r['started_at'][:16]}  {r['count']} 条")
+
+    conn.close()
+    return 0
+
+
 # ───────────────────────────── serve ─────────────────────────────
 
 def cmd_serve(args: argparse.Namespace) -> int:
@@ -372,6 +469,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_sync = sub.add_parser("sync", help="拉取海外 bundle 并合并入库")
     p_sync.add_argument("--date", help="要拉哪天的 bundle（默认今天）")
     p_sync.set_defaults(func=cmd_sync)
+
+    p_remote = sub.add_parser("remote", help="海外分身链路诊断")
+    p_remote.add_argument("--date", help="要检查哪天的 bundle（默认今天）")
+    p_remote.set_defaults(func=cmd_remote)
 
     p_serve = sub.add_parser("serve", help="打开本地阅读界面")
     p_serve.add_argument("--host", default="127.0.0.1")

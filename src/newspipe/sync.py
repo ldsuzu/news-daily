@@ -30,7 +30,7 @@ def mirror_urls(config: Config, date: str) -> list[str]:
     ]
 
 
-def _headers(config: Config, url: str) -> dict[str, str]:
+def github_headers(config: Config, url: str) -> dict[str, str]:
     headers: dict[str, str] = {}
     if "api.github.com" in url:
         # 否则 GitHub 返回的是带 base64 的 JSON 信封，不是文件内容
@@ -47,7 +47,7 @@ def pull_remote(config: Config, http: Http, date: str) -> dict[str, Any]:
 
     for url in mirror_urls(config, date):
         try:
-            text = http.get_text(url, headers=_headers(config, url))
+            text = http.get_text(url, headers=github_headers(config, url))
             payload = json.loads(text)
         except Exception as exc:  # noqa: BLE001 —— 挨个试，失败就下一个
             tried.append((url, f"{type(exc).__name__}: {str(exc)[:80]}"))

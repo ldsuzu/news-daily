@@ -134,7 +134,7 @@ sources:
     params: { rid: 4, type: all }
     needs_proxy: false
     weight: 0.6
-    enabled: false          # 适配器待实现（M2）
+    enabled: true
 
   # ─────────────────────────── AI · 墙外 ───────────────────────────
   - id: arxiv_ai
@@ -270,3 +270,49 @@ sources:
     needs_proxy: false
     weight: 1.2
     enabled: false        # 待自建 RSSHub（settings.rsshub.base）后打开
+
+  # 以下 5 个是 2026-09-22 实测有效的国内可达源（游戏站点大多没有 RSS，见 README）
+  - id: infoq_ai
+    name: InfoQ 中文
+    domain: ai
+    type: rss
+    url: https://www.infoq.cn/feed
+    needs_proxy: false
+    weight: 1.0
+    enabled: true
+
+  - id: leiphone
+    name: 雷峰网
+    domain: ai
+    type: rss
+    url: https://www.leiphone.com/feed
+    needs_proxy: false
+    weight: 1.1
+    enabled: true
+
+  - id: solidot
+    name: Solidot
+    domain: ai
+    type: rss
+    url: https://www.solidot.org/index.rss
+    needs_proxy: false
+    weight: 0.9
+    enabled: true
+
+  - id: oschina
+    name: 开源中国
+    domain: ai
+    type: rss
+    url: https://www.oschina.net/news/rss
+    needs_proxy: false
+    weight: 0.8
+    enabled: true
+
+  - id: sspai
+    name: 少数派
+    domain: ai
+    type: rss
+    url: https://sspai.com/feed
+    needs_proxy: false
+    weight: 0.8
+    enabled: true
