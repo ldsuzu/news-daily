@@ -13,6 +13,7 @@ from typing import Any
 from ..config import Config
 from ..pipeline.normalize import parse_iso
 from ..storage.repo import Repo
+from .select import select_picks
 
 WEEKDAYS = "一二三四五六日"
 
@@ -149,9 +150,13 @@ def write_digests(config: Config, repo: Repo, date: str, *, generated_at: str) -
             continue
 
         reps = repo.list_items(
-            domain=domain.id, date=date, limit=2000, order="score", representatives_only=True
+            domain=domain.id, date=date, limit=200, order="score", representatives_only=True
         )
-        picks = reps[:picks_n]
+        picks = select_picks(
+            reps,
+            picks_n,
+            max_per_source=int(config.settings.get("selection.max_per_source", 3)),
+        )
 
         markdown = render_digest(
             date=date,

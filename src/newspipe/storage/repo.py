@@ -91,7 +91,10 @@ class Repo:
         for it in items:
             h = url_hash(it.url)
             fetched = it.fetched_at or now
-            pub_date = to_local_date(it.published_at) or to_local_date(fetched) or ""
+            # 抓不到发布时间就用抓取时间：列表页类源（游民星空、3DM）本来就没有时间戳，
+            # 而它们是"当前最新"，用抓取时间比留空更接近事实。
+            published = it.published_at or fetched
+            pub_date = to_local_date(published) or ""
 
             row = self.conn.execute("SELECT id FROM items WHERE url_hash = ?", (h,)).fetchone()
             if row:
@@ -110,7 +113,7 @@ class Repo:
                     (it.content_text, it.content_text,
                      it.excerpt, it.excerpt,
                      it.title_en, it.title_en,
-                     it.published_at, pub_date, fetched, row["id"]),
+                     published, pub_date, fetched, row["id"]),
                 )
             else:
                 self.conn.execute(
@@ -122,7 +125,7 @@ class Repo:
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (h, it.source_id, it.domain, strip_tracking(it.url), it.title, it.title_en,
-                     title_key(it.title), it.published_at, pub_date, fetched,
+                     title_key(it.title), published, pub_date, fetched,
                      it.lang, it.excerpt, it.content_text,
                      float(it.extra.get("score") or 0.0), origin, now),
                 )

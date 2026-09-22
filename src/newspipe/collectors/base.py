@@ -35,6 +35,12 @@ class Http:
                 "User-Agent": user_agent,
                 "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
                 "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, application/json, text/html;q=0.8, */*;q=0.5",
+                # 这几个头看着多余，但国内不少站点靠它们判"是不是浏览器"：
+                # 实测游民星空少了它们直接 403，补上就是 200。
+                "Upgrade-Insecure-Requests": "1",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
             },
         }
         if proxy:

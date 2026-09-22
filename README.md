@@ -68,8 +68,8 @@ python -m venv .venv
 ```
 config/           settings.yaml（全部旋钮）· sources.yaml（信息源）· domains.yaml（领域）
 src/newspipe/
-  collectors/     rss / api / base(HTTP: UA·限速·代理)
-  pipeline/       normalize · extract(正文抽取) · dedupe(去重聚类) · score · bundle
+  collectors/     rss / api / html(列表页) / base(HTTP: UA·限速·代理·浏览器头)
+  pipeline/       normalize · extract · dedupe · score · select(精选) · bundle · digest
   storage/        schema.sql(含 FTS5) · db · repo
   web/            app.py(路由) · templates/ · static/
   sync.py         海外 bundle 的四层镜像回退
@@ -86,6 +86,11 @@ archive/          每日 Markdown 归档
 - **条数不设硬上限**：分成「精选 / 全部」两层。精选 = **按重要度取每领域前 N 条**（默认 10），
   不是一个硬性的分数门槛；阈值 `picks_min_score` 默认 0（不设下界），需要收紧时再调。
   **没进精选 ≠ 被丢弃**，它照常入库、照常可搜。
+- **精选限制单源占比**：`selection.max_per_source`（默认 3）。没有这一条，一家媒体就能把
+  10 个名额全占满 —— 国内游戏站只有标题、没有 RSS 摘要，关键词加分天然吃亏，
+  会被能提供摘要的源压死。名额没满时会回填，所以它只是"尽量均衡"，不是"宁可少给"。
+- **国内游戏站用 HTML 列表页采集**：它们没有 RSS，`type: html` + 几个正则参数就能接一个站。
+  注意这类页面给不出发布时间，`date_from_url` 只用于过滤老链接，日期回退为抓取时间。
 - **历史永久保留**：`items_fts` 是 FTS5 虚拟表（中文用 trigram 分词），全历史可检索，
   不做滚动过期。
 - **正文优先于链接**：正文在抓取时就落库，所以离线可读是默认状态，而不是缓存命中时的运气。

@@ -10,6 +10,7 @@ import time
 from ..config import Config, Source
 from ..models import FetchResult, RawItem
 from . import api, rss
+from . import html as html_mod
 from .base import Http
 
 # 网站在限速、风控、偶发 5xx 上都是间歇性的（B站的风控尤其如此），
@@ -26,6 +27,8 @@ def _collect_once(source: Source, http: Http, config: Config | None) -> list[Raw
         return rss.collect_rsshub(source, http, base)
     if source.type == "api":
         return api.collect(source, http)
+    if source.type == "html":
+        return html_mod.collect(source, http)
     raise ValueError(f"未知的源类型：{source.type}")
 
 

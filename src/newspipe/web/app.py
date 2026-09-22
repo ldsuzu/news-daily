@@ -18,6 +18,7 @@ from fastapi.templating import Jinja2Templates
 
 from ..config import Config, load_config
 from ..pipeline.normalize import now_utc_iso, parse_iso, to_local_date
+from ..pipeline.select import select_picks
 from ..storage.db import connect, init_db, sqlite_version
 from ..storage.repo import Repo
 
@@ -112,13 +113,19 @@ def create_app(config: Config | None = None) -> FastAPI:
             total_today = repo.count_items(domain=dom, date=target)
 
             if view == "picks":
-                # 精选 = 按重要度取前 N 条（不是"够 N 分才进来"），阈值只是可选下界
-                shown = repo.list_items(
+                # 精选 = 按重要度取前 N 条（不是"够 N 分才进来"），阈值只是可选下界；
+                # 同时限制单源占比，避免一家把名额占满
+                candidates = repo.list_items(
                     domain=dom,
                     date=target,
-                    limit=picks_n,
+                    limit=200,
                     order="score",
                     representatives_only=True,
+                )
+                shown = select_picks(
+                    candidates,
+                    picks_n,
+                    max_per_source=int(cfg.settings.get("selection.max_per_source", 3)),
                 )
                 if picks_min > 0:
                     shown = [r for r in shown if (r["score"] or 0) >= picks_min]

@@ -141,6 +141,39 @@ sources:
     enabled: true
     extract: false          # 视频播放页，没有可抽的文章正文
 
+  # 国内游戏站没有 RSS，用 HTML 列表页采集器兜底（带完整浏览器头才能过 403）
+  - id: gamersky
+    name: 游民星空
+    domain: game
+    type: html
+    url: https://www.gamersky.com/news/
+    params:
+      base_url: https://www.gamersky.com
+      link_pattern: '/news/\d{6}/\d+\.shtml$'
+      min_title: 8
+      max_items: 60
+      # 注意：URL 里只有年月，抠出来会让整月的文章全挤到 1 号，
+      # 所以这里不抠日期 —— 列表页就是"当前最新"，用抓取时间更接近事实
+    needs_proxy: false
+    weight: 1.1
+    enabled: true
+
+  - id: 3dmgame
+    name: 3DM
+    domain: game
+    type: html
+    url: https://www.3dmgame.com/news/
+    params:
+      base_url: https://www.3dmgame.com
+      link_pattern: '/news/\d{6}/\d+\.html$'
+      min_title: 8
+      max_items: 40
+      date_from_url: '/news/(\d{4})(\d{2})/'
+      max_age_days: 30        # 列表页混着"相关阅读"的老链接，挡掉一个月前的
+    needs_proxy: false
+    weight: 0.9
+    enabled: true
+
   # ─────────────────────────── AI · 墙外 ───────────────────────────
   - id: arxiv_ai
     name: arXiv cs.AI
