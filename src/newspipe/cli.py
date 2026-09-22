@@ -4,6 +4,9 @@
     newspipe collect  海外模式：只抓墙外源，产出 bundle JSON（给 GitHub Actions 用）
     newspipe sync     拉取海外分身的 bundle 并合并入库（四层镜像回退）
     newspipe remote   海外分身链路诊断（配置 / 镜像可达性 / 下一步）
+    newspipe run      跑完整流水线：sync → fetch → process → digest（定时任务用它）
+    newspipe digest   生成 Markdown 日报到 archive/
+    newspipe schedule 注册每日定时任务（Windows 任务计划 / crontab）
     newspipe process  补正文 + 去重聚类（加工都在这，抓取只负责拿回来）
     newspipe serve    打开本地阅读界面（今日 / 历史 / 信息源 / 设置）
     newspipe doctor   源健康检查
@@ -17,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -26,6 +30,7 @@ from .collectors import collect_source
 from .collectors.base import http_from_config
 from .pipeline.bundle import items_from_payload, write_bundle
 from .pipeline.dedupe import cluster_items
+from .pipeline.digest import write_digests
 from .pipeline.extract import extract_for_url, trafilatura_available
 from .pipeline.normalize import now_utc_iso, to_local_date
 from .pipeline.score import score_items
@@ -155,17 +160,24 @@ def cmd_process(args: argparse.Namespace) -> int:
         else:
             rows = conn.execute(
                 """
-                SELECT id, url, LENGTH(content_text) AS n
-                FROM items
-                WHERE LENGTH(content_text) < ?
-                ORDER BY COALESCE(published_at, fetched_at) DESC
+                SELECT i.id, i.url, LENGTH(i.content_text) AS n
+                FROM items i
+                JOIN sources s ON s.id = i.source_id
+                WHERE LENGTH(i.content_text) < ?
+                  AND s.extract = 1
+                ORDER BY COALESCE(i.published_at, i.fetched_at) DESC
                 LIMIT ?
                 """,
                 (args.min_chars, args.limit),
             ).fetchall()
             print(f"正文不足 {args.min_chars} 字的条目：{len(rows)} 条（本轮上限 {args.limit}）")
+            print("  （SPA 站点抽不出正文，已在 sources.yaml 里标 extract: false，不再浪费请求）")
 
             filled = 0
+            shorter = 0
+            nothing = 0
+            samples: list[str] = []
+
             with http_from_config(config) as http:
                 for i, row in enumerate(rows, 1):
                     text = extract_for_url(row["url"], http)
@@ -174,11 +186,22 @@ def cmd_process(args: argparse.Namespace) -> int:
                             "UPDATE items SET content_text = ? WHERE id = ?", (text, row["id"])
                         )
                         filled += 1
+                    elif text:
+                        shorter += 1
+                    else:
+                        nothing += 1
+                        if len(samples) < 3:
+                            samples.append(row["url"])
                     if i % 25 == 0:
                         conn.commit()
                         print(f"  … {i}/{len(rows)}（已补 {filled}）")
             conn.commit()
+
             print(f"补到正文 {filled} 条")
+            if nothing or shorter:
+                print(f"  （抓不到内容 {nothing} 条 · 抽出的比现有更短 {shorter} 条）")
+            for url in samples:
+                print(f"  ✗ {url[:88]}")
 
     if not args.no_cluster:
         stats = cluster_items(conn, window_days=args.window_days)
@@ -233,6 +256,154 @@ def cmd_sync(args: argparse.Namespace) -> int:
         f"\nbundle 日期 {payload.get('date', '?')} · 生成于 {payload.get('generated_at', '?')}\n"
         f"条目 {len(items)} 条 · 新增 {stats['new']} · 已见 {stats['seen']}"
     )
+    conn.close()
+    return 0
+
+
+# ───────────────────────────── digest / run / schedule ─────────────────────────────
+
+def cmd_digest(args: argparse.Namespace) -> int:
+    """把当天（或指定日期）的内容写成 Markdown 日报，放进 archive/。"""
+    config, conn, repo, _ = _open(args)
+    date = args.date or to_local_date(now_utc_iso()) or ""
+
+    paths = write_digests(config, repo, date, generated_at=now_utc_iso())
+    if not paths:
+        print(f"{date} 没有内容，没生成日报。")
+        conn.close()
+        return 1
+
+    print(f"日报已写出（{date}）：")
+    for path in paths:
+        print(f"  {path}  ({path.stat().st_size} B)")
+    conn.close()
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    """一条命令跑完整流水线：sync → fetch → process → digest。
+
+    定时任务就调它 —— 早上开机时，日报已经躺在 archive/ 里了。
+    """
+    root = getattr(args, "root", None)
+    date = args.date or to_local_date(now_utc_iso()) or ""
+    shared = {"root": root, "date": date}
+
+    steps: list[tuple[str, object, argparse.Namespace]] = []
+
+    if not args.no_sync:
+        steps.append(("① 同步海外 bundle", cmd_sync, argparse.Namespace(**shared)))
+    if not args.no_fetch:
+        steps.append(
+            ("② 抓取本地可达源", cmd_fetch,
+             argparse.Namespace(**shared, source=None, mode="standalone", out=None))
+        )
+    if not args.no_process:
+        steps.append(
+            ("③ 补正文 + 去重聚类", cmd_process,
+             argparse.Namespace(**shared, limit=args.limit, min_chars=400, window_days=14,
+                                no_extract=False, no_cluster=False))
+        )
+    steps.append(("④ 生成日报", cmd_digest, argparse.Namespace(**shared)))
+
+    failed: list[str] = []
+    for name, func, ns in steps:
+        print(f"\n{'=' * 60}\n{name}\n{'=' * 60}")
+        try:
+            rc = int(func(ns) or 0)  # type: ignore[operator]
+        except Exception as exc:  # noqa: BLE001 —— 一步失败不该带走后面几步
+            print(f"[ERROR] {name} 出错：{type(exc).__name__}: {exc}")
+            rc = 1
+        if rc != 0:
+            failed.append(name)
+
+    print(f"\n{'=' * 60}")
+    if failed:
+        print(f"跑完了，但有 {len(failed)} 步没成功：{'、'.join(failed)}")
+        print("（其它步骤的内容照常入库，不影响你读。）")
+        return 1
+    print("全部完成。")
+    return 0
+
+
+TASK_NAME = "每日简报 DailyDigest"
+
+
+def cmd_schedule(args: argparse.Namespace) -> int:
+    """把每日抓取注册成系统定时任务。
+
+    Windows 用任务计划程序；其它平台打印一行 crontab 让你贴。
+    """
+    config, conn, repo, _ = _open(args)
+    root = config.root
+    at = args.at or config.settings.get("schedule.daily_at", "07:00")
+    python = sys.executable
+    action = args.action
+
+    if os.name != "nt":
+        hh, _, mm = at.partition(":")
+        line = (
+            f"{int(hh)} {int(mm or 0)} * * * cd {root} && {python} -m newspipe run "
+            f">> {root}/data/run.log 2>&1"
+        )
+        print("非 Windows 平台：把下面这行加进 `crontab -e` 即可")
+        print()
+        print(f"  {line}")
+        conn.close()
+        return 0
+
+    # Windows：走任务计划程序。用批处理文件包一层，省掉引号地狱。
+    script = config.settings.path("data_dir") / "daily-run.cmd"
+    script.write_text(
+        "@echo off\r\n"
+        f'cd /d "{root}"\r\n'
+        f'"{python}" -m newspipe run >> "{root}\\data\\run.log" 2>&1\r\n',
+        encoding="utf-8",
+    )
+
+    if action == "install":
+        result = subprocess.run(
+            ["schtasks", "/Create", "/F", "/SC", "DAILY", "/ST", at,
+             "/TN", TASK_NAME, "/TR", str(script)],
+            capture_output=True, text=True,
+        )
+        out = (result.stdout or "") + (result.stderr or "")
+        if result.returncode == 0:
+            print(f"已注册：每天 {at} 自动跑一次 `newspipe run`")
+            print(f"  任务名  {TASK_NAME}")
+            print(f"  执行    {script}")
+            print(f"  日志    {config.settings.path('data_dir') / 'run.log'}")
+            print("\n查看状态：newspipe schedule status")
+            print("取消任务：newspipe schedule uninstall")
+        else:
+            print("注册失败：")
+            print(out.strip()[:400])
+            print("\n可以手动在「任务计划程序」里新建一个每日任务，执行上面那个 .cmd 文件。")
+        conn.close()
+        return result.returncode
+
+    if action == "uninstall":
+        result = subprocess.run(
+            ["schtasks", "/Delete", "/F", "/TN", TASK_NAME], capture_output=True, text=True
+        )
+        print(((result.stdout or "") + (result.stderr or "")).strip()[:300])
+        conn.close()
+        return result.returncode
+
+    # status
+    result = subprocess.run(
+        ["schtasks", "/Query", "/TN", TASK_NAME, "/FO", "LIST"],
+        capture_output=True, text=True,
+    )
+    text = ((result.stdout or "") + (result.stderr or "")).strip()
+    if result.returncode != 0:
+        print("还没有注册定时任务。")
+        print(f"跑这个装上：newspipe schedule install --at {at}")
+    else:
+        for line in text.splitlines():
+            if line.strip():
+                print("  " + line.strip())
+        print(f"\n手动跑一次看看：{script}")
     conn.close()
     return 0
 
@@ -479,6 +650,27 @@ def build_parser() -> argparse.ArgumentParser:
     p_serve.add_argument("--port", type=int, default=8787)
     p_serve.add_argument("--open", action="store_true", help="启动后自动打开浏览器")
     p_serve.set_defaults(func=cmd_serve)
+
+    p_digest = sub.add_parser("digest", help="生成 Markdown 日报（archive/）")
+    p_digest.add_argument("--date", help="哪一天（默认今天）")
+    p_digest.set_defaults(func=cmd_digest)
+
+    p_run = sub.add_parser("run", help="跑完整流水线：sync → fetch → process → digest")
+    p_run.add_argument("--date", help="哪一天（默认今天）")
+    p_run.add_argument("--limit", type=int, default=40, help="本轮最多补多少条正文")
+    p_run.add_argument("--no-sync", action="store_true", help="跳过海外 bundle 同步")
+    p_run.add_argument("--no-fetch", action="store_true", help="跳过本地源抓取")
+    p_run.add_argument("--no-process", action="store_true", help="跳过正文与聚类")
+    p_run.set_defaults(func=cmd_run)
+
+    p_sched = sub.add_parser("schedule", help="注册每日定时任务")
+    p_sched.add_argument(
+        "action", nargs="?", default="status",
+        choices=["status", "install", "uninstall"],
+        help="默认 status",
+    )
+    p_sched.add_argument("--at", help="每天几点跑（默认取 settings.schedule.daily_at）")
+    p_sched.set_defaults(func=cmd_schedule)
 
     p_stats = sub.add_parser("stats", help="库内容概览")
     p_stats.set_defaults(func=cmd_stats)

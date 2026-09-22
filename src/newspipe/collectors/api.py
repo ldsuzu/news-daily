@@ -137,9 +137,9 @@ def _bilibili(source: Source, http: Http) -> list[RawItem]:
         "rid": source.params.get("rid", 4),
         "type": source.params.get("type", "all"),
     }
-    data = http.get_json(
-        source.url, params=params, headers={"Referer": "https://www.bilibili.com/"}
-    )
+    data = http.get_json(source.url, params=params)
+    # 注意：这里**不要**加 Referer —— 实测带上它会触发 B站风控返回 -352，
+    # 而不带任何自定义头反而稳定返回 code=0。
 
     code = (data or {}).get("code")
     if code != 0:

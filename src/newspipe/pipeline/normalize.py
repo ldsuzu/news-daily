@@ -47,7 +47,11 @@ def normalize_title(title: str | None) -> str:
 
 
 def canonical_url(url: str) -> str:
-    """去掉追踪参数、fragment，统一大小写与尾部斜杠，得到稳定可比的 URL。"""
+    """去掉追踪参数、fragment，统一大小写与尾部斜杠，得到稳定可比的 URL。
+
+    只用于**去重与指纹**。给人点的链接请用 strip_tracking() ——
+    canonical_url 会去掉 www，而有些站点的证书只对 www 域名有效（游研社就是）。
+    """
     if not url:
         return ""
     parts = urlsplit(url.strip())
@@ -69,6 +73,22 @@ def canonical_url(url: str) -> str:
         path = path.rstrip("/")
 
     return urlunsplit((scheme, netloc, path, urlencode(query), ""))
+
+
+def strip_tracking(url: str) -> str:
+    """只剥追踪参数，host 与路径原样保留 —— 存库和展示都用它，保证链接照原样可点。"""
+    if not url:
+        return ""
+    parts = urlsplit(url.strip())
+
+    query = [
+        (k, v)
+        for k, v in parse_qsl(parts.query, keep_blank_values=True)
+        if k.lower() not in TRACKING_PARAMS and not k.lower().startswith("utm_")
+    ]
+    query.sort()
+
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), ""))
 
 
 def url_hash(url: str) -> str:

@@ -32,6 +32,7 @@ class Source:
     weight: float = 1.0
     enabled: bool = True
     adapter: str = ""
+    extract: bool = True          # 文章页能否抽出正文；SPA 站点设 false，别浪费请求
     params: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -171,6 +172,7 @@ def load_config(root: Path | None = None) -> Config:
                 weight=float(raw.get("weight", 1.0)),
                 enabled=bool(raw.get("enabled", True)),
                 adapter=raw.get("adapter", ""),
+                extract=bool(raw.get("extract", True)),
                 params=raw.get("params", {}) or {},
             )
         )

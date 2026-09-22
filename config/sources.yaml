@@ -7,6 +7,8 @@
 #               false = 国内可达，本地直连
 #   weight      源权重，参与重要度打分与聚类时的代表选取
 #   enabled     总开关
+#   extract     文章页能否抽出正文。SPA 站点（机核、开源中国新闻页、B站播放页）用
+#               trafilatura 抽不出东西，标 false 免得每轮白抓 —— 抽不到也不影响读摘要
 #
 # 加源 = 在这个文件里加一段，代码不用动。
 
@@ -105,6 +107,7 @@ sources:
     needs_proxy: false      # Steam Web API 国内通常可达；不通时改 true 交给海外分身
     weight: 0.7
     enabled: true
+    extract: false          # 正文已经在 API 的 contents 字段里，不用再抓网页
 
   # ─────────────────────────── 游戏 · 国内可达 ───────────────────────────
   - id: gcores
@@ -115,6 +118,7 @@ sources:
     needs_proxy: false
     weight: 1.2
     enabled: true
+    extract: false          # 文章页是 SPA，实测抽出 0 字
 
   - id: yystv
     name: 游研社
@@ -135,6 +139,7 @@ sources:
     needs_proxy: false
     weight: 0.6
     enabled: true
+    extract: false          # 视频播放页，没有可抽的文章正文
 
   # ─────────────────────────── AI · 墙外 ───────────────────────────
   - id: arxiv_ai
@@ -307,6 +312,7 @@ sources:
     needs_proxy: false
     weight: 0.8
     enabled: true
+    extract: false          # 新闻页只返回 3KB 的壳，抽不出正文
 
   - id: sspai
     name: 少数派

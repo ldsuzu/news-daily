@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS sources (
     weight        REAL NOT NULL DEFAULT 1.0,
     enabled       INTEGER NOT NULL DEFAULT 1,
     needs_proxy   INTEGER NOT NULL DEFAULT 0,
+    extract       INTEGER NOT NULL DEFAULT 1,   -- 该源的文章页能否抽出正文（SPA 站点抽不出）
     last_ok_at    TEXT,
     last_error    TEXT,
     fail_count    INTEGER NOT NULL DEFAULT 0

@@ -13,6 +13,7 @@ from ..config import Source
 from ..models import RawItem
 from ..pipeline.normalize import (
     now_utc_iso,
+    strip_tracking,
     title_key,
     to_local_date,
     url_hash,
@@ -31,8 +32,8 @@ class Repo:
         for s in sources:
             self.conn.execute(
                 """
-                INSERT INTO sources (id, name, domain, type, url, weight, enabled, needs_proxy)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO sources (id, name, domain, type, url, weight, enabled, needs_proxy, extract)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id) DO UPDATE SET
                     name = excluded.name,
                     domain = excluded.domain,
@@ -40,10 +41,11 @@ class Repo:
                     url = excluded.url,
                     weight = excluded.weight,
                     enabled = excluded.enabled,
-                    needs_proxy = excluded.needs_proxy
+                    needs_proxy = excluded.needs_proxy,
+                    extract = excluded.extract
                 """,
                 (s.id, s.name, s.domain, s.type, s.url, s.weight,
-                 int(s.enabled), int(s.needs_proxy)),
+                 int(s.enabled), int(s.needs_proxy), int(s.extract)),
             )
             count += 1
         self.conn.commit()
@@ -119,7 +121,7 @@ class Repo:
                          score, origin, created_at)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
-                    (h, it.source_id, it.domain, it.url, it.title, it.title_en,
+                    (h, it.source_id, it.domain, strip_tracking(it.url), it.title, it.title_en,
                      title_key(it.title), it.published_at, pub_date, fetched,
                      it.lang, it.excerpt, it.content_text,
                      float(it.extra.get("score") or 0.0), origin, now),

@@ -14,6 +14,7 @@ from newspipe.pipeline.bundle import build_bundle, items_from_payload
 from newspipe.pipeline.normalize import (
     canonical_url,
     normalize_title,
+    strip_tracking,
     title_key,
     to_local_date,
     url_hash,
@@ -31,6 +32,21 @@ def test_canonical_url_strips_tracking_and_www():
 
 def test_canonical_url_sorts_query():
     assert canonical_url("https://x.com/p?b=2&a=1") == canonical_url("https://x.com/p?a=1&b=2")
+
+
+def test_dedup_url_and_display_url_are_different_jobs():
+    """去重靠 canonical_url（去 www），展示靠 strip_tracking（保留 host）。
+
+    真实教训：游研社的证书只对 www.yystv.cn 有效，把 www 去掉后链接直接证书错误。
+    两者混用会把能点的链接弄坏。
+    """
+    raw = "https://www.yystv.cn/p/14411?utm_source=rss&utm_medium=feed"
+
+    assert canonical_url(raw) == "https://yystv.cn/p/14411"          # 只给去重用
+    assert strip_tracking(raw) == "https://www.yystv.cn/p/14411"     # 这个是给人点的
+
+    # 指纹仍然是稳定的：带不带 www、带不带追踪参数，都是同一条
+    assert url_hash(raw) == url_hash("https://yystv.cn/p/14411")
 
 
 def test_url_hash_is_stable_across_sources():

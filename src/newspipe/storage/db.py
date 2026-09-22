@@ -29,11 +29,20 @@ def _trigram_available(conn: sqlite3.Connection) -> bool:
         return False
 
 
+def _migrate(conn: sqlite3.Connection) -> None:
+    """给老库补列 —— schema 用的是 CREATE TABLE IF NOT EXISTS，加列得显式做。"""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(sources)")}
+    if "extract" not in columns:
+        conn.execute("ALTER TABLE sources ADD COLUMN extract INTEGER NOT NULL DEFAULT 1")
+        conn.commit()
+
+
 def init_db(conn: sqlite3.Connection) -> str:
     """建表并返回全文检索用的分词器名（doctor 会显示它）。"""
     sql = SCHEMA_PATH.read_text(encoding="utf-8")
     core, _, fts = sql.partition(SPLIT_MARK)
     conn.executescript(core)
+    _migrate(conn)
 
     tokenizer = "trigram" if _trigram_available(conn) else "unicode61"
     try:

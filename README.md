@@ -42,6 +42,9 @@ python -m venv .venv
 | `newspipe remote` | 海外链路诊断：配置、GitHub 可达性、每层镜像逐层测试 |
 | `newspipe process` | 补正文（trafilatura）+ 去重聚类 |
 | `newspipe serve` | 本地阅读界面 |
+| `newspipe run` | **一条命令跑完整流水线**：sync → fetch → process → digest（定时任务用的就是它） |
+| `newspipe digest` | 生成 Markdown 日报到 `archive/` |
+| `newspipe schedule` | 注册每日定时任务（`install` / `status` / `uninstall`） |
 | `newspipe doctor` | 源健康检查：可达性、耗时、体积 |
 | `newspipe stats` | 库内容概览 + 每个源的状态 |
 | `newspipe search <词>` | 全历史全文检索（SQLite FTS5） |
@@ -94,5 +97,17 @@ archive/          每日 Markdown 归档
 - [x] **M0** 骨架：schema（含 FTS5）、采集器、CLI、幂等入库、规则打分、契约测试
 - [x] **M1** 可用（代码层）：正文抽取、去重聚类、四屏界面（版式 A）、GitHub Actions 与 sync 回退
       —— 唯一待办是接上你自己的 GitHub 仓库（见上）
-- [ ] **M2** 好读：LLM 中文摘要/打分、Markdown 归档、定时自动化
+- [~] **M2** 好读：Markdown 日报归档 ✅、定时自动化 ✅（`newspipe run` + `schedule install`）；
+      LLM 中文摘要与打分待做
 - [ ] **M3** 打磨：聚类展示、收藏、关注/屏蔽、源权重自学习、桌面外壳
+
+## 每天自动跑起来
+
+```powershell
+.\.venv\Scripts\python.exe -m newspipe schedule install --at 07:00
+```
+
+Windows 会在任务计划程序里注册一个每日任务，执行 `newspipe run`（sync → fetch → process → digest），
+日志写到 `data/run.log`。跑完你会发现 `archive/2026-09-22-ai.md` 这样的日报已经躺在那儿了。
+
+非 Windows 平台会打印一行 crontab 让你贴。
