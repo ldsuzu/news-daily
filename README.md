@@ -56,13 +56,18 @@ python -m venv .venv
 
 `--mode collector` 与 `--mode standalone` 的分工是硬的：**两边零重叠**，所以合并时天然不冲突。
 
-## 接上你自己的海外分身
+## 接上你自己的海外分身（可选，非必需）
 
-代码、workflow、回退链路都已就位，只差你的仓库：
+**这一步不是必需的。** 13 个外网源本地直连就能抓到，海外分身只对剩下 7 个源
+（IGN / Hugging Face / Google Research / Import AI / DeepMind / Anthropic）有意义 ——
+它的价值是"你睡觉的时候也在抓"。
 
-1. 建一个 GitHub 仓库（私有也行），把本项目推上去；
-2. 在 `config/settings.yaml` 里填 `bundle.repo`（形如 `yourname/news-bundles`）；
-3. 在 Actions 里手动触发一次 `collect`，然后本地跑 `newspipe sync`。
+完整步骤（含踩坑点）见 **[GitHub操作指南.md](GitHub操作指南.md)**，三步概览：
+
+1. 在 GitHub 建一个**空仓库**（不要勾 README / .gitignore / license），然后 `git remote add` + `git push`；
+2. 仓库 Settings → Actions → General → **Workflow permissions 改成 Read and write**
+   —— 漏了这步，workflow 会表面成功、实际什么都不提交；
+3. Actions 页手动跑一次 `collect`，然后在 `config/settings.yaml` 填 `bundle.repo`，本地 `newspipe sync`。
 
 之后 `.github/workflows/collect.yml` 会在**北京时间每天 06:30**（UTC 22:30，给调度延迟留缓冲）
 自动抓墙外源并提交 bundle —— 你早上开机时，内容已经躺在本地库里了。

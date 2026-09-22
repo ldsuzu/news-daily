@@ -11,4 +11,8 @@ data/*
 
 # 归档与本地设置：归档是你的资产，默认保留；敏感 token 不进库
 config/settings.local.yaml
-bundles/
+
+# 注意：**不要**在这里忽略 bundles/。
+# 根目录的 bundles/ 是 GitHub Actions 采集分身的产出目录，本地 sync 要靠它拉数据；
+# 一旦被忽略，workflow 里的 `git add bundles` 就成了空操作，每天静默地"没有新内容"。
+# （本地那份副本在 data/bundles/，已经被上面的 data/* 覆盖掉了。）
