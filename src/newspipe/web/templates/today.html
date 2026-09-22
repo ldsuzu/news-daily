@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% from "macros.html" import meta_line, local_body, masthead %}
+
+{% block title %}{{ date|date_label }} · {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="A">
+
+  {{ masthead(site_name, date|date_label ~ ' · 当天 ' ~ total_today ~ ' 条 · 精选 ' ~ picks_count ~ ' 条') }}
+
+  <nav class="A-nav">
+    <a href="/?domain={{ domain }}&view={{ view }}&date={{ date }}" class="on">今日</a>
+    <a href="/history">历史</a>
+    <a href="/sources">信息源</a>
+    <a href="/settings">设置</a>
+    <span class="sp"></span>
+    <span class="dom">
+      {% for d in domain_tabs %}
+        <a href="/?domain={{ d.id }}&view={{ view }}&date={{ date }}" class="{{ 'on' if domain == d.id else '' }}">{{ d.name }}</a>
+      {% endfor %}
+    </span>
+  </nav>
+
+  {# 日期导航就长在首屏上：往前往后点一下就是历史 #}
+  <div class="H-dates" style="border-bottom:1px solid var(--line)">
+    <a href="/?domain={{ domain }}&view={{ view }}&date={{ date|shift_date(-1) }}">← {{ date|shift_date(-1) }}</a>
+    <a class="on">{{ date }}</a>
+    <a href="/?domain={{ domain }}&view={{ view }}&date={{ date|shift_date(1) }}">{{ date|shift_date(1) }} →</a>
+    {% if dates %}
+      <span style="color:var(--fg3);margin-left:6px">最近有内容：</span>
+      {% for d in dates[:7] %}
+        <a href="/?domain={{ domain }}&view=all&date={{ d.date }}" class="{{ 'on' if d.date == date else '' }}">{{ d.date }}·{{ d.n }}</a>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% if not lead %}
+    <div class="pill-empty">
+      这一天还没有内容。<br>
+      {% if dates %}
+        先看看有内容的日期：{% for d in dates[:5] %}<a href="/?view=all&date={{ d.date }}">{{ d.date }}</a>　{% endfor %}
+      {% else %}
+        先跑一次 <code>newspipe fetch</code> 把源抓进来。
+      {% endif %}
+    </div>
+  {% else %}
+
+    {# ── 头条 ── #}
+    <section class="A-lead">
+      <div>
+        {{ meta_line(lead, source_map) }}
+        <h2><a href="{{ lead.url }}" target="_blank" rel="noreferrer">{{ lead.title }}</a></h2>
+        {% if lead.title_en and lead.title_en != lead.title %}
+          <div class="en">{{ lead.title_en }}</div>
+        {% endif %}
+        <p class="sum">{{ lead.summary_cn or lead.excerpt|excerpt(360) }}</p>
+      </div>
+      <aside class="body-card">
+        <b>本地正文 · 离线可读</b>
+        <div class="text">{{ (lead.content_text or lead.excerpt or '（这条没有抓到正文，只有源摘要）')|excerpt(620) }}</div>
+        <div style="margin-top:10px">
+          <span class="time">
+            抓取于 {{ lead.fetched_at|hhmm }} · 来自{{ '海外分身' if lead.origin == 'remote' else '本地直连' }}
+            {%- if lead.content_text %} · 全文 {{ lead.content_text|length }} 字{% endif %}
+          </span>
+        </div>
+      </aside>
+    </section>
+
+    {# ── 三栏次条 ── #}
+    {% if secondary %}
+      <section class="A-tri">
+        {% for it in secondary %}
+          <article>
+            {{ meta_line(it, source_map) }}
+            <h3><a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ it.title }}</a></h3>
+            {% if it.title_en and it.title_en != it.title %}<div class="en">{{ it.title_en }}</div>{% endif %}
+            <p>{{ (it.summary_cn or it.excerpt)|excerpt(180) }}</p>
+            {{ local_body(it) }}
+          </article>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    {# ── 更多报道 ── #}
+    {% if more %}
+      <section class="A-more">
+        <div class="hd">更多报道</div>
+        <div class="cols">
+          {% for it in more %}
+            <div class="row">
+              <span class="dot {{ it.domain }}"></span>
+              <span class="t"><a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ it.title }}</a></span>
+              <span class="time">{{ source_map.get(it.source_id, {}).get('name', it.source_id) }} · {{ it.published_at|hhmm }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+  {% endif %}
+
+  <div class="A-foot">
+    <div>
+      {% if view == 'picks' %}
+        {% if picks_min_score > 0 %}
+          正在显示 <b>精选 {{ shown_count }} 条</b>（≥ {{ picks_min_score }} 分，每领域上限 {{ picks_per_domain }}）
+        {% else %}
+          正在显示 <b>精选 {{ shown_count }} 条</b>（按重要度排序，每领域上限 {{ picks_per_domain }}）
+        {% endif %}
+        · 当天共 <b>{{ total_today }}</b> 条已入库，一条都没丢
+      {% else %}
+        正在显示 <b>全部 {{ shown_count }} 条</b> · 按时间倒序
+        {%- if shown_count < total_today %}（当天共 {{ total_today }} 条）{% endif %}
+      {% endif %}
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      {% if view == 'picks' %}
+        <a class="more-btn" href="/?domain={{ domain }}&view=all&date={{ date }}">查看全部 →</a>
+      {% else %}
+        <a class="more-btn" href="/?domain={{ domain }}&view=picks&date={{ date }}">← 只看精选</a>
+      {% endif %}
+      <a class="more-btn" href="/history?date={{ date }}&domain={{ domain }}">在历史里打开</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+# 领域定义。加一个领域 = 加一段配置，代码不用动。
+domains:
+  - id: game
+    name: 游戏
+    short: 游戏
+    color: "#7c3aed"
+  - id: ai
+    name: AI
+    short: AI
+    color: "#0284c7"

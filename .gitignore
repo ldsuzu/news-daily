@@ -1,0 +1,14 @@
+# 虚拟环境与构建产物
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 本地数据（数据库、正文缓存、bundle 副本）—— 属于你自己的机器，不进版本库
+data/*
+!data/.gitkeep
+
+# 归档与本地设置：归档是你的资产，默认保留；敏感 token 不进库
+config/settings.local.yaml
+bundles/

@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>每日简报 · 今日（原型）</title>
+<!--
+  PROTOTYPE — 一次性产物，用于回答「今日屏幕应该长什么样」。
+  三个结构完全不同的变体，通过 ?variant=A|B|C 切换，底部浮动栏左右切换。
+  数据全部是写死的示例数据，不落任何持久化，不接后端。
+  验证完就丢掉：赢家折进真实代码，其余移到 throwaway 分支。
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --serif:Georgia,"Songti SC","Times New Roman",serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --bg:#f4f4f2;--panel:#fff;--panel2:#fafaf8;--line:#e4e4e0;--line2:#d6d6d0;
+  --fg:#15151a;--fg2:#55555f;--fg3:#92929c;
+  --game:#7c3aed;--ai:#0284c7;
+  --hi:#c0392b;--mid:#b0730a;--lo:#7a7a86;
+  --sel:#eef2ff;
+  --sh:0 1px 2px rgba(0,0,0,.05),0 6px 16px rgba(0,0,0,.04);
+}
+html[data-theme=dark]{
+  --bg:#0f0f12;--panel:#18181d;--panel2:#1d1d23;--line:#2a2a33;--line2:#3a3a45;
+  --fg:#ececf2;--fg2:#a4a4b2;--fg3:#6d6d7a;
+  --game:#a78bfa;--ai:#3fbdf8;
+  --hi:#f87171;--mid:#fbbf24;--lo:#8a8a96;
+  --sel:#232338;
+  --sh:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
+}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  font-size:14px;line-height:1.6;padding-bottom:96px;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;vertical-align:middle;margin-right:5px}
+.dot.game{background:var(--game)}
+.dot.ai{background:var(--ai)}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--fg2)}
+.icon-btn:hover{border-color:var(--line2);color:var(--fg)}
+.score{font-family:var(--mono);font-size:11px;font-weight:600;padding:1px 5px;border-radius:5px;border:1px solid currentColor;opacity:.9}
+.score.hi{color:var(--hi)}.score.mid{color:var(--mid)}.score.lo{color:var(--lo)}
+.proto-tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:2px 5px;border-radius:4px;background:var(--fg);color:var(--bg);vertical-align:middle;margin-left:8px}
+.src{font-size:11.5px;color:var(--fg2);font-weight:600;letter-spacing:.02em}
+.time{font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.en{font-size:11.5px;color:var(--fg3);font-style:italic;line-height:1.45}
+
+/* ============ 共用外壳（仅导航示意，各变体自己排版）============ */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);
+  padding:8px 16px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .18s;z-index:99;max-width:80vw;text-align:center}
+.toast.on{opacity:1}
+
+/* ============ 变体 A — 报纸 / Editorial ============ */
+.A{max-width:1180px;margin:0 auto;padding:0 28px}
+.A-mast{display:flex;align-items:flex-end;justify-content:space-between;padding:26px 0 10px;border-bottom:3px double var(--line2);gap:20px}
+.A-mast h1{font-family:var(--serif);font-size:34px;margin:0;letter-spacing:.04em;line-height:1}
+.A-mast .date{font-size:12.5px;color:var(--fg2);padding-bottom:4px}
+.A-nav{display:flex;align-items:center;gap:18px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.A-nav a{color:var(--fg2);padding:2px 0;border-bottom:2px solid transparent}
+.A-nav a.on{color:var(--fg);font-weight:600;border-bottom-color:var(--fg)}
+.A-nav .sp{flex:1}
+.A-nav .dom{font-size:12.5px}
+.A-lead{display:grid;grid-template-columns:2fr 1fr;gap:26px;padding:24px 0;border-bottom:1px solid var(--line)}
+.A-lead h2{font-family:var(--serif);font-size:29px;line-height:1.32;margin:8px 0 8px;letter-spacing:.01em}
+.A-lead .sum{color:var(--fg2);font-size:14.5px;margin:0 0 12px}
+.A-lead ul{margin:0;padding-left:18px;color:var(--fg2);font-size:13.5px}
+.A-lead ul li{margin:2px 0}
+.A-lead .body{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--fg2);box-shadow:var(--sh)}
+.A-lead .body b{color:var(--fg);display:block;margin-bottom:6px;font-size:12px;letter-spacing:.04em}
+.A-tri{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--line)}
+.A-tri article{padding:20px 22px 22px 0;border-right:1px solid var(--line)}
+.A-tri article:last-child{border-right:0;padding-right:0}
+.A-tri article:not(:first-child){padding-left:22px}
+.A-tri h3{font-family:var(--serif);font-size:17.5px;line-height:1.42;margin:6px 0 5px}
+.A-tri p{margin:0;color:var(--fg2);font-size:13px}
+.A-more{padding:22px 0 30px}
+.A-more .hd{font-size:12px;letter-spacing:.14em;color:var(--fg3);text-transform:uppercase;margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.A-more .cols{column-count:2;column-gap:38px}
+.A-more .row{break-inside:avoid;padding:9px 0;border-bottom:1px dotted var(--line);display:flex;gap:10px;align-items:baseline}
+.A-more .row .t{flex:1;font-size:13.5px}
+.A-more .row:hover .t{color:var(--hi)}
+.A-foot{display:flex;justify-content:space-between;align-items:center;padding:12px 0 34px;border-top:3px double var(--line2);font-size:12.5px;color:var(--fg2);margin-top:6px}
+.A-foot .more-btn{border:1px solid var(--line2);padding:5px 12px;border-radius:20px;font-size:12.5px}
+.A-foot .more-btn:hover{background:var(--panel)}
+
+/* ============ 变体 B — 三栏工作台 / Workbench ============ */
+.B{display:grid;grid-template-columns:216px 340px 1fr;grid-template-rows:auto 1fr;height:calc(100vh - 96px);overflow:hidden}
+.B .col{overflow-y:auto;min-height:0;border-right:1px solid var(--line);background:var(--panel)}
+.B .col:last-child{border-right:0;background:var(--bg)}
+.B-bar{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.B-bar h1{font-size:14px;margin:0;font-weight:700;letter-spacing:.02em}
+.B-bar .sp{flex:1}
+.B-sec{padding:12px 14px 4px;font-size:10.5px;letter-spacing:.14em;color:var(--fg3);text-transform:uppercase}
+.B-facet{display:flex;align-items:center;gap:8px;padding:7px 14px;font-size:13px;color:var(--fg2);border-left:2px solid transparent}
+.B-facet:hover{background:var(--panel2)}
+.B-facet.on{background:var(--sel);border-left-color:var(--fg);color:var(--fg);font-weight:600}
+.B-facet .n{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.B-hist{font-family:var(--mono);font-size:12px}
+.B-list .row{padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.B-list .row:hover{background:var(--panel2)}
+.B-list .row.on{background:var(--sel);box-shadow:inset 3px 0 0 var(--fg)}
+.B-list .row .t{font-size:13.5px;line-height:1.45;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.B-list .row.dim .t{font-weight:500;color:var(--fg2)}
+.B-list .row .m{display:flex;align-items:center;gap:8px;margin-top:5px}
+.B-read{padding:26px 32px 60px;max-width:760px}
+.B-read h2{font-size:22px;line-height:1.4;margin:0 0 8px}
+.B-read .meta{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.B-read .sum{font-size:14.5px;color:var(--fg);background:var(--panel);border-left:3px solid var(--accent,var(--ai));padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.B-read .body{font-size:14px;color:var(--fg2);line-height:1.85;white-space:pre-line}
+.B-read .acts{display:flex;gap:8px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.B-read .acts button{border:1px solid var(--line);border-radius:8px;padding:5px 12px;font-size:12.5px;color:var(--fg2)}
+.B-read .acts button:hover{border-color:var(--line2);color:var(--fg)}
+.B-read .offline{font-size:12px;color:var(--fg3);margin-top:18px;padding:9px 12px;background:var(--panel);border:1px dashed var(--line2);border-radius:8px}
+
+/* ============ 变体 C — 时间流 / Stream ============ */
+.C{max-width:840px;margin:0 auto;padding:0 24px}
+.C-bar{display:flex;align-items:center;gap:12px;padding:16px 0 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.C-bar h1{font-size:19px;margin:0;font-weight:700}
+.C-bar .sp{flex:1}
+.C-chips{display:flex;gap:6px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.chip{font-size:12.5px;padding:4px 12px;border-radius:20px;border:1px solid var(--line);color:var(--fg2)}
+.chip:hover{border-color:var(--line2);color:var(--fg)}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
+.C-stat{display:flex;gap:22px;padding:14px 0 4px;font-size:12.5px;color:var(--fg2);flex-wrap:wrap}
+.C-stat b{font-family:var(--mono);color:var(--fg);font-size:14px;margin-right:3px}
+.C-tl{padding:14px 0 20px;position:relative}
+.C-tl .node{display:grid;grid-template-columns:56px 22px 1fr;gap:0}
+.C-tl .tm{font-family:var(--mono);font-size:11.5px;color:var(--fg3);padding-top:15px;text-align:right;padding-right:10px}
+.C-tl .line{position:relative;display:flex;justify-content:center}
+.C-tl .line::before{content:"";position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.C-tl .line i{position:relative;margin-top:19px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--fg3)}
+.C-tl .node.hot .line i{border-color:var(--hi);background:var(--hi)}
+.C-tl .node.g .line i{border-color:var(--game)}
+.C-tl .node.a .line i{border-color:var(--ai)}
+.C-tl .node .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:8px 0 14px 14px;box-shadow:var(--sh)}
+.C-tl .card h3{margin:6px 0 4px;font-size:15.5px;line-height:1.5}
+.C-tl .card .sum{margin:6px 0 0;color:var(--fg2);font-size:13px}
+.C-tl .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.C-tl .cluster{font-size:11px;color:var(--fg3);border-left:1px solid var(--line2);padding-left:10px}
+
+/* ============ 原型切换栏 ============ */
+.sw{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;
+  background:#111;color:#fff;border-radius:999px;padding:5px 6px;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:100}
+html[data-theme=dark] .sw{background:#f4f4f2;color:#111}
+.sw button{width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;opacity:.75}
+.sw button:hover{opacity:1;background:rgba(128,128,128,.25)}
+.sw .lbl{font-size:12.5px;padding:0 10px;min-width:196px;text-align:center;font-family:var(--mono);letter-spacing:.02em}
+.sw .lbl small{display:block;font-size:10px;opacity:.55;font-family:var(--sans);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<div class="sw">
+  <button id="prev" title="上一个变体（←）">‹</button>
+  <div class="lbl"><span id="swlbl"></span><small>PROTOTYPE · 示例数据 · ← → 切换</small></div>
+  <button id="next" title="下一个变体（→）">›</button>
+</div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ * 示例数据（全假。别把它当新闻，它只是用来把版式撑出真实密度的）
+ * ------------------------------------------------------------------ */
+const SOURCES = {
+  ign:      {name:'IGN',          domain:'game'},
+  pcg:      {name:'PC Gamer',     domain:'game'},
+  gematsu:  {name:'Gematsu',      domain:'game'},
+  rps:      {name:'RPS',          domain:'game'},
+  vgc:      {name:'VGC',          domain:'game'},
+  gcores:   {name:'机核',          domain:'game'},
+  yystv:    {name:'游研社',        domain:'game'},
+  arxiv:    {name:'arXiv',        domain:'ai'},
+  openai:   {name:'OpenAI',       domain:'ai'},
+  anthropic:{name:'Anthropic',    domain:'ai'},
+  hf:       {name:'Hugging Face', domain:'ai'},
+  hn:       {name:'Hacker News',  domain:'ai'},
+  verge:    {name:'The Verge',    domain:'ai'},
+  qbitai:   {name:'量子位',        domain:'ai'},
+  jiqi:     {name:'机器之心',      domain:'ai'}
+};
+
+const ITEMS = [
+  {id:1, src:'ign', zh:'《空洞骑士：丝之歌》公布确定发售窗口，同步放出 8 分钟实机', en:'Hollow Knight: Silksong finally gets a release window in new gameplay showcase', sum:'开发组在最新展示中给出确定发售窗口，并首次完整演示了新的区域结构、移动方式与 Boss 战节奏。', points:['确定发售窗口，不再是「待定」','新区域与移动机制首次完整演示','同步确认多平台首发'], time:'18:20', score:9, cluster:6},
+  {id:2, src:'openai', zh:'OpenAI 发布新一代推理模型技术报告，重点在长链路任务稳定性', en:'OpenAI publishes technical report for its next reasoning model', sum:'报告把重点放在长链路任务的稳定性与工具调用成功率上，并给出了与前代在推理成本上的对比。', points:['长链路任务的失败率显著下降','工具调用与代码执行能力增强','推理成本对比公开'], time:'17:48', score:9, cluster:4},
+  {id:3, src:'gematsu', zh:'某经典日式 RPG 重制版正式公布，明年春季发售', en:'Classic Japanese RPG remake announced for spring release', sum:'官方放出首支预告与开发访谈，确认保留原版战斗系统并重制全部美术资源。', points:['保留原版战斗系统','全部美术资源重制','明年春季发售'], time:'16:02', score:8, cluster:5},
+  {id:4, src:'hf', zh:'开源社区新模型在多项基准上追平闭源第一梯队', en:'Open-source model matches frontier closed models on several benchmarks', sum:'权重与训练配方同时公开，社区在数小时内给出了量化版本与推理加速方案。', points:['权重与配方同时公开','社区当日给出量化版','长上下文表现突出'], time:'15:31', score:8, cluster:7},
+  {id:5, src:'verge', zh:'监管机构就生成式 AI 内容标注发布新规草案', en:'Regulators publish draft rules on labelling AI-generated content', sum:'草案要求平台对合成内容加显式标识，并对违规情形给出分档处罚。', points:['合成内容需显式标注','分档处罚机制','过渡期 6 个月'], time:'14:55', score:8, cluster:9},
+  {id:6, src:'gcores', zh:'一款国产独立游戏在海外平台冲上热销榜前列', en:'Chinese indie title climbs the charts on an overseas storefront', sum:'上线首周的口碑发酵主要来自海外主播与社区讨论，开发组只有三个人。', points:['三人团队','首周冲上热销榜前列','口碑驱动而非买量'], time:'14:12', score:8, cluster:3},
+  {id:7, src:'ign', zh:'备受期待的大作宣布延期至明年，官方解释为打磨质量', en:'Highly anticipated title delayed to next year for polish', sum:'发行方在公告中提到需要更多时间打磨关键系统，并承诺不会缩减内容规模。', points:['延期至明年','官方称为了打磨','内容规模不变'], time:'13:40', score:8, cluster:8},
+  {id:8, src:'arxiv', zh:'论文：把长上下文注意力改写成可流式更新的稀疏结构', en:'Streaming sparse attention for long-context inference', sum:'作者提出一种可在线更新的稀疏注意力结构，在保持质量的同时把长上下文推理显存占用大幅压低。', points:['显存占用大幅下降','质量损失可忽略','开源了 CUDA 实现'], time:'13:05', score:7, cluster:2},
+  {id:9, src:'hn', zh:'讨论：把上下文塞满真的比检索更划算吗', en:'Ask HN: is stuffing the context really cheaper than retrieval?', sum:'讨论里出现了一批实测数据，结论倾向于任务类型决定一切，而非某个方案普适更优。', points:['实测数据对比','按任务类型分场景','反方给出成本反例'], time:'12:30', score:7, cluster:2},
+  {id:10, src:'qbitai', zh:'国内团队开源多模态模型，主打低显存部署', en:'', sum:'模型在单张消费级显卡上即可运行，团队同时放出了完整的部署脚本与量化方案。', points:['消费级显卡可跑','完整部署脚本','提供量化方案'], time:'11:58', score:7, cluster:3},
+  {id:11, src:'pcg', zh:'Steam 新品节最受欢迎的十款试玩出炉', en:'The ten most-played demos of this Steam Next Fest', sum:'榜单以同时在线试玩人数排序，前十里有四款是独立团队的首部作品。', points:['按同时在线人数排序','四款为团队首作','类型分布集中在 Roguelike'], time:'11:20', score:7, cluster:4},
+  {id:12, src:'anthropic', zh:'一份关于模型自我评估可靠性的新研究', en:'New research on the reliability of model self-evaluation', sum:'研究显示模型对自身输出的置信度判断在分布外任务上明显失准，作者给出了一种校准方法。', points:['分布外任务明显失准','提出校准方法','附带评测集'], time:'10:44', score:7, cluster:3},
+  {id:13, src:'vgc', zh:'主机厂商财报：数字版收入占比继续上升', en:'Console maker earnings: digital share keeps climbing', sum:'财报显示订阅与数字版收入占比继续上升，实体渠道收入进一步收缩。', points:['数字版占比继续上升','订阅收入增长','实体渠道收缩'], time:'10:10', score:7, cluster:5},
+  {id:14, src:'jiqi', zh:'多模态推理的最新进展综述', en:'', sum:'综述把近半年的多模态推理工作按数据、训练、评测三条线做了梳理，评测部分尤其值得看。', points:['按三条线梳理','评测部分最有价值','附完整文献表'], time:'09:32', score:6, cluster:2},
+  {id:15, src:'rps', zh:'本周值得关注的五款独立游戏', en:'Five indie games worth your attention this week', sum:'编辑挑选了五款风格迥异的独立作品，其中两款是免费发布。', points:['两款免费','风格差异大','附上手时长'], time:'09:05', score:6, cluster:1},
+  {id:16, src:'yystv', zh:'一款二十年前的老游戏为什么突然又被讨论', en:'', sum:'文章从一次社区考古说起，聊了当年的设计取舍为什么在今天看来依然成立。', points:['社区考古起头','设计取舍分析','附原始资料链接'], time:'08:40', score:6, cluster:1},
+  {id:17, src:'arxiv', zh:'论文：用蒸馏把推理链压缩到原来的三分之一', en:'Distilling reasoning chains to a third of their length', sum:'作者用教师模型的长推理链训练学生模型输出更短的推理，准确率损失被控制在可接受范围内。', points:['推理链长度降至 1/3','准确率损失有限','给出训练配方'], time:'08:12', score:6, cluster:2},
+  {id:18, src:'gematsu', zh:'日本周销量榜：新作首发成绩超过前作', en:'Japan weekly sales: new entry outsells its predecessor', sum:'首发周销量超过前作同期，实体版占比高于行业平均。', points:['首发超过前作','实体占比偏高','长尾待观察'], time:'07:50', score:6, cluster:3},
+  {id:19, src:'pcg', zh:'一次显卡驱动更新带来的性能回退被定位', en:'A driver update regression gets tracked down', sum:'社区通过对比测试把回退定位到某个着色器编译路径，厂商已确认收到报告。', points:['定位到着色器编译路径','厂商已确认','临时回滚方案'], time:'07:20', score:5, cluster:2},
+  {id:20, src:'verge', zh:'芯片供应链的下一轮产能分配正在重新谈判', en:'Next round of chip capacity allocation is being renegotiated', sum:'报道称几家主要厂商正在就明年的产能分配重新谈判，AI 加速卡优先级最高。', points:['明年产能重新分配','加速卡优先级最高','价格仍待观察'], time:'06:55', score:5, cluster:4}
+];
+
+/* ------------------------------------------------------------------ *
+ * 状态（内存里，刷新即重置 —— 原型不持久化）
+ * ------------------------------------------------------------------ */
+const VARIANTS = {
+  A: '报纸版式',
+  B: '三栏工作台',
+  C: '时间流'
+};
+const state = {
+  variant: (new URLSearchParams(location.search).get('variant') || 'A').toUpperCase(),
+  domain: 'all',       // all | game | ai
+  view: 'picks',       // picks | all
+  theme: 'light',
+  selected: 1
+};
+if(!VARIANTS[state.variant]) state.variant = 'A';
+
+const domainOf = it => SOURCES[it.src].domain;
+const byScore = (a,b) => b.score - a.score || b.time.localeCompare(a.time);
+const byTime  = (a,b) => b.time.localeCompare(a.time);
+
+function pool(){ return ITEMS.filter(it => state.domain === 'all' || domainOf(it) === state.domain); }
+function visible(){
+  const p = pool();
+  return state.view === 'picks' ? p.filter(it => it.score >= 8).sort(byScore) : p.slice().sort(byTime);
+}
+function counts(){
+  return {
+    all: ITEMS.length,
+    game: ITEMS.filter(i=>domainOf(i)==='game').length,
+    ai: ITEMS.filter(i=>domainOf(i)==='ai').length,
+    picks: pool().filter(i=>i.score>=8).length,
+    today: ITEMS.length
+  };
+}
+function todayLabel(){
+  const d = new Date(), w = '日一二三四五六'[d.getDay()];
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${w}`;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function scoreCls(n){ return n >= 8 ? 'hi' : n >= 6 ? 'mid' : 'lo'; }
+function srcBadge(it){
+  const d = domainOf(it);
+  return `<span class="src"><span class="dot ${d}"></span>${esc(SOURCES[it.src].name)}</span>`;
+}
+
+/* ------------------------------------------------------------------ *
+ * 变体 A — 报纸 / Editorial：版式驱动的信息层级
+ * ------------------------------------------------------------------ */
+function renderA(){
+  const list = visible(), c = counts(), [lead, ...rest] = list;
+  const tri = rest.slice(0,3), more = rest.slice(3);
+  if(!lead) return `<div class="A"><p style="padding:60px 0;color:var(--fg3)">该筛选下没有条目。</p></div>`;
+
+  return `
+  <div class="A">
+    <header class="A-mast">
+      <h1>每日简报<span class="proto-tag">PROTOTYPE</span></h1>
+      <div class="date">${todayLabel()} · 今日 ${c.today} 条 · 精选 ${c.picks} 条</div>
+      <button class="icon-btn" data-theme-toggle title="切换主题">◐</button>
+    </header>
+
+    <nav class="A-nav">
+      ${navItems('A')}
+      <span class="sp"></span>
+      <span class="dom">
+        ${['all','game','ai'].map(d=>`<a data-domain="${d}" class="${state.domain===d?'on':''}">${d==='all'?'全部':d==='game'?'游戏':'AI'}</a>`).join(' &nbsp;·&nbsp; ')}
+      </span>
+    </nav>
+
+    <section class="A-lead">
+      <div>
+        <div class="meta">${srcBadge(lead)} <span class="time">${lead.time}</span> <span class="score ${scoreCls(lead.score)}">${lead.score}</span></div>
+        <h2>${esc(lead.zh)}</h2>
+        ${lead.en?`<div class="en">${esc(lead.en)}</div>`:''}
+        <p class="sum">${esc(lead.sum)}</p>
+        <ul>${lead.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      </div>
+      <aside class="body">
+        <b>本地正文 · 离线可读</b>
+        正文在抓取那一刻就落进了本地库，所以这段文字在没有网络、没有 VPN 的时候照样能看。原型里它是一段占位文本，正式版会显示 trafilatura 抽出的原文段落，并提供「展开全文」。
+        <div style="margin-top:10px"><span class="time">共 1,842 字 · 抓取于 ${lead.time} · 另有 ${lead.cluster-1} 家报道</span></div>
+      </aside>
+    </section>
+
+    <section class="A-tri">
+      ${tri.map(it=>`
+        <article>
+          <div class="meta">${srcBadge(it)} <span class="time">${it.time}</span> <span class="score ${scoreCls(it.score)}">${it.score}</span></div>
+          <h3>${esc(it.zh)}</h3>
+          ${it.en?`<div class="en">${esc(it.en)}</div>`:''}
+          <p>${esc(it.sum)}</p>
+        </article>`).join('')}
+    </section>
+
+    <section class="A-more">
+      <div class="hd">更多报道</div>
+      <div class="cols">
+        ${more.map(it=>`
+          <div class="row">
+            <span class="dot ${domainOf(it)}"></span>
+            <span class="t">${esc(it.zh)}</span>
+            <span class="time">${esc(SOURCES[it.src].name)} · ${it.time}</span>
+          </div>`).join('')}
+      </div>
+    </section>
+
+    <div class="A-foot">
+      <div>${state.view==='picks'
+        ? `正在显示 <b>精选 ${list.length} 条</b> · 今日共 ${c.today} 条已入库`
+        : `正在显示 <b>全部 ${list.length} 条</b> · 按时间倒序`}</div>
+      <button class="more-btn" data-view="${state.view==='picks'?'all':'picks'}">
+        ${state.view==='picks' ? '查看全部 →' : '← 只看精选'}
+      </button>
+    </div>
+  </div>`;
+}
+
+/* ------------------------------------------------------------------ *
+ * 变体 B — 三栏工作台 / Workbench：列表-详情，密度优先
+ * ------------------------------------------------------------------ */
+function renderB(){
+  const list = visible(), c = counts();
+  const cur = ITEMS.find(i => i.id === state.selected) || list[0] || ITEMS[0];
+  const history = [
+    {d:'今天', n:c.today, on:true},
+    {d:'5月31日', n:132},
+    {d:'5月30日', n:118},
+    {d:'5月29日', n:141},
+    {d:'5月28日', n:97}
+  ];
+
+  return `
+  <div class="B">
+    <div class="B-bar">
+      <h1>每日简报<span class="proto-tag">PROTOTYPE</span></h1>
+      <span class="time">${todayLabel()}</span>
+      <span class="sp"></span>
+      <button class="chip ${state.view==='picks'?'on':''}" data-view="picks">精选 ${c.picks}</button>
+      <button class="chip ${state.view==='all'?'on':''}" data-view="all">全部 ${c.today}</button>
+      <button class="icon-btn" data-theme-toggle title="切换主题">◐</button>
+    </div>
+
+    <aside class="col">
+      <div class="B-sec">领域</div>
+      <div class="B-facet ${state.domain==='all'?'on':''}" data-domain="all">全部<span class="n">${c.all}</span></div>
+      <div class="B-facet ${state.domain==='game'?'on':''}" data-domain="game"><span class="dot game"></span>游戏<span class="n">${c.game}</span></div>
+      <div class="B-facet ${state.domain==='ai'?'on':''}" data-domain="ai"><span class="dot ai"></span>AI<span class="n">${c.ai}</span></div>
+
+      <div class="B-sec">历史 · 按日期</div>
+      ${history.map(h=>`<div class="B-facet B-hist ${h.on?'on':''}"><span>${h.d}</span><span class="n">${h.n}</span></div>`).join('')}
+      <div class="B-facet B-hist" style="color:var(--fg3)">更早…</div>
+      <div class="B-sec">来源</div>
+      <div class="B-facet"><span class="dot game"></span>IGN<span class="n">14</span></div>
+      <div class="B-facet"><span class="dot ai"></span>arXiv<span class="n">9</span></div>
+      <div class="B-facet"><span class="dot game"></span>机核<span class="n">6</span></div>
+    </aside>
+
+    <section class="col B-list">
+      <div class="B-sec">${state.view==='picks'?'精选':'全部'} · ${list.length} 条</div>
+      ${list.map(it=>`
+        <div class="row ${it.id===cur.id?'on':''}" data-item="${it.id}">
+          <div class="t">${esc(it.zh)}</div>
+          <div class="m">${srcBadge(it)}<span class="time">${it.time}</span><span class="score ${scoreCls(it.score)}">${it.score}</span></div>
+        </div>`).join('')}
+    </section>
+
+    <article class="col" style="overflow-y:auto">
+      <div class="B-read">
+        <div class="meta">
+          ${srcBadge(cur)}
+          <span class="time">${cur.time}</span>
+          <span class="score ${scoreCls(cur.score)}">重要度 ${cur.score}</span>
+          <span class="time">另有 ${cur.cluster-1} 家报道</span>
+          <span style="flex:1"></span>
+          <span class="time">✓ 已缓存正文</span>
+        </div>
+        <h2>${esc(cur.zh)}</h2>
+        ${cur.en?`<div class="en" style="margin:-4px 0 14px">${esc(cur.en)}</div>`:''}
+        <p class="sum">${esc(cur.sum)}</p>
+        <ul style="color:var(--fg2);font-size:13.5px;margin:-6px 0 20px;padding-left:18px">
+          ${cur.points.map(p=>`<li>${esc(p)}</li>`).join('')}
+        </ul>
+        <div class="body">正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文。
+
+这一段同样来自本地缓存，不依赖任何网络请求。正式版这里显示 trafilatura 抽取的原文段落，中英混排时可一键切换「只看中文摘要」。</div>
+        <div class="acts">
+          <button>★ 收藏</button>
+          <button>✓ 标记已读</button>
+          <button>↗ 打开原文</button>
+          <button>⧉ 复制摘要</button>
+        </div>
+        <div class="offline">没有网络也能读：标题、摘要、要点、正文全部来自本地 SQLite，原文链接只是补充。</div>
+      </div>
+    </article>
+  </div>`;
+}
+
+/* ------------------------------------------------------------------ *
+ * 变体 C — 时间流 / Stream：按时间推进，读「今天发生了什么」
+ * ------------------------------------------------------------------ */
+function renderC(){
+  const list = visible(), c = counts();
+  return `
+  <div class="C">
+    <div class="C-bar">
+      <h1>今天<span class="proto-tag">PROTOTYPE</span></h1>
+      <span class="time">${todayLabel()}</span>
+      <span class="sp"></span>
+      <button class="icon-btn" data-theme-toggle title="切换主题">◐</button>
+    </div>
+    <div class="C-chips">
+      <span class="chip ${state.domain==='all'?'on':''}" data-domain="all">全部 ${c.all}</span>
+      <span class="chip ${state.domain==='game'?'on':''}" data-domain="game">游戏 ${c.game}</span>
+      <span class="chip ${state.domain==='ai'?'on':''}" data-domain="ai">AI ${c.ai}</span>
+      <span style="width:10px"></span>
+      <span class="chip ${state.view==='picks'?'on':''}" data-view="picks">精选 ≥8 分</span>
+      <span class="chip ${state.view==='all'?'on':''}" data-view="all">全部条目</span>
+    </div>
+    <div class="C-stat">
+      <span><b>${c.today}</b>条今日入库</span>
+      <span><b>${c.picks}</b>条精选</span>
+      <span><b>${new Set(ITEMS.map(i=>i.src)).size}</b>个来源</span>
+      <span><b>12</b>条已读</span>
+      <span class="time">历史：<a style="text-decoration:underline">5月31日</a> · <a style="text-decoration:underline">5月30日</a> · <a style="text-decoration:underline">全部日期 ›</a></span>
+    </div>
+    <div class="C-tl">
+      ${list.map(it=>`
+        <div class="node ${it.score>=9?'hot':domainOf(it)==='game'?'g':'a'}">
+          <div class="tm">${it.time}</div>
+          <div class="line"><i></i></div>
+          <div class="card">
+            <div class="meta">
+              ${srcBadge(it)}
+              <span class="score ${scoreCls(it.score)}">${it.score}</span>
+              ${it.cluster>1?`<span class="cluster">另有 ${it.cluster-1} 家报道</span>`:''}
+            </div>
+            <h3>${esc(it.zh)}</h3>
+            ${it.en?`<div class="en">${esc(it.en)}</div>`:''}
+            <p class="sum">${esc(it.sum)}</p>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div class="A-foot">
+      <div>已到今天的起点 · 更早的内容在「历史」里</div>
+      <button class="more-btn" data-nav="history">打开历史 →</button>
+    </div>
+  </div>`;
+}
+
+/* ------------------------------------------------------------------ *
+ * 导航、切换与事件
+ * ------------------------------------------------------------------ */
+function navItems(){
+  return [
+    ['today','今日'],['history','历史'],['sources','信息源'],['settings','设置']
+  ].map(([k,label])=>`<a data-nav="${k}" class="${k==='today'?'on':''}">${label}</a>`).join('');
+}
+
+function render(){
+  const el = document.getElementById('app');
+  el.innerHTML = state.variant === 'A' ? renderA() : state.variant === 'B' ? renderB() : renderC();
+  document.documentElement.dataset.theme = state.theme;
+  document.getElementById('swlbl').textContent = `${state.variant} — ${VARIANTS[state.variant]}`;
+  const url = new URL(location.href);
+  url.searchParams.set('variant', state.variant);
+  history.replaceState(null, '', url);
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove('on'), 2200);
+}
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  const nav = t.closest('[data-nav]');
+  if(nav){ if(nav.dataset.nav !== 'today') toast('原型只演示「今日」屏 —— 历史 / 信息源 / 设置 的布局见技术框架 §5'); return; }
+
+  const dom = t.closest('[data-domain]');
+  if(dom){ state.domain = dom.dataset.domain; render(); return; }
+
+  const v = t.closest('[data-view]');
+  if(v){ state.view = v.dataset.view; render(); return; }
+
+  const row = t.closest('[data-item]');
+  if(row){ state.selected = +row.dataset.item; render(); return; }
+
+  if(t.closest('[data-theme-toggle]')){ state.theme = state.theme === 'light' ? 'dark' : 'light'; render(); return; }
+});
+
+function cycle(step){
+  const keys = Object.keys(VARIANTS);
+  const i = keys.indexOf(state.variant);
+  state.variant = keys[(i + step + keys.length) % keys.length];
+  render();
+}
+document.getElementById('prev').onclick = () => cycle(-1);
+document.getElementById('next').onclick = () => cycle(1);
+document.addEventListener('keydown', e => {
+  if(/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+  if(e.key === 'ArrowLeft')  cycle(-1);
+  if(e.key === 'ArrowRight') cycle(1);
+});
+
+render();
+</script>
+</body>
+</html>

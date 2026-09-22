@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% from "macros.html" import masthead %}
+
+{% block title %}设置 · {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="A">
+
+  {{ masthead(site_name, '设置 · 全部旋钮都在 config/*.yaml 里') }}
+
+  <nav class="A-nav">
+    <a href="/">今日</a>
+    <a href="/history">历史</a>
+    <a href="/sources">信息源</a>
+    <a href="/settings" class="on">设置</a>
+    <span class="sp"></span>
+    <span class="dom"><span class="time">界面只读，配置文件才是唯一事实来源</span></span>
+  </nav>
+
+  <div class="S-grid">
+
+    <div class="S-card">
+      <h3>条数 · 精选 / 全部</h3>
+      <p class="hint">精选只是排序视图，不是过滤器 —— 没进精选的条目照常入库、照常可搜。</p>
+      <div class="S-knob">
+        <span class="v">{{ picks_per_domain }}</span>
+        <span class="l">精选每领域条数</span>
+        <span class="h">selection.picks_per_domain</span>
+      </div>
+      <div class="S-knob">
+        <span class="v">{{ picks_min_score if picks_min_score > 0 else '不设下界' }}</span>
+        <span class="l">精选的分数下界（只按 Top N 取）</span>
+        <span class="h">selection.picks_min_score</span>
+      </div>
+      <div class="S-knob">
+        <span class="v">{{ counts.total }}</span>
+        <span class="l">库里总条目（永久保留）</span>
+        <span class="h">retention.keep_forever</span>
+      </div>
+    </div>
+
+    <div class="S-card">
+      <h3>数据在哪</h3>
+      <p class="hint">全部在你自己的机器上，没有任何第三方持有你的阅读记录。</p>
+      <dl>
+        <dt>项目根</dt><dd>{{ root }}</dd>
+        <dt>数据库</dt><dd>{{ db_path }}</dd>
+        <dt>SQLite</dt><dd>{{ sqlite }}</dd>
+        <dt>归档目录</dt><dd>{{ root }}\archive</dd>
+      </dl>
+    </div>
+
+    <div class="S-card">
+      <h3>海外采集分身</h3>
+      {% if bundle_repo %}
+        <dl>
+          <dt>仓库</dt><dd>{{ bundle_repo }}</dd>
+        </dl>
+        <p class="hint">
+          <code>newspipe sync</code> 按 jsDelivr → GitHub API → raw → 本地留存 的顺序回退，
+          全都走不通时用最近一次的 bundle 并在界面标注新鲜度。
+        </p>
+      {% else %}
+        <p class="S-empty">
+          还没配置 <code>bundle.repo</code>。<br><br>
+          在 <code>config/settings.yaml</code> 里填上你的 bundle 仓库（形如 <code>yourname/news-bundles</code>），
+          再把 <code>.github/workflows/collect.yml</code> 推到那个仓库，
+          <code>newspipe sync</code> 就能把墙外源的内容拉回来 —— 不开 VPN 也能读。
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="S-card">
+      <h3>抓取与网络</h3>
+      <dl>
+        <dt>每日抓取</dt><dd>{{ settings.get('schedule', {}).get('daily_at', '07:00') }}</dd>
+        <dt>增量间隔</dt><dd>{{ settings.get('schedule', {}).get('incremental_hours', 2) }} 小时</dd>
+        <dt>代理</dt><dd>{{ proxy or '（直连）' }}</dd>
+        <dt>超时</dt><dd>{{ settings.get('network', {}).get('timeout_seconds', 20) }} 秒</dd>
+        <dt>单域限速</dt><dd>{{ settings.get('network', {}).get('rate_limit_per_host', 1.0) }} req/s</dd>
+      </dl>
+    </div>
+
+    <div class="S-card">
+      <h3>历史与检索</h3>
+      <dl>
+        <dt>全文索引</dt><dd>FTS5 · {{ counts.total }} 条</dd>
+        <dt>覆盖日期</dt><dd>{{ dates|length }} 天</dd>
+        <dt>最近日期</dt><dd>{{ dates[0].date if dates else '—' }}</dd>
+      </dl>
+      <p class="hint">不做滚动过期：条目、正文、摘要全部留在库里，随时可搜回来。</p>
+    </div>
+
+    <div class="S-card">
+      <h3>命令速查</h3>
+      <dl>
+        <dt>抓取</dt><dd>newspipe fetch</dd>
+        <dt>同步海外</dt><dd>newspipe sync</dd>
+        <dt>补正文+去重</dt><dd>newspipe process</dd>
+        <dt>体检</dt><dd>newspipe doctor</dd>
+        <dt>搜索</dt><dd>newspipe search 关键词</dd>
+      </dl>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

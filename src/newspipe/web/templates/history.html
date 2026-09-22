@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% from "macros.html" import meta_line, local_body, masthead %}
+
+{% block title %}历史 · {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="A">
+
+  {{ masthead(site_name, '历史 · 库中共 ' ~ counts.total ~ ' 条 · 覆盖 ' ~ dates|length ~ ' 个日期 · 永久保留') }}
+
+  <nav class="A-nav">
+    <a href="/">今日</a>
+    <a href="/history" class="on">历史</a>
+    <a href="/sources">信息源</a>
+    <a href="/settings">设置</a>
+    <span class="sp"></span>
+    <span class="dom"><span class="time">全文检索：FTS5 索引全部历史</span></span>
+  </nav>
+
+  <div class="H-bar">
+    <h2>{% if mode == 'search' %}搜索结果{% else %}按时间浏览{% endif %}</h2>
+    <form method="get" action="/history">
+      <input type="search" name="q" value="{{ q }}" placeholder="搜全部历史：标题、英文原标题、正文…">
+      <input type="hidden" name="domain" value="{{ domain }}">
+      <input type="hidden" name="min_score" value="{{ min_score }}">
+      <button type="submit">搜索</button>
+    </form>
+    {% if mode == 'search' %}<a class="btn" href="/history">清除</a>{% endif %}
+  </div>
+
+  <div class="H-filters">
+    {% for d in domain_tabs %}
+      <a class="chip {{ 'on' if domain == d.id else '' }}"
+         href="/history?q={{ q }}&domain={{ d.id }}&min_score={{ min_score }}">{{ d.name }}</a>
+    {% endfor %}
+    <span style="width:14px"></span>
+    <a class="chip {{ 'on' if min_score >= 8 else '' }}"
+       href="/history?q={{ q }}&domain={{ domain }}&min_score=8">只看 ≥8 分</a>
+    <a class="chip {{ 'on' if not min_score else '' }}"
+       href="/history?q={{ q }}&domain={{ domain }}&min_score=0">不设阈值</a>
+  </div>
+
+  {% if dates %}
+    <div class="H-dates">
+      {% for d in dates[:36] %}
+        <a class="{{ 'on' if d.date == date else '' }}" href="/history?date={{ d.date }}&domain={{ domain }}">
+          {{ d.date }} · {{ d.n }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="H-list">
+    {% for it in rows %}
+      <div class="H-row">
+        <div class="d">{{ it.pub_date }}</div>
+        <div class="t">
+          <a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ it.title }}</a>
+          {% if it.title_en and it.title_en != it.title %}
+            <div class="en">{{ it.title_en }}</div>
+          {% endif %}
+          {% if it.summary_cn %}
+            <div class="sub">{{ it.summary_cn|excerpt(180) }}</div>
+          {% elif it.excerpt %}
+            <div class="sub">{{ it.excerpt|excerpt(180) }}</div>
+          {% endif %}
+          {{ local_body(it) }}
+        </div>
+        <div class="r">{{ meta_line(it, source_map) }}</div>
+      </div>
+    {% else %}
+      <div class="pill-empty">
+        {% if mode == 'search' %}
+          没有匹配「{{ q }}」的条目。
+        {% else %}
+          没有内容。先跑 <code>newspipe fetch</code> 抓一次。
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="A-foot">
+    <div>
+      本页 {{ rows|length }} 条
+      {%- if mode == 'search' %}（搜索：{{ q }}）{% endif %}
+      {%- if date %}（日期：{{ date }}）{% endif %}
+    </div>
+    <div>更早的内容：改上面的日期，或者直接搜关键词</div>
+  </div>
+
+</div>
+{% endblock %}

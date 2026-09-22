@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% from "macros.html" import masthead %}
+
+{% block title %}信息源 · {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="A">
+
+  {% set remote_count = rows | selectattr('needs_proxy', 'equalto', 1) | list | length %}
+  {% set local_count = rows | length - remote_count %}
+
+  {{ masthead(site_name, '信息源 · 共 ' ~ rows|length ~ ' 个 · 本地直连 ' ~ local_count ~ ' / 海外分身 ' ~ remote_count) }}
+
+  <nav class="A-nav">
+    <a href="/">今日</a>
+    <a href="/history">历史</a>
+    <a href="/sources" class="on">信息源</a>
+    <a href="/settings">设置</a>
+    <span class="sp"></span>
+    <span class="dom"><span class="time">改源请编辑 config/sources.yaml</span></span>
+  </nav>
+
+  <table class="S-table">
+    <thead>
+      <tr>
+        <th>源</th>
+        <th>领域</th>
+        <th>类型</th>
+        <th>归属</th>
+        <th style="text-align:right">条目</th>
+        <th>上次成功</th>
+        <th>状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        <tr>
+          <td class="name">{{ r.name }}<div class="type">{{ r.id }}</div></td>
+          <td><span class="dot {{ r.domain }}"></span>{{ r.domain }}</td>
+          <td class="type">{{ r.type }}{% if r.adapter %} · {{ r.adapter }}{% endif %}</td>
+          <td>
+            <span class="badge {{ 'remote' if r.needs_proxy else 'local' }}">
+              {{ '海外分身' if r.needs_proxy else '本地直连' }}
+            </span>
+          </td>
+          <td class="num">{{ r.item_count }}</td>
+          <td class="time">{{ r.last_ok_at[:16]|replace('T', ' ') if r.last_ok_at else '—' }}</td>
+          <td>
+            {% if not r.enabled %}
+              <span class="badge warn">已停用</span>
+            {% elif r.fail_count %}
+              <span class="badge err">连续失败 {{ r.fail_count }} 次</span>
+              {% if r.last_error %}<div class="en">{{ r.last_error|excerpt(90) }}</div>{% endif %}
+            {% elif r.last_ok_at %}
+              <span class="badge ok">正常</span>
+            {% else %}
+              <span class="badge warn">尚未抓取</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="A-foot">
+    <div>
+      本地直连的源用 <code>newspipe fetch</code> 抓；海外分身的源交给 GitHub Actions，
+      本地用 <code>newspipe sync</code> 拉回来。
+    </div>
+    <div>源越多，聚类去重的价值越明显</div>
+  </div>
+
+</div>
+{% endblock %}

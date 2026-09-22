@@ -1,0 +1,34 @@
+{# 共用片段：条目元信息行、本地正文展开 #}
+
+{% macro meta_line(item, source_map) %}
+<div class="meta">
+  <span class="src"><span class="dot {{ item.domain }}"></span>{{ source_map.get(item.source_id, {}).get('name', item.source_id) }}</span>
+  <span class="time">{{ item.published_at|hhmm }}</span>
+  <span class="score {{ item.score|score_class }}">{{ '%.1f'|format(item.score or 0) }}</span>
+  {% if item.cluster_size and item.cluster_size > 1 %}
+    <span class="cluster-note">另有 {{ item.cluster_size - 1 }} 家报道</span>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro local_body(item, label='本地正文 · 离线可读') %}
+  {% set text = item.content_text or '' %}
+  {% if text|length > 80 %}
+    <details class="local-body">
+      <summary>{{ label }}（{{ text|length }} 字）</summary>
+      <div class="text">{{ text|excerpt(5000) }}</div>
+    </details>
+  {% elif item.excerpt %}
+    <div class="en" style="margin-top:6px">{{ item.excerpt|excerpt(220) }}</div>
+  {% endif %}
+{% endmacro %}
+
+{% macro masthead(site_name, subtitle) %}
+<header class="A-mast">
+  <h1><a href="/">{{ site_name }}</a></h1>
+  <div class="date">{{ subtitle }}</div>
+  <div class="mast-actions">
+    <button class="icon-btn" data-theme-toggle title="切换主题">◐</button>
+  </div>
+</header>
+{% endmacro %}

@@ -1,0 +1,272 @@
+# 信息源清单
+#
+# 关键字段说明：
+#   type        rss | api | html | rsshub
+#   adapter     type=api 时用哪个适配器（arxiv / hackernews / steam）
+#   needs_proxy true  = 墙外源，交给 GitHub Actions 采集分身（见技术框架 §3.1）
+#               false = 国内可达，本地直连
+#   weight      源权重，参与重要度打分与聚类时的代表选取
+#   enabled     总开关
+#
+# 加源 = 在这个文件里加一段，代码不用动。
+
+sources:
+  # ─────────────────────────── 游戏 · 墙外 ───────────────────────────
+  - id: ign
+    name: IGN
+    domain: game
+    type: rss
+    url: https://feeds.feedburner.com/ign/all
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: gamespot
+    name: GameSpot
+    domain: game
+    type: rss
+    url: https://www.gamespot.com/feeds/mashup/
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: eurogamer
+    name: Eurogamer
+    domain: game
+    type: rss
+    url: https://www.eurogamer.net/feed
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: pcgamer
+    name: PC Gamer
+    domain: game
+    type: rss
+    url: https://www.pcgamer.com/rss/
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: rps
+    name: Rock Paper Shotgun
+    domain: game
+    type: rss
+    url: https://www.rockpapershotgun.com/feed
+    needs_proxy: true
+    weight: 0.9
+    enabled: true
+
+  - id: gematsu
+    name: Gematsu
+    domain: game
+    type: rss
+    url: https://www.gematsu.com/feed
+    needs_proxy: true
+    weight: 1.1
+    enabled: true
+
+  - id: vgc
+    name: VGC
+    domain: game
+    type: rss
+    url: https://www.videogameschronicle.com/feed/
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: nintendolife
+    name: Nintendo Life
+    domain: game
+    type: rss
+    url: https://www.nintendolife.com/feeds/latest
+    needs_proxy: true
+    weight: 0.8
+    enabled: true
+
+  - id: famitsu
+    name: Famitsu
+    domain: game
+    type: rss
+    url: https://www.famitsu.com/feed
+    needs_proxy: true
+    weight: 0.9
+    enabled: true
+
+  - id: steam_news
+    name: Steam 官方公告
+    domain: game
+    type: api
+    adapter: steam
+    url: https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/
+    params:
+      appids: [730, 570, 1245620, 1091500]   # CS2 / Dota2 / 艾尔登法环 / 赛博朋克2077
+      count: 20
+    needs_proxy: false      # Steam Web API 国内通常可达；不通时改 true 交给海外分身
+    weight: 0.7
+    enabled: true
+
+  # ─────────────────────────── 游戏 · 国内可达 ───────────────────────────
+  - id: gcores
+    name: 机核
+    domain: game
+    type: rss
+    url: https://www.gcores.com/rss
+    needs_proxy: false
+    weight: 1.2
+    enabled: true
+
+  - id: yystv
+    name: 游研社
+    domain: game
+    type: rss
+    url: https://www.yystv.cn/rss/feed
+    needs_proxy: false
+    weight: 1.2
+    enabled: true
+
+  - id: bilibili_game
+    name: B站游戏区热门
+    domain: game
+    type: api
+    adapter: bilibili
+    url: https://api.bilibili.com/x/web-interface/ranking/v2
+    params: { rid: 4, type: all }
+    needs_proxy: false
+    weight: 0.6
+    enabled: false          # 适配器待实现（M2）
+
+  # ─────────────────────────── AI · 墙外 ───────────────────────────
+  - id: arxiv_ai
+    name: arXiv cs.AI
+    domain: ai
+    type: api
+    adapter: arxiv
+    url: http://export.arxiv.org/api/query
+    params:
+      search_query: "cat:cs.AI"
+      sortBy: submittedDate
+      sortOrder: descending
+      max_results: 40
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: arxiv_cl
+    name: arXiv cs.CL
+    domain: ai
+    type: api
+    adapter: arxiv
+    url: http://export.arxiv.org/api/query
+    params:
+      search_query: "cat:cs.CL"
+      sortBy: submittedDate
+      sortOrder: descending
+      max_results: 40
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: hackernews
+    name: Hacker News
+    domain: ai
+    type: api
+    adapter: hackernews
+    url: https://hacker-news.firebaseio.com/v0
+    params:
+      top: 60
+      keywords: ["AI", "LLM", "model", "GPT", "neural", "agent", "inference", "training"]
+    needs_proxy: true
+    weight: 0.8
+    enabled: true
+
+  - id: openai_blog
+    name: OpenAI
+    domain: ai
+    type: rss
+    url: https://openai.com/blog/rss.xml
+    needs_proxy: true
+    weight: 1.4
+    enabled: true
+
+  - id: deepmind
+    name: Google DeepMind
+    domain: ai
+    type: rss
+    url: https://deepmind.google/blog/rss.xml
+    needs_proxy: true
+    weight: 1.3
+    enabled: true
+
+  - id: hf_blog
+    name: Hugging Face Blog
+    domain: ai
+    type: rss
+    url: https://huggingface.co/blog/feed.xml
+    needs_proxy: true
+    weight: 1.2
+    enabled: true
+
+  - id: google_research
+    name: Google Research
+    domain: ai
+    type: rss
+    url: https://research.google/blog/rss/
+    needs_proxy: true
+    weight: 1.1
+    enabled: true
+
+  - id: theverge_ai
+    name: The Verge AI
+    domain: ai
+    type: rss
+    url: https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+    needs_proxy: true
+    weight: 1.0
+    enabled: true
+
+  - id: techcrunch_ai
+    name: TechCrunch AI
+    domain: ai
+    type: rss
+    url: https://techcrunch.com/category/artificial-intelligence/feed/
+    needs_proxy: true
+    weight: 0.9
+    enabled: true
+
+  - id: importai
+    name: Import AI
+    domain: ai
+    type: rss
+    url: https://importai.substack.com/feed
+    needs_proxy: true
+    weight: 1.1
+    enabled: true
+
+  - id: anthropic
+    name: Anthropic
+    domain: ai
+    type: rsshub
+    url: /anthropic/news
+    needs_proxy: true
+    weight: 1.4
+    enabled: false          # 需要自建 RSSHub（settings.rsshub.base），先关着
+
+  # ─────────────────────────── AI · 国内可达 ───────────────────────────
+  - id: qbitai
+    name: 量子位
+    domain: ai
+    type: rss
+    url: https://www.qbitai.com/feed
+    needs_proxy: false
+    weight: 1.2
+    enabled: true
+
+  - id: jiqizhixin
+    name: 机器之心
+    domain: ai
+    type: rsshub          # 官方 /rss 实际返回的是 SPA 页面，不是 feed；只能经 RSSHub
+    url: /jiqizhixin
+    needs_proxy: false
+    weight: 1.2
+    enabled: false        # 待自建 RSSHub（settings.rsshub.base）后打开
