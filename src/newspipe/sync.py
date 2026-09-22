@@ -61,8 +61,35 @@ def pull_remote(config: Config, http: Http, date: str) -> dict[str, Any]:
     return {"ok": False, "payload": None, "label": "", "tried": tried}
 
 
+def pull_recent(config: Config, http: Http, start_date: str, *, days: int = 3) -> dict[str, Any]:
+    """从 start_date 往前找最近一份可用的 bundle。
+
+    采集分身的 cron 是 UTC 22:30，所以在 UTC 当天的大部分时间里，
+    「今天的 bundle」根本还没产出 —— 死死盯着今天必然扑空。
+    """
+    from datetime import date as _date
+    from datetime import timedelta
+
+    tried: list[tuple[str, str]] = []
+    try:
+        start = _date.fromisoformat(start_date)
+    except ValueError:
+        start = _date.today()
+
+    for offset in range(max(1, days)):
+        day = (start - timedelta(days=offset)).isoformat()
+        result = pull_remote(config, http, day)
+        tried.extend(result["tried"])
+        if result["ok"]:
+            result["tried"] = tried
+            result["date"] = day
+            return result
+
+    return {"ok": False, "payload": None, "label": "", "tried": tried, "date": start_date}
+
+
 def fallback_local(bundles_dir: Path, date: str) -> tuple[Path | None, str]:
-    """全部镜像都失败时，用本地留存的副本：先今天的，再最近一天的。"""
+    """全部镜像都失败时，用本地留存的副本：先当天的，再最近一天的。"""
     exact = bundles_dir / f"{date}.json"
     if exact.exists():
         return exact, "本地留存（当天）"

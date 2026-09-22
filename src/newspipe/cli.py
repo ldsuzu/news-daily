@@ -33,7 +33,7 @@ from .pipeline.bundle import items_from_payload, write_bundle
 from .pipeline.dedupe import cluster_items
 from .pipeline.digest import write_digests
 from .pipeline.extract import extract_for_url, trafilatura_available
-from .pipeline.normalize import now_utc_iso, to_local_date
+from .pipeline.normalize import now_utc_iso, to_local_date, utc_today
 from .pipeline.score import score_items
 from .storage.db import connect, init_db, sqlite_version
 from .storage.repo import Repo
@@ -42,6 +42,7 @@ from .sync import (
     fallback_local,
     github_headers,
     mirror_urls,
+    pull_recent,
     pull_remote,
     read_payload,
 )
@@ -104,7 +105,8 @@ def cmd_fetch(args: argparse.Namespace) -> int:
 
     if mode == "collector":
         out_dir = Path(args.out) if args.out else config.settings.path("bundles")
-        date = args.date or to_local_date(now_utc_iso()) or ""
+        # 用 UTC 日期命名 —— GitHub runner 就是 UTC，本地按北京时区找会差一天
+        date = args.date or utc_today()
         path = write_bundle(out_dir, date, results)
         print(f"\nbundle 已写出：{path}")
 
@@ -254,21 +256,23 @@ def cmd_process(args: argparse.Namespace) -> int:
 def cmd_sync(args: argparse.Namespace) -> int:
     """把海外分身的 bundle 拿回来合并入库：镜像 → 本地留存 → 最近一次。"""
     config, conn, repo, _ = _open(args)
-    date = args.date or to_local_date(now_utc_iso()) or ""
+    date = args.date or utc_today()
     bundles_dir = config.settings.path("bundles")
 
     payload = None
     if config.settings.get("bundle.repo"):
         with http_from_config(config) as http:
-            result = pull_remote(config, http, date)
+            # 从今天往前找 3 天：采集分身按 UTC 22:30 跑，当天大部分时间还没有"今天的"bundle
+            result = pull_recent(config, http, date, days=3)
         for url, why in result["tried"]:
             print(f"[FAIL] {url[:72]}\n        {why[:80]}")
         if result["ok"]:
             payload = result["payload"]
+            date = result.get("date", date)
             (bundles_dir / f"{date}.json").write_text(
                 json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8"
             )
-            print(f"[ OK ] bundle 已取回：{result['label']}")
+            print(f"[ OK ] bundle 已取回（{date}）：{result['label']}")
     else:
         print("[skip] 未配置 bundle.repo，直接看本地留存")
 
@@ -456,7 +460,7 @@ def cmd_remote(args: argparse.Namespace) -> int:
     branch = s.get("bundle.branch", "main")
     path = s.get("bundle.path", "bundles")
     token = s.get("bundle.token") or os.environ.get("NEWSPIPE_GH_TOKEN") or ""
-    date = args.date or to_local_date(now_utc_iso()) or ""
+    date = args.date or utc_today()
 
     print("海外采集分身 · 链路诊断")
     print(f"  仓库       {repo_name or '（未配置 bundle.repo）'}")

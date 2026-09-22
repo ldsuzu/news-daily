@@ -131,6 +131,15 @@ def to_local_date(value: str | None) -> str | None:
     return dt.astimezone().strftime("%Y-%m-%d")
 
 
+def utc_today() -> str:
+    """UTC 的今天。
+
+    bundle 的日期必须两边都用 UTC —— GitHub runner 就是 UTC，采集分身在那边写文件名；
+    如果本地按北京时区去找（UTC+8，夜里会跨到第二天），就会永远差一天、永远 404。
+    """
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
 def truncate(text: str, limit: int) -> str:
     if limit <= 0 or len(text) <= limit:
         return text
