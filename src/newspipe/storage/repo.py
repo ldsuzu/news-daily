@@ -294,6 +294,7 @@ class Repo:
         title_cn: str,
         summary_cn: str,
         heat: float | None,
+        event: str,
         ts: str,
     ) -> None:
         self.conn.execute(
@@ -302,10 +303,11 @@ class Repo:
                 title_cn   = CASE WHEN ? <> '' THEN ? ELSE title_cn END,
                 summary_cn = CASE WHEN ? <> '' THEN ? ELSE summary_cn END,
                 llm_score  = COALESCE(?, llm_score),
+                event_key  = ?,
                 llm_at     = ?
             WHERE id = ?
             """,
-            (title_cn, title_cn, summary_cn, summary_cn, heat, ts, item_id),
+            (title_cn, title_cn, summary_cn, summary_cn, heat, event, ts, item_id),
         )
 
     def record_llm_usage(self, usage: Any, ts: str) -> None:
@@ -356,6 +358,41 @@ class Repo:
         )
         self.conn.commit()
         return int(cur.rowcount)
+
+    def distinct_event_keys(self, *, days: int = 3) -> list[dict[str, Any]]:
+        """当天出现过的事件标签，带上条数和一条代表标题。
+
+        代表标题是给归并步骤用的 —— 光看「Xbox重组」和「动视接手光环」这两个标签，
+        模型判断不出它们是一件事；给它一条标题，就清楚了。
+        """
+        rows = self.conn.execute(
+            """
+            SELECT event_key AS ev,
+                   COUNT(*) AS n,
+                   MAX(llm_score) AS heat,
+                   (SELECT title_cn FROM items i2
+                     WHERE i2.event_key = items.event_key AND i2.title_cn <> ''
+                     ORDER BY i2.llm_score DESC LIMIT 1) AS sample
+            FROM items
+            WHERE event_key <> ''
+              AND COALESCE(published_at, fetched_at) >= datetime('now', ?)
+            GROUP BY event_key
+            ORDER BY n DESC
+            """,
+            (f"-{int(days)} days",),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+    def update_event_keys(self, mapping: dict[str, str]) -> int:
+        """把旧标签改成规范标签。返回受影响的条目数。"""
+        changed = 0
+        for old, new in mapping.items():
+            cur = self.conn.execute(
+                "UPDATE items SET event_key = ? WHERE event_key = ?", (new, old)
+            )
+            changed += cur.rowcount
+        self.conn.commit()
+        return changed
 
     # ───────────────────────────── 阅读状态 ─────────────────────────────
 

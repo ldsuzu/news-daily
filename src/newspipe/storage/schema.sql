@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS items (
     points_json   TEXT NOT NULL DEFAULT '[]',
     score         REAL NOT NULL DEFAULT 0,    -- 规则分（源权重 + 时效 + 关键词）
     llm_score     REAL,                       -- LLM 给的热度分 0-10；有就优先用它排序
+    event_key     TEXT NOT NULL DEFAULT '',   -- LLM 给的事件标签，用来折叠「同一件事的 N 篇报道」
     llm_at        TEXT,                       -- 什么时候被 LLM 处理过（NULL = 还没处理）
     cluster_id    INTEGER,
     cluster_size  INTEGER NOT NULL DEFAULT 1,

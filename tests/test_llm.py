@@ -66,6 +66,25 @@ def test_tolerates_missing_heat() -> None:
     assert out[0].title_cn == "标题"
 
 
+def test_parses_event_label() -> None:
+    content = '{"items":[{"i":0,"cn":"标题","sum":"摘要","heat":8,"ev":"Xbox重组"}]}'
+    out = LlmClient._parse(content, 1)
+    assert out[0].event == "Xbox重组"
+
+
+def test_event_label_is_normalised() -> None:
+    """标签要能当去重键用，所以去掉空白和标点，并限长。"""
+    content = '{"items":[{"i":0,"ev":"  Xbox 重组，裁员！ "}]}'
+    out = LlmClient._parse(content, 1)
+    assert out[0].event == "Xbox重组裁员"
+
+
+def test_missing_event_label_is_empty_string() -> None:
+    content = '{"items":[{"i":0,"cn":"标题"}]}'
+    out = LlmClient._parse(content, 1)
+    assert out[0].event == ""
+
+
 def test_returns_empty_on_garbage() -> None:
     assert LlmClient._parse("抱歉，我无法完成", 1) == {}
     assert LlmClient._parse("", 1) == {}
@@ -104,7 +123,15 @@ def test_a_realistic_day_is_cheap() -> None:
     assert cost < 0.25, f"一天 300 条不该超过两毛五，实际 ¥{cost:.4f}"
 
 
-def test_available_requires_both_switch_and_key() -> None:
+def test_available_requires_both_switch_and_key(monkeypatch) -> None:
+    # 这台机器上真的配了 NEWSPIPE_LLM_KEY，所以要先把环境变量摘掉再测
+    monkeypatch.delenv("NEWSPIPE_LLM_KEY", raising=False)
+
     assert _client().available is True
     assert _client(enabled=False).available is False
     assert _client(api_key="").available is False
+
+
+def test_api_key_can_come_from_environment(monkeypatch) -> None:
+    monkeypatch.setenv("NEWSPIPE_LLM_KEY", "from-env")
+    assert _client(api_key="").available is True

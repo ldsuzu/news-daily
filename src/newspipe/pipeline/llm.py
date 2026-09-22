@@ -31,8 +31,31 @@ SYSTEM_PROMPT = """你是新闻编辑，为中文读者筛选和翻译资讯。
       影响范围多大、是不是行业级的变化、时效性如何。
       不要因为标题里出现了大厂名字就给高分，也不要因为来源小众就给低分。
       10 = 当天最重要的行业事件；7-8 = 值得一读；5-6 = 常规资讯；3-4 = 边角消息。
+- ev: 事件标签，4-8 个字，不带标点。**同一件事的不同报道必须给出完全相同的标签**，
+      比如英文的「Xbox lays off 268 employees」和中文的「微软重组 Xbox 工作室」
+      都要写成「Xbox重组」。不相关的事件各写各的。
 
 只输出一个 JSON 对象：{"items": [ ... ]}，不要任何解释，不要 markdown 代码块。
+"""
+
+
+EVENT_PROMPT = """下面给你一批新闻事件标签，每条还附了一条用该标签报道的中文标题。
+
+请把**读者会认为是"同一天同一件事"**的标签归为一组，每组挑一个最准确、最中性的标签作为规范名。
+
+判断标准是**读者的感受**，不是严格的事件定义：
+- 同一次公司重组带来的裁员、工作室合并、IP 移交 —— 算同一件事（别拆成三条）
+- 同一场发布会上的多个产品、同一次财报的多个数字 —— 算同一件事
+- 同一起诉讼、同一次事故的后续进展 —— 算同一件事
+- 同一个游戏的不同性质消息（发售日、评测、更新补丁）—— 不算同一件事
+
+核心目的：不要让同一件事在一天的日报里出现三次。
+**宁可合并得多一点**，读者看到重复内容比漏掉一条更烦。
+
+返回 JSON：{"map": {"原标签": "规范标签", ...}}
+只把需要改的放进去；本来就是独立事件的不要出现在 map 里。不要新增没出现过的标签名。
+
+只输出这个 JSON 对象，不要解释。
 """
 
 
@@ -42,6 +65,7 @@ class EnrichResult:
     title_cn: str = ""
     summary_cn: str = ""
     heat: float | None = None
+    event: str = ""      # 事件标签：同一件事的多篇报道标签相同，用来防止刷屏
 
 
 @dataclass
@@ -114,6 +138,10 @@ class LlmClient:
             "response_format": {"type": "json_object"},
             "temperature": 0.3,
             "max_tokens": max(800, len(items) * 220),
+            # 关掉思考模式：翻译和分类是机械活儿，不需要推理链。
+            # 开着的话 reasoning token 会算进输出（输出单价是输入的 4 倍），
+            # 而且长任务会因为思考没写完就把 max_tokens 用光、content 返回空。
+            "thinking": {"type": "disabled"},
         }
 
         try:
@@ -133,15 +161,7 @@ class LlmClient:
             usage.note = f"{type(exc).__name__}: {str(exc)[:160]}"
             return {}, usage
 
-        raw = data.get("usage") or {}
-        usage.cached_tokens = int(raw.get("prompt_cache_hit_tokens") or 0)
-        miss = raw.get("prompt_cache_miss_tokens")
-        usage.input_tokens = int(
-            miss if miss is not None else (raw.get("prompt_tokens") or 0)
-        ) - (0 if miss is not None else usage.cached_tokens)
-        usage.input_tokens = max(0, usage.input_tokens)
-        usage.output_tokens = int(raw.get("completion_tokens") or 0)
-        usage.cost_cny = self._cost(usage)
+        self._fill_usage(usage, data)
 
         choices = data.get("choices") or []
         content = ""
@@ -149,6 +169,98 @@ class LlmClient:
             content = ((choices[0].get("message") or {}).get("content") or "").strip()
 
         return self._parse(content, len(items)), usage
+
+    def _fill_usage(self, usage: Usage, data: dict[str, Any]) -> None:
+        raw = data.get("usage") or {}
+        usage.cached_tokens = int(raw.get("prompt_cache_hit_tokens") or 0)
+        miss = raw.get("prompt_cache_miss_tokens")
+        prompt = int(raw.get("prompt_tokens") or 0)
+        usage.input_tokens = (
+            int(miss) if miss is not None else max(0, prompt - usage.cached_tokens)
+        )
+        usage.output_tokens = int(raw.get("completion_tokens") or 0)
+        usage.cost_cny = self._cost(usage)
+
+    def normalize_events(
+        self, entries: list[dict[str, Any]], *, batch: int = 120
+    ) -> tuple[dict[str, str], Usage]:
+        """把一天里互不一致的事件标签归并成规范名。
+
+        批处理时每批只有 20 条，跨批次看不见彼此，所以同一件事可能被标成
+        「Xbox重组」「动视接手光环」「暴雪裁员」三个标签，折叠就失效了。
+        这一步做一次全局归并 —— 输入里要带上代表标题，光看标签模型也判断不出来。
+        """
+        payload = [
+            {
+                "ev": str(e.get("ev", "")).strip(),
+                "标题": (e.get("sample") or "")[:60],
+                "条数": int(e.get("n") or 1),
+            }
+            for e in entries
+            if str(e.get("ev", "")).strip()
+        ]
+
+        merged: dict[str, str] = {}
+        total = Usage(model=self.model, items=len(payload))
+        if not payload:
+            return merged, total
+
+        for start in range(0, len(payload), batch):
+            chunk = payload[start : start + batch]
+            body = {
+                "model": self.model,
+                "messages": [
+                    {"role": "system", "content": EVENT_PROMPT},
+                    {"role": "user", "content": json.dumps(chunk, ensure_ascii=False)},
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.2,
+                "max_tokens": max(800, len(chunk) * 24),
+                "thinking": {"type": "disabled"},
+            }
+
+            try:
+                resp = httpx.post(
+                    f"{self.base_url}/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {self.api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json=body,
+                    timeout=180.0,
+                )
+                resp.raise_for_status()
+                data = resp.json()
+            except Exception as exc:  # noqa: BLE001
+                total.ok = False
+                total.note = f"{type(exc).__name__}: {str(exc)[:160]}"
+                continue
+
+            piece = Usage(model=self.model)
+            self._fill_usage(piece, data)
+            total.input_tokens += piece.input_tokens
+            total.cached_tokens += piece.cached_tokens
+            total.output_tokens += piece.output_tokens
+
+            choices = data.get("choices") or []
+            content = ((choices[0].get("message") or {}).get("content") or "") if choices else ""
+            text = content.strip()
+            if text.startswith("```"):
+                text = re.sub(r"^```[a-zA-Z]*\s*", "", text)
+                text = re.sub(r"\s*```$", "", text)
+
+            try:
+                mapping_raw = (json.loads(text) or {}).get("map") or {}
+            except (json.JSONDecodeError, AttributeError):
+                continue
+
+            for old, new in mapping_raw.items():
+                old_s, new_s = str(old).strip(), str(new).strip()
+                if old_s and new_s and old_s != new_s:
+                    merged[old_s] = new_s
+
+        total.cost_cny = self._cost(total)
+        return merged, total
 
     @staticmethod
     def _parse(content: str, expected: int) -> dict[int, EnrichResult]:
@@ -190,5 +302,6 @@ class LlmClient:
                 title_cn=str(row.get("cn") or "").strip(),
                 summary_cn=str(row.get("sum") or "").strip(),
                 heat=heat,
+                event=re.sub(r"[\s，。、！？：;·\-—]+", "", str(row.get("ev") or ""))[:20],
             )
         return out

@@ -65,3 +65,54 @@ def test_zero_cap_means_no_balancing() -> None:
 def test_handles_empty_and_zero_sized_requests() -> None:
     assert select_picks([], 5) == []
     assert select_picks([_row("a", "a1", 9.0)], 0) == []
+
+
+# ───────────────────────────── 同一事件折叠 ─────────────────────────────
+
+def _event_row(source_id: str, title: str, score: float, event: str) -> dict[str, object]:
+    return {"source_id": source_id, "title": title, "score": score, "event_key": event}
+
+
+def test_folds_same_event_reported_by_many_sources() -> None:
+    """真实场景：微软重组 Xbox 那天，八家媒体各报一遍，精选 10 条里 8 条是同一件事。"""
+    rows = [
+        _event_row(f"src{i}", f"微软重组 #{i}", 9.0 - i * 0.1, "Xbox重组")
+        for i in range(8)
+    ]
+
+    picks = select_picks(rows, 10)
+
+    assert len(picks) == 1
+    assert picks[0]["source_id"] == "src0"      # 留热度最高的那条
+
+
+def test_keeps_different_events() -> None:
+    rows = [
+        _event_row("a", "A", 9.0, "事件甲"),
+        _event_row("b", "B", 8.0, "事件乙"),
+    ]
+    assert len(select_picks(rows, 10)) == 2
+
+
+def test_rows_without_event_key_are_never_folded_together() -> None:
+    """没被 LLM 处理过的条目没有 event_key —— 不能因为都为空就当成同一件事。"""
+    rows = [
+        {"source_id": "a", "title": "A", "score": 9.0},
+        {"source_id": "b", "title": "B", "score": 8.0},
+    ]
+    assert len(select_picks(rows, 10)) == 2
+
+
+def test_folded_events_are_not_backfilled() -> None:
+    """折叠掉的条目不能在"名额没满就回填"那一步又冒出来。"""
+    rows = [
+        _event_row("a", "A1", 9.0, "甲"),
+        _event_row("a", "A2", 8.9, "甲"),
+        _event_row("a", "A3", 8.8, "甲"),
+        _event_row("a", "A4", 8.7, "甲"),
+    ]
+
+    picks = select_picks(rows, 4, max_per_source=1)
+
+    assert len(picks) == 1
+    assert picks[0]["title"] == "A1"

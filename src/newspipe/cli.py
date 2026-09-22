@@ -328,11 +328,10 @@ def cmd_enrich(args: argparse.Namespace) -> int:
     spend = repo.llm_spend()
 
     print(f"模型 {client.model} · 每批 {client.batch_size} 条 · 今日已花 ¥{spend['today']['cost_cny']:.4f}")
-    if not pending:
-        print("没有需要处理的新条目。")
-        conn.close()
-        return 0
-    print(f"待处理 {len(pending)} 条\n")
+    if pending:
+        print(f"待处理 {len(pending)} 条\n")
+    else:
+        print("没有需要处理的新条目。\n")
 
     done = 0
     failed = 0
@@ -360,6 +359,7 @@ def cmd_enrich(args: argparse.Namespace) -> int:
                     title_cn=res.title_cn,
                     summary_cn=res.summary_cn,
                     heat=res.heat,
+                    event=res.event,
                     ts=ts,
                 )
             conn.commit()
@@ -377,6 +377,19 @@ def cmd_enrich(args: argparse.Namespace) -> int:
             if spent >= client.daily_budget:
                 print(f"\n今日累计 ¥{spent:.4f} 已达上限 ¥{client.daily_budget}，停手。")
                 break
+
+    # 跨批次的事件标签对齐：一次调用就够，很便宜，但能让"同一件事刷屏"彻底消失。
+    # 幂等 —— 标签已经规范时它返回空映射，什么都不改。
+    labels = repo.distinct_event_keys(days=args.days)
+    if len(labels) > 1:
+        print(f"\n正在归并 {len(labels)} 个事件标签…")
+        mapping, merge_usage = client.normalize_events(labels)
+        repo.record_llm_usage(merge_usage, now_utc_iso())
+        if merge_usage.ok:
+            changed = repo.update_event_keys(mapping)
+            print(f"  归并 {len(mapping)} 组，影响 {changed} 条 · ¥{merge_usage.cost_cny:.4f}")
+        else:
+            print(f"  归并失败（{merge_usage.note[:60]}），标签保持原样")
 
     spend = repo.llm_spend()
     t, tot = spend["today"], spend["total"]

@@ -40,8 +40,16 @@ def _summary_of(item: dict[str, Any], limit: int = 160) -> str:
     return _one_line(item.get("summary_cn") or item.get("excerpt") or "", limit)
 
 
+def _heat(item: dict[str, Any]) -> float:
+    """显示用的分数：LLM 热度分优先，没有就退回规则分。"""
+    value = item.get("llm_score")
+    return float(value) if value is not None else float(item.get("score") or 0)
+
+
 def _link(item: dict[str, Any]) -> str:
-    return f"[{_one_line(item.get('title') or '', 90)}]({item.get('url')})"
+    # 有中文标题就用它 —— 和界面上显示的是同一个规则
+    label = item.get("title_cn") or item.get("title") or ""
+    return f"[{_one_line(label, 90)}]({item.get('url')})"
 
 
 def render_digest(
@@ -83,7 +91,7 @@ def render_digest(
     lines.append("")
     lines.append(f"### {_link(lead)}")
     lines.append("")
-    lines.append(f"`{src(lead)}` · {_hhmm(lead.get('published_at'))} · 重要度 **{lead.get('score', 0):.1f}**")
+    lines.append(f"`{src(lead)}` · {_hhmm(lead.get('published_at'))} · 热度 **{_heat(lead):.1f}**")
     lines.append("")
     summary = _summary_of(lead, 400)
     if summary:
@@ -108,7 +116,7 @@ def render_digest(
                 note = f"（同事件另有 {item['cluster_size'] - 1} 条）"
             lines.append(
                 f"| {n} | {_link(item)}{note} | {src(item)} | {_hhmm(item.get('published_at'))} "
-                f"| {item.get('score', 0):.1f} |"
+                f"| {_heat(item):.1f} |"
             )
         lines.append("")
 
@@ -122,7 +130,7 @@ def render_digest(
     for item in all_items:
         lines.append(
             f"| {_hhmm(item.get('published_at'))} | {src(item)} | {_link(item)} "
-            f"| {item.get('score', 0):.1f} |"
+            f"| {_heat(item):.1f} |"
         )
     lines.append("")
     lines.append("---")
