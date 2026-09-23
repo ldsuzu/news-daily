@@ -90,6 +90,32 @@ def test_returns_empty_on_garbage() -> None:
     assert LlmClient._parse("", 1) == {}
 
 
+def test_parses_relevance_flag() -> None:
+    content = (
+        '{"items":[{"i":0,"rel":0,"heat":1,"ev":"无关"},'
+        '{"i":1,"rel":1,"heat":8,"ev":"Xbox重组"}]}'
+    )
+    out = LlmClient._parse(content, 2)
+    assert out[0].relevant is False
+    assert out[1].relevant is True
+
+
+def test_chinese_items_may_skip_title_and_summary() -> None:
+    """中文条目只回 rel/heat/ev —— 不让模型把中文再写一遍，这是省 token 的大头。"""
+    content = '{"items":[{"i":0,"rel":1,"heat":7,"ev":"Xbox重组"}]}'
+    out = LlmClient._parse(content, 1)
+
+    assert out[0].title_cn == ""
+    assert out[0].summary_cn == ""
+    assert out[0].heat == 7.0
+    assert out[0].relevant is True
+
+
+def test_relevance_is_none_when_absent() -> None:
+    content = '{"items":[{"i":0,"heat":5}]}'
+    assert LlmClient._parse(content, 1)[0].relevant is None
+
+
 # ───────────────────────────── 计价 ─────────────────────────────
 
 def test_cost_uses_configured_prices() -> None:
