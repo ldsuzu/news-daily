@@ -123,6 +123,7 @@ def create_app(config: Config | None = None) -> FastAPI:
                     limit=200,
                     order="score",
                     representatives_only=True,
+                    relevant_only=True,
                 )
                 shown = select_picks(
                     candidates,
@@ -134,7 +135,8 @@ def create_app(config: Config | None = None) -> FastAPI:
                 picks_count = len(shown)
             else:
                 shown = repo.list_items(
-                    domain=dom, date=target, limit=500, order="time", representatives_only=True
+                    domain=dom, date=target, limit=500, order="time",
+                    representatives_only=True, relevant_only=True,
                 )
                 picks_count = (
                     repo.count_items(domain=dom, date=target, min_score=picks_min)

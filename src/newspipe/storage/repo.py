@@ -145,6 +145,7 @@ class Repo:
         offset: int = 0,
         order: str = "time",
         representatives_only: bool = False,
+        relevant_only: bool = False,
     ) -> list[dict[str, Any]]:
         where, args = [], []
         if domain:
@@ -163,6 +164,9 @@ class Repo:
             # 同一事件被多家（或同一家的两个入口）报道时，只出代表条目，
             # 否则重复条目会白占「精选每领域 N 条」的名额。
             where.append("(cluster_id IS NULL OR cluster_id = id)")
+        if relevant_only:
+            # 游戏站也会发月饼、耳机这类泛生活新闻；relevant IS NULL 表示还没被 LLM 判过，先留着
+            where.append("(relevant IS NULL OR relevant = 1)")
 
         # 排序：LLM 给的热度分优先，没被 LLM 处理过的回退到规则分
         order_sql = (
@@ -295,6 +299,7 @@ class Repo:
         summary_cn: str,
         heat: float | None,
         event: str,
+        relevant: bool | None,
         ts: str,
     ) -> None:
         self.conn.execute(
@@ -304,10 +309,12 @@ class Repo:
                 summary_cn = CASE WHEN ? <> '' THEN ? ELSE summary_cn END,
                 llm_score  = COALESCE(?, llm_score),
                 event_key  = ?,
+                relevant   = COALESCE(?, relevant),
                 llm_at     = ?
             WHERE id = ?
             """,
-            (title_cn, title_cn, summary_cn, summary_cn, heat, event, ts, item_id),
+            (title_cn, title_cn, summary_cn, summary_cn, heat, event,
+             None if relevant is None else int(relevant), ts, item_id),
         )
 
     def record_llm_usage(self, usage: Any, ts: str) -> None:

@@ -360,6 +360,7 @@ def cmd_enrich(args: argparse.Namespace) -> int:
                     summary_cn=res.summary_cn,
                     heat=res.heat,
                     event=res.event,
+                    relevant=res.relevant,
                     ts=ts,
                 )
             conn.commit()
@@ -378,9 +379,13 @@ def cmd_enrich(args: argparse.Namespace) -> int:
                 print(f"\n今日累计 ¥{spent:.4f} 已达上限 ¥{client.daily_budget}，停手。")
                 break
 
-    # 跨批次的事件标签对齐：一次调用就够，很便宜，但能让"同一件事刷屏"彻底消失。
+    # 跨批次的事件标签对齐：一次调用就够，但也是要花钱的，所以给了开关。
     # 幂等 —— 标签已经规范时它返回空映射，什么都不改。
-    labels = repo.distinct_event_keys(days=args.days)
+    labels = (
+        repo.distinct_event_keys(days=args.days)
+        if config.settings.get("llm.merge_events", True)
+        else []
+    )
     if len(labels) > 1:
         print(f"\n正在归并 {len(labels)} 个事件标签…")
         mapping, merge_usage = client.normalize_events(labels)

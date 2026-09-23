@@ -20,20 +20,26 @@ import httpx
 from ..config import Config
 from ..models import RawItem
 
-SYSTEM_PROMPT = """你是新闻编辑，为中文读者筛选和翻译资讯。
+SYSTEM_PROMPT = """你是新闻编辑，为中文读者筛选科技、游戏、AI 领域的资讯。
 
 对每条资讯输出一个对象：
 - i: 原样返回输入的编号
-- cn: 中文标题。外文标题翻译成中文（不超过 25 字）；本来就是中文的原样返回，
-      只在明显冗长时精简。不要加「重磅」「震惊」这类词。
+- rel: 1 或 0 —— 这条是否属于科技/游戏/AI 行业。
+      游戏和科技媒体常发泛生活类新闻（月饼销量、耳机新品、房价、明星八卦、社会事件、体育），
+      这些**即使来自游戏网站也要标 0**。行业内的公司、产品、人事、技术、政策、赛事标 1。
+      **游戏改编的影视剧、游戏硬件外设、游戏文化与行业话题，算相关（标 1）。**
+- cn: 中文标题，不超过 25 字。**只有原标题是外文时才输出这个字段** ——
+      标题本来就是中文的，直接跳过 cn（不必把中文改写成中文）。
 - sum: 一句话中文摘要，不超过 60 字，说清"发生了什么"，不要评价、不要用"本文"。
+      **标题本来就是中文的也跳过 sum** —— 原文摘要够用了，不必再写一遍。
 - heat: 热度，0-10 的整数。判断依据是这件事本身有多值得知道 ——
       影响范围多大、是不是行业级的变化、时效性如何。
       不要因为标题里出现了大厂名字就给高分，也不要因为来源小众就给低分。
       10 = 当天最重要的行业事件；7-8 = 值得一读；5-6 = 常规资讯；3-4 = 边角消息。
+      **rel=0 的条目一律给 0-2。**
 - ev: 事件标签，4-8 个字，不带标点。**同一件事的不同报道必须给出完全相同的标签**，
       比如英文的「Xbox lays off 268 employees」和中文的「微软重组 Xbox 工作室」
-      都要写成「Xbox重组」。不相关的事件各写各的。
+      都要写成「Xbox重组」。不相关的事件各写各的；rel=0 的写「无关」。
 
 只输出一个 JSON 对象：{"items": [ ... ]}，不要任何解释，不要 markdown 代码块。
 """
@@ -66,6 +72,7 @@ class EnrichResult:
     summary_cn: str = ""
     heat: float | None = None
     event: str = ""      # 事件标签：同一件事的多篇报道标签相同，用来防止刷屏
+    relevant: bool | None = None   # 是否属于本行业（游戏媒体也会发月饼、耳机这类泛生活新闻）
 
 
 @dataclass
@@ -297,11 +304,20 @@ class LlmClient:
             if heat is not None:
                 heat = max(0.0, min(10.0, heat))
 
+            rel_raw = row.get("rel")
+            relevant: bool | None = None
+            if rel_raw is not None:
+                try:
+                    relevant = bool(int(rel_raw))
+                except (TypeError, ValueError):
+                    relevant = None
+
             out[idx] = EnrichResult(
                 index=idx,
                 title_cn=str(row.get("cn") or "").strip(),
                 summary_cn=str(row.get("sum") or "").strip(),
                 heat=heat,
                 event=re.sub(r"[\s，。、！？：;·\-—]+", "", str(row.get("ev") or ""))[:20],
+                relevant=relevant,
             )
         return out

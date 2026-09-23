@@ -151,14 +151,18 @@ def write_digests(config: Config, repo: Repo, date: str, *, generated_at: str) -
     written: list[Path] = []
 
     for domain in config.domains:
+        # 完整清单也过滤掉与领域无关的内容（游戏站的月饼、耳机这类），
+        # 它们仍然留在库里可搜，只是不进日报。
         all_items = repo.list_items(
-            domain=domain.id, date=date, limit=2000, order="time", representatives_only=False
+            domain=domain.id, date=date, limit=2000, order="time",
+            representatives_only=False, relevant_only=True,
         )
         if not all_items:
             continue
 
         reps = repo.list_items(
-            domain=domain.id, date=date, limit=200, order="score", representatives_only=True
+            domain=domain.id, date=date, limit=200, order="score",
+            representatives_only=True, relevant_only=True,
         )
         picks = select_picks(
             reps,

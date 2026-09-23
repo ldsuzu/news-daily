@@ -40,6 +40,7 @@ def _migrate(conn: sqlite3.Connection) -> None:
         ("title_cn", "ALTER TABLE items ADD COLUMN title_cn TEXT NOT NULL DEFAULT ''"),
         ("llm_score", "ALTER TABLE items ADD COLUMN llm_score REAL"),
         ("event_key", "ALTER TABLE items ADD COLUMN event_key TEXT NOT NULL DEFAULT ''"),
+        ("relevant", "ALTER TABLE items ADD COLUMN relevant INTEGER"),
         ("llm_at", "ALTER TABLE items ADD COLUMN llm_at TEXT"),
     ):
         if name not in item_cols:
