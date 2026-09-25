@@ -507,11 +507,19 @@ def cmd_schedule(args: argparse.Namespace) -> int:
 
     # Windows：走任务计划程序。用批处理文件包一层，省掉引号地狱。
     script = config.settings.path("data_dir") / "daily-run.cmd"
-    script.write_text(
-        "@echo off\r\n"
-        f'cd /d "{root}"\r\n'
-        f'"{python}" -m newspipe run >> "{root}\\data\\run.log" 2>&1\r\n',
-        encoding="utf-8",
+    # 必须写成 GBK + 单个 CRLF，两个原因都不能省：
+    #   1) cmd.exe 按**系统代码页**读批处理文件，而这里的路径含中文
+    #      （D:\DSH工作区\...）。写成 UTF-8 的话，任务计划程序启动的 cmd.exe
+    #      （GBK 环境）会把路径读成乱码 → cd 失败 → python 那行也不执行，
+    #      表现就是任务"跑过了"但什么都没发生、日志一直不更新。
+    #   2) 用 write_bytes 是为了绕开 Python 的换行转换 —— write_text 写 "\r\n"
+    #      会被再转一次，变成 "\r\r\n"。
+    script.write_bytes(
+        (
+            "@echo off\r\n"
+            f'cd /d "{root}"\r\n'
+            f'"{python}" -m newspipe run >> "{root}\\data\\run.log" 2>&1\r\n'
+        ).encode("gbk", errors="replace")
     )
 
     if action == "install":
