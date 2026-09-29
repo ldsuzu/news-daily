@@ -437,7 +437,13 @@ def cmd_run(args: argparse.Namespace) -> int:
     date = args.date or to_local_date(now_utc_iso()) or ""
     shared = {"root": root, "date": date}
 
+    # LLM 默认不参与自动流程 —— 自动跑的东西不该悄悄花钱。
+    # 只有 config/settings.yaml 里显式写下 llm.auto_in_run: true 才会带上这一步。
+    cfg = load_config(Path(root).resolve() if root else None)
+    auto_enrich = bool(cfg.settings.get("llm.auto_in_run", False))
+
     steps: list[tuple[str, object, argparse.Namespace]] = []
+    skipped: list[str] = []
 
     if not args.no_sync:
         steps.append(("① 同步海外 bundle", cmd_sync, argparse.Namespace(**shared)))
@@ -452,12 +458,19 @@ def cmd_run(args: argparse.Namespace) -> int:
              argparse.Namespace(**shared, limit=args.limit, min_chars=400, window_days=14,
                                 no_extract=False, no_cluster=False))
         )
-    if not args.no_enrich:
+    if args.no_enrich:
+        skipped.append("LLM 翻译与评分（--no-enrich）")
+    elif not auto_enrich:
+        skipped.append("LLM 翻译与评分（llm.auto_in_run=false，想补跑就手动执行 newspipe enrich）")
+    else:
         steps.append(
             ("④ LLM 翻译 + 热度评分", cmd_enrich,
              argparse.Namespace(**shared, days=3, reset=False))
         )
     steps.append(("⑤ 生成日报", cmd_digest, argparse.Namespace(**shared)))
+
+    for item in skipped:
+        print(f"[跳过] {item}")
 
     failed: list[str] = []
     for name, func, ns in steps:

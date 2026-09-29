@@ -45,11 +45,14 @@ rsshub:
   base: ""               # 例如 http://127.0.0.1:1200
 
 llm:
-  enabled: true             # 已启用；api_key 走环境变量 NEWSPIPE_LLM_KEY，不写进文件
+  enabled: false            # ← 已关闭。想用时改成 true，再手动跑 `newspipe enrich`
   provider: deepseek
   model: deepseek-flash     # DeepSeek-V4.1-Flash；贵一点的备选 deepseek-v4-pro
   base_url: https://api.deepseek.com
   api_key: ""               # 也可用环境变量 NEWSPIPE_LLM_KEY，免得写进文件
+  auto_in_run: false        # 定时任务里是否自动跑 enrich。
+                            # 默认 false = **自动流程永远不花钱**：只有你手动跑
+                            # `newspipe enrich` 时才会调用 LLM。想恢复全自动再改 true。
   batch_size: 20            # 一次请求塞多少条 —— 批量是省 token 的主要手段
   max_items_per_run: 400    # 单轮最多处理多少条，防止一口气烧穿预算
   daily_budget_cny: 0.5     # 硬上限：当天花超过这个数就停手（0 = 不限）。按实测，正常一天约 ¥0.06
