@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<title>每日简报 · 桌面版界面原型</title>
+<!--
+  PROTOTYPE — 用来讨论「桌面软件该长什么样」。
+  三个结构不同的方向，?variant=A|B|C 切换；每个都能切到「设置」看那一屏。
+  数据全是假的，不接后端。选完就丢。
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --serif:Georgia,"Songti SC",serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --bg:#e8e8ea;--win:#fff;--win2:#f7f7f8;--side:#f2f2f4;--line:#e3e3e6;--line2:#d2d2d6;
+  --fg:#1a1a1d;--fg2:#5c5c66;--fg3:#94949e;
+  --brand:#5b4ee0;--brand2:#0b8ec9;--ok:#1f9254;--warn:#b0730a;--err:#c0392b;
+  --sh:0 18px 50px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.08);
+}
+html[data-theme=dark]{
+  --bg:#141417;--win:#1c1c21;--win2:#232329;--side:#191920;--line:#2c2c34;--line2:#3a3a45;
+  --fg:#ececf2;--fg2:#a4a4b2;--fg3:#6d6d7a;
+  --brand:#8b7cf6;--brand2:#38bdf8;
+  --sh:0 18px 50px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);
+}
+body{margin:0;background:var(--bg);font-family:var(--sans);color:var(--fg);font-size:13.5px;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px 24px 96px;
+  -webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select{font:inherit}
+
+/* ── 模拟的桌面窗口 ── */
+.win{width:1180px;max-width:100%;height:720px;background:var(--win);border-radius:11px;
+  box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line2)}
+.titlebar{height:38px;background:var(--win2);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;padding:0 14px;gap:14px;flex:none;user-select:none}
+.lights{display:flex;gap:7px}
+.lights i{width:11px;height:11px;border-radius:50%;display:block}
+.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.titlebar .t{font-size:12.5px;color:var(--fg2);font-weight:600;letter-spacing:.02em}
+.titlebar .sp{flex:1}
+.titlebar .hint{font-size:11px;color:var(--fg3);font-family:var(--mono)}
+.body{flex:1;display:flex;min-height:0}
+
+/* ── 通用小件 ── */
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;vertical-align:middle;margin-right:5px}
+.dot.game{background:var(--brand)}.dot.ai{background:var(--brand2)}
+.src{font-size:11.5px;color:var(--fg2);font-weight:600}
+.time{font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.en{font-size:11.5px;color:var(--fg3);font-style:italic}
+.score{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:1px 5px;border-radius:5px;border:1px solid currentColor}
+.score.hi{color:var(--err)}.score.mid{color:var(--warn)}.score.lo{color:var(--fg3)}
+.tag{font-size:10px;padding:1px 6px;border-radius:20px;border:1px solid currentColor;color:var(--warn)}
+.tag.on{color:var(--ok)}
+.btn{border:1px solid var(--line2);border-radius:7px;padding:5px 11px;font-size:12.5px;color:var(--fg2)}
+.btn:hover{background:var(--win2);color:var(--fg)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{opacity:.9;color:#fff}
+.sec{padding:14px 16px 3px;font-size:10px;letter-spacing:.14em;color:var(--fg3);text-transform:uppercase}
+
+/* ══════════ 变体 A：三栏工作台 ══════════ */
+.A{display:flex;width:100%}
+.A .nav{width:112px;background:var(--side);border-right:1px solid var(--line);padding:10px 0;flex:none}
+.A .nav a{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:13px;color:var(--fg2);border-left:2px solid transparent;text-decoration:none}
+.A .nav a:hover{background:var(--win2)}
+.A .nav a.on{background:var(--win);border-left-color:var(--brand);color:var(--fg);font-weight:600}
+.A .nav .ico{width:15px;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+.A .nav .ico svg{width:15px;height:15px;display:block}
+.A .list{width:330px;border-right:1px solid var(--line);overflow-y:auto;flex:none;background:var(--win)}
+.A .list .row{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.A .list .row:hover{background:var(--win2)}
+.A .list .row.on{background:color-mix(in srgb,var(--brand) 9%,var(--win));box-shadow:inset 3px 0 0 var(--brand)}
+.A .list .row .t{font-size:13.5px;font-weight:600;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.A .list .row .m{display:flex;gap:8px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.A .read{flex:1;overflow-y:auto;padding:26px 34px 60px;background:var(--win)}
+.A .read h2{font-size:21px;line-height:1.4;margin:4px 0 6px}
+.A .read .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.A .read .sum{background:var(--win2);border-left:3px solid var(--brand);padding:11px 15px;border-radius:0 8px 8px 0;font-size:14px;margin:0 0 18px}
+.A .read .txt{font-size:14px;line-height:1.85;color:var(--fg2);white-space:pre-line}
+.A .read .acts{display:flex;gap:8px;margin-top:22px;padding-top:15px;border-top:1px solid var(--line)}
+
+/* ══════════ 变体 B：图标侧栏 + 卡片流 ══════════ */
+.B{display:flex;width:100%}
+.B .rail{width:56px;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex:none}
+.B .rail a{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--fg2);text-decoration:none}
+.B .rail a svg{width:20px;height:20px;display:block}
+.B .rail a:hover{background:var(--win2)}
+.B .rail a.on{background:var(--brand);color:#fff}
+.B .rail .sp{flex:1}
+.B .main{flex:1;overflow-y:auto;padding:0 0 40px}
+.B .topbar{position:sticky;top:0;background:color-mix(in srgb,var(--win) 92%,transparent);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:14px 26px;display:flex;align-items:center;gap:12px;z-index:5}
+.B .topbar h1{font-size:16px;margin:0;font-weight:700}
+.B .topbar .sp{flex:1}
+.B .search{border:1px solid var(--line2);border-radius:8px;padding:5px 12px;font-size:12.5px;background:var(--win2);color:var(--fg);width:200px}
+.B .wrap{padding:20px 26px}
+.B .hero{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 12%,var(--win)),color-mix(in srgb,var(--brand2) 10%,var(--win)));
+  border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px}
+.B .hero h2{margin:8px 0 6px;font-size:23px;line-height:1.35}
+.B .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:14px}
+.B .card{background:var(--win2);border:1px solid var(--line);border-radius:12px;padding:15px 16px;cursor:pointer}
+.B .card:hover{border-color:var(--line2);transform:translateY(-1px)}
+.B .card h3{margin:7px 0 5px;font-size:14px;line-height:1.45;font-weight:650}
+.B .card p{margin:0;font-size:12.5px;color:var(--fg2);line-height:1.6}
+
+/* ══════════ 变体 C：报纸（现有版式的桌面化）══════════ */
+.C{width:100%;overflow-y:auto}
+.C .sheet{max-width:860px;margin:0 auto;padding:22px 34px 60px}
+.C .mast{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px double var(--line2);padding-bottom:9px}
+.C .mast h1{font-family:var(--serif);font-size:30px;margin:0;letter-spacing:.04em}
+.C .mast .d{font-size:12px;color:var(--fg2);padding-bottom:3px}
+.C .lead{padding:20px 0;border-bottom:1px solid var(--line)}
+.C .lead h2{font-family:var(--serif);font-size:26px;line-height:1.34;margin:7px 0}
+.C .tri{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.C .tri article{padding:16px 18px 18px 0;border-right:1px solid var(--line)}
+.C .tri article:last-child{border-right:0}
+.C .tri article:not(:first-child){padding-left:18px}
+.C .tri h3{font-family:var(--serif);font-size:16px;line-height:1.4;margin:5px 0 4px}
+.C .tri p{margin:0;font-size:12.5px;color:var(--fg2)}
+.C .more{padding:16px 0}
+.C .more .h{font-size:11px;letter-spacing:.14em;color:var(--fg3);text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:9px}
+.C .more .cols{column-count:2;column-gap:32px}
+.C .more .r{padding:7px 0;border-bottom:1px dotted var(--line);display:flex;gap:9px;align-items:baseline;break-inside:avoid}
+.C .more .r .t{flex:1;font-size:13px}
+
+/* ══════════ 设置页（三个变体共用，只是换外壳）══════════ */
+.set{padding:26px 32px 60px;overflow-y:auto;width:100%}
+.set h1{font-size:19px;margin:0 0 4px}
+.set .sub{color:var(--fg3);font-size:12.5px;margin-bottom:22px}
+.set .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;max-width:960px}
+.card2{background:var(--win2);border:1px solid var(--line);border-radius:12px;padding:17px 19px}
+.card2 h3{margin:0 0 3px;font-size:14px}
+.card2 .hint{font-size:12px;color:var(--fg3);margin:0 0 14px;line-height:1.6}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.field label{font-size:12px;color:var(--fg2);font-weight:600}
+.field input,.field select{background:var(--win);border:1px solid var(--line2);border-radius:8px;padding:7px 11px;font-size:13px;color:var(--fg)}
+.field .note{font-size:11px;color:var(--fg3)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px dotted var(--line)}
+.switch:last-child{border-bottom:0}
+.switch .l{font-size:13px}
+.switch .l small{display:block;color:var(--fg3);font-size:11.5px;margin-top:2px;line-height:1.5}
+.toggle{width:44px;height:24px;border-radius:20px;background:var(--line2);position:relative;flex:none;transition:.16s}
+.toggle.on{background:var(--ok)}
+.toggle i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.16s}
+.toggle.on i{left:23px}
+.stat{display:flex;align-items:baseline;gap:9px;padding:8px 0;border-bottom:1px dotted var(--line)}
+.stat:last-child{border-bottom:0}
+.stat .v{font-family:var(--mono);font-size:16px;font-weight:700}
+.stat .l{font-size:12.5px;color:var(--fg2)}
+.stat .h{font-size:11.5px;color:var(--fg3);margin-left:auto}
+.bar{height:7px;border-radius:5px;background:var(--line2);overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;background:var(--brand);width:24%}
+table.srcs{width:100%;border-collapse:collapse;font-size:12.5px}
+table.srcs th{text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);padding:5px 7px;border-bottom:1px solid var(--line2)}
+table.srcs td{padding:7px;border-bottom:1px solid var(--line)}
+table.srcs .num{font-family:var(--mono);text-align:right}
+.mini{font-size:11px;color:var(--fg3);font-family:var(--mono)}
+
+/* ── 切换栏 ── */
+.sw{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:3px;
+  background:#111;color:#fff;border-radius:999px;padding:5px 6px;box-shadow:0 10px 34px rgba(0,0,0,.4);z-index:99}
+html[data-theme=dark] .sw{background:#f4f4f2;color:#111}
+.sw button{width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;opacity:.75}
+.sw button:hover{opacity:1;background:rgba(128,128,128,.28)}
+.sw .lbl{font-size:12.5px;padding:0 10px;min-width:230px;text-align:center}
+.sw .lbl small{display:block;font-size:9.5px;opacity:.55;letter-spacing:.05em}
+.sw .vsep{width:1px;height:20px;background:rgba(128,128,128,.4);margin:0 4px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="sw">
+  <button id="prev" title="上一个方向（←）">‹</button>
+  <div class="lbl"><span id="lbl"></span><small>PROTOTYPE · 假数据 · ← → 切换方向</small></div>
+  <button id="next" title="下一个方向（→）">›</button>
+  <div class="vsep"></div>
+  <button id="toSettings" title="切换到设置页">⚙</button>
+  <button id="toToday" title="切换回主界面">📰</button>
+  <button id="theme" title="明暗主题">◐</button>
+</div>
+
+<script>
+/* ───────── 图标：线性 SVG，不用 emoji ───────── */
+const SVG = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICON = {
+  today:  SVG('<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.2 9.4V20a1 1 0 0 0 1 1h11.6a1 1 0 0 0 1-1V9.4"/><path d="M9.6 21v-6.2h4.8V21"/>'),
+  history:SVG('<rect x="3.2" y="4.6" width="17.6" height="16" rx="2.2"/><path d="M8 2.6v4M16 2.6v4M3.2 10.2h17.6"/><path d="M7.6 14h3M7.6 17.2h7"/>'),
+  star:   SVG('<path d="m12 3.6 2.6 5.3 5.8.84-4.2 4.1 1 5.8-5.2-2.74-5.2 2.74 1-5.8-4.2-4.1 5.8-.84z"/>'),
+  search: SVG('<circle cx="11" cy="11" r="7.2"/><path d="m20.6 20.6-4.1-4.1"/>'),
+  gear:   SVG('<path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h8M16 17h4"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="14" cy="17" r="2.2"/>'),
+  folder: SVG('<path d="M3.4 6.6a2 2 0 0 1 2-2h3.4l2 2.4h7.8a2 2 0 0 1 2 2v8.4a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2z"/>'),
+};
+
+/* ───────── 假数据 ───────── */
+const ITEMS = [
+  {id:1,src:'游民星空',dom:'game',zh:'Xbox裁员268人，Halo、Rare等工作室划归动视',en:'Xbox lays off 268 employees as Halo, Rare move to Activision',sum:'微软重组Xbox工作室架构并裁员268人，Halo新作转交动视，黑曜石划归贝塞斯达。',t:'23:15',heat:9.0,ext:true,body:'微软今日宣布对 Xbox 部门进行第二轮重组……（本地正文 1,842 字，离线可读）'},
+  {id:2,src:'3DM',dom:'game',zh:'《暗黑破坏神5》取消安全城镇，改为随车队移动',en:'',sum:'暴雪确认新作将移除系列沿用多年的安全城镇设计，改为随车队迁徙的动态据点。',t:'23:16',heat:8.0,ext:false,body:'据外媒报道……'},
+  {id:3,src:'Eurogamer',dom:'game',zh:'Xbox重组引发游戏社区不满',en:'Community reaction: Xbox restructuring',sum:'第二轮裁员波及 Ninja Theory、Halo Studios 与 World\u2019s Edge，社区反应强烈。',t:'22:44',heat:8.0,ext:true,body:'The reaction has been……'},
+  {id:4,src:'量子位',dom:'ai',zh:'阿里研究员透露 Qwen4.5 后将扩展至 5-10T 参数',en:'',sum:'在一次公开分享中，阿里研究员提到下一代模型的参数规模将再上一个量级。',t:'11:48',heat:7.5,ext:false,body:'在近日的一场分享中……'},
+  {id:5,src:'arXiv cs.AI',dom:'ai',zh:'用蒸馏把推理链压缩到原来的三分之一',en:'Distilling reasoning chains to a third of their length',sum:'作者用教师模型的长推理链训练学生模型输出更短推理，准确率损失控制在可接受范围内。',t:'08:12',heat:6.0,ext:true,body:'We propose a method……'},
+  {id:6,src:'Solidot',dom:'ai',zh:'NASA 火星样本送回任务终止',en:'',sum:'美国国会预算法案取消对该任务的资助，毅力号采集的样本将无法送回地球。',t:'16:59',heat:8.0,ext:false,body:'……'},
+  {id:7,src:'PC Gamer',dom:'game',zh:'AMD 市值突破 1 万亿美元',en:'AMD\u2019s market cap just blasted through the $1 trillion barrier',sum:'在 AI 加速卡需求带动下，AMD 市值首次越过一万亿美元。',t:'22:45',heat:7.0,ext:true,body:'AMD has crossed……'},
+  {id:8,src:'机核',dom:'game',zh:'没有放弃《命运》！Bungie 发布致歉声明',en:'',sum:'Bungie 就近期风波向玩家致歉，并承诺继续推进《命运2》的内容计划。',t:'16:22',heat:7.0,ext:false,body:'……'},
+];
+
+const SOURCES = [
+  {name:'游民星空',dom:'game',on:true,n:68,ok:'2 分钟前'},
+  {name:'机核',dom:'game',on:true,n:22,ok:'2 分钟前'},
+  {name:'3DM',dom:'game',on:true,n:31,ok:'2 分钟前'},
+  {name:'Gematsu',dom:'game',on:true,n:22,ok:'3 分钟前'},
+  {name:'PC Gamer',dom:'game',on:true,n:54,ok:'3 分钟前'},
+  {name:'IGN',dom:'game',on:false,n:0,ok:'连不上（走海外分身）'},
+  {name:'量子位',dom:'ai',on:true,n:13,ok:'2 分钟前'},
+  {name:'arXiv cs.AI',dom:'ai',on:true,n:40,ok:'4 分钟前'},
+  {name:'Hacker News',dom:'ai',on:true,n:34,ok:'4 分钟前'},
+  {name:'机器之心',dom:'ai',on:false,n:0,ok:'需要 RSSHub'},
+];
+
+const state = {
+  variant:(new URLSearchParams(location.search).get('variant')||'A').toUpperCase(),
+  view:new URLSearchParams(location.search).get('view')||'today',
+  domain:'all', theme:'light', selected:1, llm:false,
+};
+const NAMES = {A:'三栏工作台',B:'图标侧栏 + 卡片流',C:'报纸版式（现有）'};
+if(!NAMES[state.variant]) state.variant='A';
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pool = () => ITEMS.filter(i => state.domain==='all' || i.dom===state.domain);
+const sc = n => n>=8?'hi':n>=6?'mid':'lo';
+
+/* ───────── 设置页（三方向共用） ───────── */
+function settings(){
+  return `
+  <div class="set">
+    <h1>设置</h1>
+    <div class="sub">按你的选择：Key 存 Windows 凭据管理器，不落明文文件；LLM 开关就在第一屏。</div>
+    <div class="grid2">
+
+      <div class="card2">
+        <h3>AI 摘要（LLM）</h3>
+        <p class="hint">关着的时候：外网条目显示英文原标题、排序用规则分、同一件事可能重复出现。<b>自动流程永远不会花钱</b>，只有你点「立即生成」才会调用。</p>
+        <div class="switch">
+          <div class="l">启用 LLM 翻译与热度
+            <small>${state.llm?'当前：开启（会消耗 token）':'当前：关闭（零 API 调用）'}</small></div>
+          <div class="toggle ${state.llm?'on':''}" data-toggle="llm"><i></i></div>
+        </div>
+        <div class="switch">
+          <div class="l">定时任务里也自动跑
+            <small>关掉的话，早上 7 点那次不会带 LLM 这一步</small></div>
+          <div class="toggle ${state.llm?'on':''}" data-toggle="auto"><i></i></div>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label>DeepSeek API Key</label>
+          <input type="password" value="sk-••••••••••••••••••••••••" />
+          <div class="note">✓ 已保存到 Windows 凭据管理器 · 不写入任何配置文件</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn pri">保存</button>
+          <button class="btn">测试连通性</button>
+          <button class="btn">清除 Key</button>
+        </div>
+      </div>
+
+      <div class="card2">
+        <h3>花费</h3>
+        <p class="hint">只在开启 LLM 后才会增长。每天 0.5 元封顶，超了自动停手。</p>
+        <div class="stat"><span class="v">¥0.00</span><span class="l">今日</span><span class="h">LLM 已关闭</span></div>
+        <div class="stat"><span class="v">¥1.87</span><span class="l">累计</span><span class="h">173 次调用</span></div>
+        <div class="bar"><i style="width:24%"></i></div>
+        <div class="mini" style="margin-top:6px">日预算 ¥0.50 · 今日已用 ¥0.00</div>
+      </div>
+
+      <div class="card2">
+        <h3>抓取</h3>
+        <div class="field"><label>每天自动抓取时间</label><input value="07:00" /></div>
+        <div class="switch"><div class="l">开机补跑<small>关机错过时间点，开机后补一次</small></div><div class="toggle on"><i></i></div></div>
+        <div class="switch"><div class="l">每次抓完打开日报<small>抓完之后自动弹出主界面</small></div><div class="toggle"><i></i></div></div>
+        <div class="field" style="margin-top:12px"><label>代理（可选）</label><input placeholder="http://127.0.0.1:7890" /><div class="note">留空 = 直连</div></div>
+      </div>
+
+      <div class="card2" style="grid-column:span 2">
+        <h3>信息源</h3>
+        <p class="hint">${SOURCES.filter(s=>s.on).length} 个启用中 · ${SOURCES.filter(s=>!s.on).length} 个停用</p>
+        <table class="srcs">
+          <thead><tr><th>源</th><th>领域</th><th style="text-align:right">条目</th><th>上次成功</th><th style="text-align:right">开关</th></tr></thead>
+          <tbody>
+          ${SOURCES.map(s=>`<tr>
+            <td><span class="dot ${s.dom}"></span>${esc(s.name)}</td>
+            <td>${s.dom==='game'?'游戏':'AI'}</td>
+            <td class="num">${s.n}</td>
+            <td class="mini">${esc(s.ok)}</td>
+            <td style="text-align:right"><div class="toggle ${s.on?'on':''}" style="display:inline-block;vertical-align:middle"><i></i></div></td>
+          </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card2">
+        <h3>界面</h3>
+        <div class="field"><label>主题</label><select><option>跟随系统</option><option>浅色</option><option>深色</option></select></div>
+        <div class="field"><label>每领域精选条数</label><input value="10" /></div>
+        <div class="switch"><div class="l">开机自动启动</div><div class="toggle on"><i></i></div></div>
+        <div class="switch"><div class="l">最小化到系统托盘</div><div class="toggle on"><i></i></div></div>
+      </div>
+
+      <div class="card2">
+        <h3>数据</h3>
+        <div class="stat"><span class="v">1352</span><span class="l">条条目</span><span class="h">永久保留</span></div>
+        <div class="stat"><span class="v">7</span><span class="l">天历史</span><span class="h">FTS5 全文可搜</span></div>
+        <div class="mini" style="margin:10px 0">C:\\Users\\…\\每日简报\\data\\news.db</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn">打开数据目录</button><button class="btn">立即备份</button>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+/* ───────── 方向 A ───────── */
+function viewA(){
+  const list = pool();
+  const cur = ITEMS.find(i=>i.id===state.selected) || list[0];
+  return `
+  <div class="A">
+    <nav class="nav">
+      <a class="on"><span class="ico">${ICON.today}</span>今日</a>
+      <a><span class="ico">${ICON.history}</span>历史</a>
+      <a><span class="ico">${ICON.star}</span>收藏</a>
+      <div class="sec" style="padding:14px 14px 4px">领域</div>
+      <a data-dom="all" class="${state.domain==='all'?'on':''}"><span class="ico"><span class="dot game"></span></span>全部</a>
+      <a data-dom="game" class="${state.domain==='game'?'on':''}"><span class="ico"><span class="dot game"></span></span>游戏</a>
+      <a data-dom="ai" class="${state.domain==='ai'?'on':''}"><span class="ico"><span class="dot ai"></span></span>AI</a>
+      <div class="sec" style="padding:16px 14px 4px">最近</div>
+      <a><span class="ico mini">09-30</span></a>
+      <a><span class="ico mini">09-29</span></a>
+      <a><span class="ico mini">09-28</span></a>
+      <div style="flex:1;height:10px"></div>
+      <a data-view="settings"><span class="ico">${ICON.gear}</span>设置</a>
+    </nav>
+
+    <div class="list">
+      <div class="sec">今天 · 精选 ${list.length}</div>
+      ${list.map(it=>`
+        <div class="row ${it.id===cur.id?'on':''}" data-item="${it.id}">
+          <div class="t">${esc(it.zh)}</div>
+          <div class="m">
+            <span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span>
+            <span class="time">${it.t}</span>
+            <span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>
+            ${it.ext?'<span class="tag on">已译</span>':'<span class="tag">原文</span>'}
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="read">
+      <div class="meta">
+        <span class="src"><span class="dot ${cur.dom}"></span>${esc(cur.src)}</span>
+        <span class="time">${cur.t}</span>
+        <span class="score ${sc(cur.heat)}">热度 ${cur.heat.toFixed(1)}</span>
+        ${cur.ext?'<span class="tag on">LLM 翻译</span>':''}
+      </div>
+      <h2>${esc(cur.zh)}</h2>
+      ${cur.en?`<div class="en" style="margin:-2px 0 12px">${esc(cur.en)}</div>`:''}
+      <p class="sum">${esc(cur.sum)}</p>
+      <div class="txt">${esc(cur.body)}</div>
+      <div class="acts">
+        <button class="btn">★ 收藏</button><button class="btn">✓ 已读</button>
+        <button class="btn">↗ 打开原文</button><button class="btn">⧉ 复制摘要</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ───────── 方向 B ───────── */
+function viewB(){
+  const list = pool();
+  const hero = list[0], cards = list.slice(1);
+  return `
+  <div class="B">
+    <nav class="rail">
+      <a class="on" title="今日">${ICON.today}</a>
+      <a title="历史">${ICON.history}</a>
+      <a title="收藏">${ICON.star}</a>
+      <a title="搜索">${ICON.search}</a>
+      <div class="sp"></div>
+      <a data-view="settings" title="设置">${ICON.gear}</a>
+    </nav>
+    <div class="main">
+      <div class="topbar">
+        <h1>今天</h1>
+        <span class="time">2026年9月29日 星期一 · ${list.length} 条</span>
+        <div class="sp"></div>
+        <span data-dom="all" class="btn" style="${state.domain==='all'?'border-color:var(--brand);color:var(--brand)':''}">全部</span>
+        <span data-dom="game" class="btn" style="${state.domain==='game'?'border-color:var(--brand);color:var(--brand)':''}">游戏</span>
+        <span data-dom="ai" class="btn" style="${state.domain==='ai'?'border-color:var(--brand);color:var(--brand)':''}">AI</span>
+        <input class="search" placeholder="搜全部历史…" />
+      </div>
+      <div class="wrap">
+        <div class="hero">
+          <div class="meta" style="display:flex;gap:10px;align-items:center">
+            <span class="src"><span class="dot ${hero.dom}"></span>${esc(hero.src)}</span>
+            <span class="time">${hero.t}</span>
+            <span class="score ${sc(hero.heat)}">热度 ${hero.heat.toFixed(1)}</span>
+          </div>
+          <h2>${esc(hero.zh)}</h2>
+          ${hero.en?`<div class="en">${esc(hero.en)}</div>`:''}
+          <p style="font-size:14px;color:var(--fg2);margin:8px 0 0">${esc(hero.sum)}</p>
+        </div>
+        <div class="grid">
+          ${cards.map(it=>`
+            <div class="card" data-item="${it.id}">
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span>
+                <span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>
+                <span class="time" style="margin-left:auto">${it.t}</span>
+              </div>
+              <h3>${esc(it.zh)}</h3>
+              <p>${esc(it.sum)}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ───────── 方向 C ───────── */
+function viewC(){
+  const list = pool();
+  const lead = list[0], tri = list.slice(1,4), more = list.slice(4);
+  return `
+  <div class="C">
+    <div class="sheet">
+      <div class="mast">
+        <h1>每日简报</h1>
+        <div class="d">2026年9月29日 星期一 · 当天 ${list.length} 条</div>
+      </div>
+      <section class="lead">
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="src"><span class="dot ${lead.dom}"></span>${esc(lead.src)}</span>
+          <span class="time">${lead.t}</span>
+          <span class="score ${sc(lead.heat)}">热度 ${lead.heat.toFixed(1)}</span>
+        </div>
+        <h2>${esc(lead.zh)}</h2>
+        ${lead.en?`<div class="en">${esc(lead.en)}</div>`:''}
+        <p style="font-size:14px;color:var(--fg2);margin:8px 0 0">${esc(lead.sum)}</p>
+      </section>
+      <section class="tri">
+        ${tri.map(it=>`<article>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span>
+            <span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>
+          </div>
+          <h3>${esc(it.zh)}</h3>
+          <p>${esc(it.sum)}</p>
+        </article>`).join('')}
+      </section>
+      <section class="more">
+        <div class="h">更多报道</div>
+        <div class="cols">
+          ${more.map(it=>`<div class="r"><span class="dot ${it.dom}"></span><span class="t">${esc(it.zh)}</span><span class="time">${esc(it.src)}</span></div>`).join('')}
+        </div>
+      </section>
+    </div>
+  </div>`;
+}
+
+/* ───────── 组装 ───────── */
+function render(){
+  const isSet = state.view==='settings';
+  const html = isSet ? settings() : (state.variant==='A'?viewA():state.variant==='B'?viewB():viewC());
+  document.getElementById('app').innerHTML = `
+    <div class="win">
+      <div class="titlebar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div class="t">每日简报${isSet?' · 设置':''}</div>
+        <div class="sp"></div>
+        <div class="hint">${isSet?'':'双击条目打开原文 · '}${state.llm?'LLM 已开启':'LLM 已关闭'}</div>
+      </div>
+      <div class="body">${html}</div>
+    </div>`;
+  document.documentElement.dataset.theme = state.theme;
+  document.getElementById('lbl').textContent = `${state.variant} — ${NAMES[state.variant]}`;
+  const u = new URL(location.href);
+  u.searchParams.set('variant', state.variant);
+  if(isSet) u.searchParams.set('view','settings'); else u.searchParams.delete('view');
+  history.replaceState(null,'',u);
+}
+
+document.addEventListener('click', e => {
+  const t = e.target;
+  if(t.closest('[data-toggle]')){ state.llm = !state.llm; render(); return; }
+  if(t.closest('[data-view="settings"]')){ state.view='settings'; render(); return; }
+  const dom = t.closest('[data-dom]');
+  if(dom){ state.domain = dom.dataset.dom; render(); return; }
+  const item = t.closest('[data-item]');
+  if(item){ state.selected = +item.dataset.item; render(); return; }
+});
+function cycle(s){
+  const k = Object.keys(NAMES), i = k.indexOf(state.variant);
+  state.variant = k[(i+s+k.length)%k.length]; state.view='today'; render();
+}
+document.getElementById('prev').onclick = () => cycle(-1);
+document.getElementById('next').onclick = () => cycle(1);
+document.getElementById('toSettings').onclick = () => { state.view='settings'; render(); };
+document.getElementById('toToday').onclick = () => { state.view='today'; render(); };
+document.getElementById('theme').onclick = () => { state.theme = state.theme==='light'?'dark':'light'; render(); };
+document.addEventListener('keydown', e => {
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  if(e.key==='ArrowLeft') cycle(-1);
+  if(e.key==='ArrowRight') cycle(1);
+});
+render();
+</script>
+</body>
+</html>
