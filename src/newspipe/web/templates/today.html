@@ -111,6 +111,13 @@
   }
   function sc(n) { return n >= 8 ? 'hi' : n >= 6 ? 'mid' : 'lo'; }
 
+  // 正文按行切成段落 —— 抓下来的文本换行不规则，直接丢进一个 div 会挤成一大坨
+  function bodyHtml(text) {
+    if (!text) return '';
+    var parts = String(text).split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean);
+    return parts.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
+  }
+
   function paint(i) {
     var it = items[i];
     if (!it) return;
@@ -126,7 +133,7 @@
       (it.en ? '<div class="en">' + esc(it.en) + '</div>' : '') +
       (it.sum ? '<p class="sum">' + esc(it.sum) + '</p>' : '') +
       (it.body
-        ? '<div class="txt">' + esc(it.body) + '</div>'
+        ? '<div class="txt">' + bodyHtml(it.body) + '</div>'
         : '<p class="hint-line">这条没抓到正文 —— 点上面的标题去原文看。</p>') +
       '<div class="acts">' +
         '<a class="btn" href="' + esc(it.url) + '" target="_blank" rel="noreferrer">打开原文</a>' +

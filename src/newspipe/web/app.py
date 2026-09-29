@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import threading
 from datetime import date as _date
 from datetime import timedelta
@@ -76,6 +77,50 @@ def _score_class(value: float | None) -> str:
     return "hi" if v >= 8 else "mid" if v >= 6 else "lo"
 
 
+def _tidy_body(title: str, text: str) -> str:
+    """清掉抓取正文里的模板噪音。
+
+    国内站点尤其明显 —— 正文开头会把标题再抄一遍，后面挂一串
+    「来源：xxx - 作者：xxx - 编辑：xxx」。这些是页面模板，不是内容，
+    但 trafilatura 会把它们一起抽出来，读起来像广告。
+    """
+    text = (text or "").strip()
+    if not text:
+        return ""
+
+    # 1) 先删署名/出处这类模板片段。分两条正则，因为它们的边界不一样：
+    #    「来源」后面常跟别的署名段（用 lookahead 卡在下一个分隔符前），
+    #    而「作者/编辑」后面直接跟正文（只能按"名字"的长度收敛）。
+    #    合成一条的话，无论怎么调长度上限，都会在某一类站点上啃到正文。
+    text = re.sub(
+        r"[-–—\s|]*(?:来源|出处|原文|via|source)\s*[:：]\s*[^\n]{1,30}?(?=\s*[-–—|]|$)",
+        " ",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"[-–—\s|]*(?:作者|编译|责任编辑|编辑|author)\s*[:：]\s*[^\s\-–—|。，！？；、\n]{1,12}",
+        " ",
+        text,
+        flags=re.IGNORECASE,
+    )
+    # 删完模板，开头可能孤零零剩个标点或连接符
+    text = re.sub(r"^\s*[。，、；：,;:\-–—|]+\s*", "", text)
+
+    # 2) 再切掉开头重复的标题。
+    #    只切「前缀」，不整行丢：3DM 这类站点的正文是标题和正文挤在同一行的。
+    #    另外要求正文明显长于标题，避免在一条短新闻上切过头。
+    title = (title or "").strip()
+    if title and len(text) > len(title) * 2:
+        stripped = text.lstrip()
+        if stripped.startswith(title):
+            text = stripped[len(title):].lstrip(" -–—|·:：\t\n")
+
+    # 3) 收拾残留的连接符和空行
+    lines = [ln.strip(" -–—|·") for ln in text.split("\n")]
+    return "\n".join(ln for ln in lines if ln).strip()
+
+
 def _items_payload(
     rows: list[dict[str, Any]], source_map: dict[str, dict[str, Any]], body_limit: int = 4000
 ) -> str:
@@ -86,7 +131,8 @@ def _items_payload(
     """
     payload = []
     for it in rows:
-        body = (it.get("content_text") or "").strip()
+        raw_body = (it.get("content_text") or "").strip()
+        body = _tidy_body(it.get("title_cn") or it.get("title") or "", raw_body)
         lang = str(it.get("lang") or "")
         is_foreign = bool(lang and not lang.startswith("zh"))
 

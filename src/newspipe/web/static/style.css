@@ -239,7 +239,17 @@ table.srcs .name { font-weight: 600; }
   background: var(--win2); border-left: 3px solid var(--brand);
   padding: 11px 15px; border-radius: 0 8px 8px 0; font-size: 13.5px; margin: 15px 0;
 }
-.split .read .txt { font-size: 13.5px; line-height: 1.88; color: var(--fg2); white-space: pre-line; }
+.split .read .txt {
+  font-size: 14.5px;
+  line-height: 1.95;
+  /* 正文比摘要重要，用接近主文字的颜色 —— 灰色读长文眼睛累 */
+  color: color-mix(in srgb, var(--fg) 86%, var(--bg));
+  /* 中文一行 40 字左右最舒服；窗口再宽也不该让眼睛来回扫 */
+  max-width: 40em;
+  letter-spacing: .01em;
+}
+.split .read .txt p { margin: 0 0 1.05em; }
+.split .read .txt p:last-child { margin-bottom: 0; }
 .split .read .acts { display: flex; gap: 8px; margin-top: 24px; padding-top: 15px; border-top: 1px solid var(--line); flex-wrap: wrap; }
 .split .read .hint-line { font-size: 12px; color: var(--fg3); margin-top: 10px; }
 
