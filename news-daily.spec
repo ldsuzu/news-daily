@@ -8,7 +8,7 @@
 
 from pathlib import Path
 
-from PyInstaller.utils.hooks import collect_submodules
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 ROOT = Path(SPECPATH).resolve()
 
@@ -18,7 +18,7 @@ datas = [
     (str(ROOT / "src" / "newspipe" / "storage" / "schema.sql"), "newspipe/storage"),
     (str(ROOT / "config"), "config"),
     (str(ROOT / "README.md"), "."),
-]
+] + collect_data_files("trafilatura")        # 正文抽取的语言数据文件
 
 hiddenimports = [
     "uvicorn.logging",
@@ -31,7 +31,7 @@ hiddenimports = [
     "uvicorn.lifespan.off",
     "anyio._backends._asyncio",
     "webview.platforms.edgechromium",
-] + collect_submodules("keyring.backends")
+] + collect_submodules("keyring.backends") + collect_submodules("trafilatura")
 
 a = Analysis(
     [str(ROOT / "src" / "newspipe" / "__main__.py")],

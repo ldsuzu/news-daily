@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>每日简报 · 布局对照（真实数据）</title>
+<!--
+  布局对账用。数据是 2026-09-29 的真实条目（prototype/_data.js）。
+  1 和 2 是「对账」：1 = 最初原型的样子，2 = 现在实际做出来的样子。
+  3/4/5 是本轮新提的排列，直接挑一个，或者说「1 的卡片密度 + 2 的顶栏」这种组合。
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --bg:#e8e8ea;--win:#fff;--win2:#f7f7f8;--side:#f2f2f4;--line:#e4e4e7;--line2:#d2d2d6;
+  --fg:#17171a;--fg2:#56565f;--fg3:#94949e;--brand:#5b4ee0;--brand2:#0b8ec9;
+  --ok:#1f9254;--warn:#b0730a;--err:#c0392b;
+}
+body{margin:0;background:var(--bg);font-family:var(--sans);color:var(--fg);font-size:13.5px;
+  padding:20px 20px 96px;display:flex;justify-content:center;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+
+.win{width:1200px;max-width:100%;background:var(--win);border:1px solid var(--line2);border-radius:11px;
+  box-shadow:0 16px 44px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;height:760px}
+.tb{height:36px;background:var(--win2);border-bottom:1px solid var(--line);display:flex;align-items:center;
+  gap:12px;padding:0 13px;flex:none;font-size:12px;color:var(--fg3)}
+.tb .d{display:flex;gap:6px}.tb i{width:10px;height:10px;border-radius:50%;display:block}
+.tb i:nth-child(1){background:#ff5f57}.tb i:nth-child(2){background:#febc2e}.tb i:nth-child(3){background:#28c840}
+.stage{flex:1;display:flex;min-height:0}
+
+/* 侧栏 */
+.rail{width:56px;flex:none;background:var(--side);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px}
+.rail a{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--fg2)}
+.rail a.on{background:var(--brand);color:#fff}
+.rail svg{width:19px;height:19px;display:block}
+.rail .sp{flex:1}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.content{flex:1;overflow-y:auto;padding:20px 26px 60px}
+.empty{color:var(--fg3)}
+
+/* 通用件 */
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;vertical-align:middle;margin-right:5px}
+.dot.game{background:var(--brand)}.dot.ai{background:var(--brand2)}
+.src{font-size:11.5px;color:var(--fg2);font-weight:600}
+.time{font-family:var(--mono);font-size:11px;color:var(--fg3)}
+.en{font-size:11.5px;color:var(--fg3);font-style:italic;line-height:1.5}
+.meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:1px 5px;border-radius:5px;border:1px solid currentColor}
+.score.hi{color:var(--err)}.score.mid{color:var(--warn)}.score.lo{color:var(--fg3)}
+.tag{font-size:10px;padding:1px 6px;border-radius:20px;border:1px solid var(--ok);color:var(--ok)}
+.btn{border:1px solid var(--line2);border-radius:8px;padding:5px 11px;font-size:12.5px;color:var(--fg2);background:#fff}
+.chip{font-size:12.5px;padding:4px 12px;border-radius:20px;border:1px solid var(--line);color:var(--fg2)}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
+.search{border:1px solid var(--line2);border-radius:9px;padding:6px 12px;font-size:12.5px;background:var(--win2);color:var(--fg);width:200px}
+
+/* 顶栏两种排法 */
+.top{flex:none;display:flex;align-items:center;gap:11px;padding:14px 24px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.top h1{font-size:16px;margin:0;font-weight:700}
+.top .sp{flex:1}
+
+/* hero */
+.hero{border:1px solid var(--line);border-radius:13px;padding:20px 22px;margin-bottom:16px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 11%,#fff),color-mix(in srgb,var(--brand2) 9%,#fff))}
+.hero h2{margin:8px 0 5px;font-size:22px;line-height:1.35;font-weight:700}
+.hero .sum{font-size:13.5px;color:var(--fg2);margin:7px 0 0}
+.hero .pv{font-size:12.5px;color:var(--fg3);margin:10px 0 0;line-height:1.7}
+
+/* 卡片：密度由 --cw 控制 —— 这是原型和实际最大的差别所在 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cw,290px),1fr));gap:14px}
+.card{background:var(--win2);border:1px solid var(--line);border-radius:12px;padding:14px 15px}
+.card h3{margin:8px 0 3px;font-size:14.5px;line-height:1.45;font-weight:650}
+.card p{margin:6px 0 0;font-size:12.5px;color:var(--fg2)}
+.card .pv{margin:7px 0 0;font-size:12px;color:var(--fg3);border-top:1px dotted var(--line);padding-top:6px;line-height:1.6}
+
+/* v4：左列表 + 右正文 */
+.split{flex:1;display:flex;min-height:0;width:100%}
+.split .list{width:330px;flex:none;border-right:1px solid var(--line);overflow-y:auto}
+.split .list .it{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.split .list .it.on{background:color-mix(in srgb,var(--brand) 8%,#fff);box-shadow:inset 3px 0 0 var(--brand)}
+.split .list .it h4{margin:0;font-size:13.5px;font-weight:600;line-height:1.45}
+.split .read{flex:1;overflow-y:auto;padding:24px 30px 50px}
+.split .read h2{font-size:20px;line-height:1.4;margin:8px 0 5px}
+.split .read .sum{background:var(--win2);border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;margin:14px 0}
+.split .read .txt{font-size:13.5px;line-height:1.85;color:var(--fg2)}
+
+/* v5：单列时间线 */
+.tl{max-width:760px}
+.tl .row{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+.tl .row .tm{font-family:var(--mono);font-size:11px;color:var(--fg3);padding-top:3px}
+.tl .row h3{margin:0 0 3px;font-size:15px;font-weight:650;line-height:1.45}
+.tl .row p{margin:4px 0 0;font-size:12.5px;color:var(--fg2)}
+
+.sw{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:3px;
+  background:#111;color:#fff;border-radius:999px;padding:5px 7px;box-shadow:0 10px 30px rgba(0,0,0,.4);z-index:99}
+.sw button{width:30px;height:30px;border-radius:999px;font-size:14px;opacity:.75}
+.sw button:hover{opacity:1;background:rgba(128,128,128,.28)}
+.sw .lbl{font-size:12.5px;padding:0 12px;min-width:290px;text-align:center}
+.sw .lbl b{color:#8b7cf6}
+.sw .lbl small{display:block;font-size:9.5px;opacity:.6;letter-spacing:.04em}
+.sw .sep{width:1px;height:18px;background:rgba(128,128,128,.4);margin:0 4px}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="tb"><div class="d"><i></i><i></i><i></i></div><span>每日简报</span><div style="flex:1"></div><span id="tbnote"></span></div>
+  <div class="stage" id="stage"></div>
+</div>
+
+<div class="sw">
+  <button id="prev">‹</button>
+  <div class="lbl"><span id="lbl"></span><small>真实数据 · ← → 切换 · 2 是现在装在你机器上的那个</small></div>
+  <button id="next">›</button>
+</div>
+
+<script src="_data.js"></script>
+<script>
+const ICON = {
+  today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.2 9.4V20a1 1 0 0 0 1 1h11.6a1 1 0 0 0 1-1V9.4"/><path d="M9.6 21v-6.2h4.8V21"/></svg>',
+  history:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="4.6" width="17.6" height="16" rx="2.2"/><path d="M8 2.6v4M16 2.6v4M3.2 10.2h17.6"/><path d="M7.6 14h3M7.6 17.2h7"/></svg>',
+  source:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.6"/><path d="M5.6 5.6a9 9 0 0 0 0 12.8M18.4 18.4a9 9 0 0 0 0-12.8M8.5 8.5a5 5 0 0 0 0 7M15.5 15.5a5 5 0 0 0 0-7"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h8M16 17h4"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="14" cy="17" r="2.2"/></svg>'
+};
+
+const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sc = n => n >= 8 ? 'hi' : n >= 6 ? 'mid' : 'lo';
+const rail = () => `<nav class="rail"><a class="on">${ICON.today}</a><a>${ICON.history}</a><div class="sp"></div><a>${ICON.source}</a><a>${ICON.gear}</a></nav>`;
+
+function meta(it, right) {
+  return `<div class="meta">
+    <span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span>
+    <span class="time">${it.t}</span>
+    <span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>
+    ${it.ext ? '<span class="tag">已译</span>' : ''}
+  </div>`;
+}
+
+/* ── v1：最初原型的样子（卡片最小 238px，时间靠右） ── */
+function v1() {
+  const hero = DATA[0], cards = DATA.slice(1, 13);
+  return rail() + `<div class="main">
+    <div class="top">
+      <h1>今天</h1><span class="time">9月29日 周一 · ${DATA.length} 条</span>
+      <div class="sp"></div>
+      <span class="btn">全部</span><span class="btn">游戏</span><span class="btn">AI</span>
+      <input class="search" placeholder="搜全部历史…">
+    </div>
+    <div class="content">
+      <div class="hero">
+        <div class="meta">
+          <span class="src"><span class="dot ${hero.dom}"></span>${esc(hero.src)}</span>
+          <span class="time">${hero.t}</span>
+          <span class="score ${sc(hero.heat)}">热度 ${hero.heat.toFixed(1)}</span>
+        </div>
+        <h2>${esc(hero.zh)}</h2>
+        ${hero.en ? `<div class="en">${esc(hero.en)}</div>` : ''}
+        <p class="sum">${esc(hero.sum)}</p>
+      </div>
+      <div class="grid" style="--cw:238px">
+        ${cards.map(it => `<div class="card">${meta(it)}<h3>${esc(it.zh)}</h3>${it.en ? `<div class="en">${esc(it.en)}</div>` : ''}<p>${esc(it.sum)}</p></div>`).join('')}
+      </div>
+    </div></div>`;
+}
+
+/* ── v2：现在实际装在机器上的样子（卡片 290px，顶栏带日期箭头和精选/全部） ── */
+function v2() {
+  const hero = DATA[0], cards = DATA.slice(1, 13);
+  return rail() + `<div class="main">
+    <div class="top">
+      <h1>今天</h1>
+      <span class="btn">‹</span><span class="time">9月29日 周二</span><span class="btn">›</span>
+      <span class="time">当天 ${DATA.length} 条</span>
+      <div class="sp"></div>
+      <span class="chip on">全部</span><span class="chip">游戏</span><span class="chip">AI</span>
+      <span style="width:6px"></span>
+      <span class="chip on">精选 10</span><span class="chip">全部</span>
+      <input class="search" placeholder="搜全部历史…">
+    </div>
+    <div class="content">
+      <div class="hero">
+        ${meta(hero)}
+        <h2>${esc(hero.zh)}</h2>
+        ${hero.en ? `<div class="en">${esc(hero.en)}</div>` : ''}
+        <p class="sum">${esc(hero.sum)}</p>
+        ${hero.chars > 80 ? `<p class="pv">本地正文（${hero.chars} 字，离线可读）：${esc(hero.preview)}…</p>` : ''}
+      </div>
+      <div class="grid" style="--cw:290px">
+        ${cards.map(it => `<div class="card">${meta(it)}<h3>${esc(it.zh)}</h3>${it.en ? `<div class="en">${esc(it.en)}</div>` : ''}<p>${esc(it.sum)}</p></div>`).join('')}
+      </div>
+    </div></div>`;
+}
+
+/* ── v3：不要头条，全部等宽小卡（一屏看更多） ── */
+function v3() {
+  return rail() + `<div class="main">
+    <div class="top">
+      <h1>今天</h1><span class="time">9月29日 周二 · ${DATA.length} 条</span>
+      <div class="sp"></div>
+      <span class="chip on">全部</span><span class="chip">游戏</span><span class="chip">AI</span>
+      <input class="search" placeholder="搜全部历史…">
+    </div>
+    <div class="content">
+      <div class="grid" style="--cw:230px">
+        ${DATA.slice(0, 24).map(it => `<div class="card">${meta(it)}<h3>${esc(it.zh)}</h3><p>${esc(it.sum)}</p></div>`).join('')}
+      </div>
+    </div></div>`;
+}
+
+/* ── v4：左列表 + 右正文（桌面软件的信息密度） ── */
+function v4() {
+  const cur = DATA[0];
+  return rail() + `<div class="main">
+    <div class="top">
+      <h1>今天</h1><span class="time">9月29日 周二 · ${DATA.length} 条</span>
+      <div class="sp"></div>
+      <span class="chip on">全部</span><span class="chip">游戏</span><span class="chip">AI</span>
+      <input class="search" placeholder="搜全部历史…">
+    </div>
+    <div class="split">
+      <div class="list">
+        ${DATA.slice(0, 20).map((it, i) => `<div class="it ${i === 0 ? 'on' : ''}">${meta(it)}<h4>${esc(it.zh)}</h4></div>`).join('')}
+      </div>
+      <div class="read">
+        ${meta(cur)}
+        <h2>${esc(cur.zh)}</h2>
+        ${cur.en ? `<div class="en">${esc(cur.en)}</div>` : ''}
+        <p class="sum">${esc(cur.sum)}</p>
+        <div class="txt">${esc(cur.preview)}……</div>
+      </div>
+    </div></div>`;
+}
+
+/* ── v5：单列时间线 ── */
+function v5() {
+  return rail() + `<div class="main">
+    <div class="top">
+      <h1>今天</h1><span class="time">9月29日 周二 · ${DATA.length} 条</span>
+      <div class="sp"></div>
+      <span class="chip on">全部</span><span class="chip">游戏</span><span class="chip">AI</span>
+      <input class="search" placeholder="搜全部历史…">
+    </div>
+    <div class="content"><div class="tl">
+      ${DATA.slice(0, 22).map(it => `<div class="row">
+        <div class="tm">${it.t}</div>
+        <div>
+          <div class="meta"><span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span><span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>${it.ext ? '<span class="tag">已译</span>' : ''}</div>
+          <h3>${esc(it.zh)}</h3>
+          <p>${esc(it.sum)}</p>
+        </div>
+      </div>`).join('')}
+    </div></div></div>`;
+}
+
+const VIEWS = [
+  { id:'v1', name:'① 最初原型的样子', note:'卡片最小 238px（更密）；时间靠右；顶栏没有日期箭头' },
+  { id:'v2', name:'② 现在装在你机器上的', note:'卡片最小 290px（更宽）；顶栏有日期箭头和精选/全部' },
+  { id:'v3', name:'③ 无头条 · 全部等宽小卡', note:'不要大头条，一屏看 20+ 条' },
+  { id:'v4', name:'④ 左列表 + 右正文', note:'桌面软件的信息密度：点左边看右边，不用来回跳' },
+  { id:'v5', name:'⑤ 单列时间线', note:'一条一条往下读，层次最清楚，密度最低' },
+];
+
+let idx = 0;
+function render() {
+  const v = VIEWS[idx];
+  document.getElementById('stage').innerHTML = ({ v1, v2, v3, v4, v5 })[v.id]();
+  document.getElementById('lbl').innerHTML = `<b>${v.name}</b><small>${v.note}</small>`;
+  document.getElementById('tbnote').textContent = v.name;
+  const u = new URL(location.href); u.searchParams.set('v', v.id); history.replaceState(null, '', u);
+}
+document.getElementById('prev').onclick = () => { idx = (idx - 1 + VIEWS.length) % VIEWS.length; render(); };
+document.getElementById('next').onclick = () => { idx = (idx + 1) % VIEWS.length; render(); };
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') document.getElementById('prev').click();
+  if (e.key === 'ArrowRight') document.getElementById('next').click();
+});
+const want = new URLSearchParams(location.search).get('v');
+const found = VIEWS.findIndex(v => v.id === want);
+if (found >= 0) idx = found;
+render();
+</script>
+</body>
+</html>

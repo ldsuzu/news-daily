@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% from "macros.html" import meta_line, original_title, headline, summary_of, local_body %}
+{% from "macros.html" import meta_line, headline %}
 
-{% block title %}{{ date|date_label }} · {{ site_name }}{% endblock %}
+{% block title %}{{ date|date_short }} · {{ site_name }}{% endblock %}
+{% block content_class %}flush{% endblock %}
 
 {% block topbar %}
   <h1>{{ '今天' if is_today else date|date_short }}</h1>
@@ -26,7 +27,7 @@
 
 {% block content %}
 {% if is_empty %}
-  <div class="empty" style="max-width:540px;margin:0 auto;padding-top:50px">
+  <div class="empty" style="max-width:540px;margin:0 auto;padding-top:70px">
     <div style="font-size:17px;color:var(--fg);font-weight:700;margin-bottom:10px">还没有内容</div>
     <p style="line-height:1.95">
       这台机器上还没抓过新闻。<br>
@@ -36,85 +37,141 @@
     <button class="btn pri" id="firstRun" style="margin-top:18px;padding:9px 24px;font-size:13.5px">立即抓取</button>
     <div id="runHint" class="time" style="margin-top:14px;line-height:1.8"></div>
   </div>
-{% elif not lead %}
-  <div class="empty">
-    这一天还没有内容。<br><br>
+{% elif not rows %}
+  <div class="empty" style="padding-top:80px">
+    这一天没有内容。<br><br>
     {% if dates %}
       有内容的日期：{% for d in dates[:6] %}<a href="/?view=all&date={{ d.date }}" style="text-decoration:underline">{{ d.date }}</a>　{% endfor %}
     {% else %}
-      先跑一次 <code>newspipe run</code> 把内容抓进来。
+      先跑一次抓取把内容抓进来。
     {% endif %}
   </div>
 {% else %}
-
-  <div class="hero">
-    {{ meta_line(lead, source_map) }}
-    <h2><a href="{{ lead.url }}" target="_blank" rel="noreferrer">{{ headline(lead) }}</a></h2>
-    {{ original_title(lead) }}
-    <p class="sum">{{ summary_of(lead, 360) }}</p>
-    {% if lead.content_text and lead.content_text|length > 80 %}
-      <p class="body-preview">本地正文（{{ lead.content_text|length }} 字，离线可读）：{{ lead.content_text|excerpt(300) }}</p>
-    {% endif %}
-  </div>
-
-  {% if cards %}
-    <div class="section-h">
-      {{ '精选' if view == 'picks' else '全部' }} · 其余 {{ cards|length }} 条
-      {%- if shown_count > cards|length + 1 %}（本页 {{ shown_count }} 条）{% endif %}
-    </div>
-    <div class="grid">
-      {% for it in cards %}
-        <div class="card">
+  <div class="split">
+    <div class="list" id="list">
+      {% for it in rows %}
+        <a class="it {{ 'on' if loop.first else '' }}" data-i="{{ loop.index0 }}" href="#">
           {{ meta_line(it, source_map) }}
-          <h3><a href="{{ it.url }}" target="_blank" rel="noreferrer">{{ headline(it) }}</a></h3>
-          {{ original_title(it) }}
-          <p>{{ summary_of(it, 140) }}</p>
-        </div>
+          <h4>{{ headline(it) }}</h4>
+        </a>
       {% endfor %}
     </div>
-  {% endif %}
-
+    <div class="read" id="read"></div>
+  </div>
+  <script id="items-data" type="application/json">{{ items_json|safe }}</script>
 {% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script>
 (function () {
-  var btn = document.getElementById('firstRun');
-  if (!btn) return;
-  var hint = document.getElementById('runHint');
+  var dataEl = document.getElementById('items-data');
 
-  btn.addEventListener('click', async function () {
-    btn.disabled = true;
-    btn.textContent = '正在抓取…';
-    hint.textContent = '第一次抓取要 1~2 分钟，别关窗口。';
-    try {
-      var r = await fetch('/api/run', { method: 'POST' });
-      var data = await r.json();
-      if (!r.ok || data.ok === false) throw new Error(data.reason || data.detail || '启动失败');
+  // 首次运行引导
+  var first = document.getElementById('firstRun');
+  if (first) {
+    var hint = document.getElementById('runHint');
+    first.addEventListener('click', async function () {
+      first.disabled = true;
+      first.textContent = '正在抓取…';
+      hint.textContent = '第一次抓取要 1~2 分钟，别关窗口。';
+      try {
+        var r = await fetch('/api/run', { method: 'POST' });
+        var data = await r.json();
+        if (!r.ok || data.ok === false) throw new Error(data.reason || data.detail || '启动失败');
+        var timer = setInterval(async function () {
+          var s = await (await fetch('/api/run/status')).json();
+          if (s.running) { hint.textContent = '还在抓…（完成后会自动刷新）'; return; }
+          clearInterval(timer);
+          if (s.error) {
+            hint.textContent = '出错了：' + s.error;
+            first.disabled = false; first.textContent = '重试';
+          } else {
+            hint.textContent = '抓完了，共 ' + s.total + ' 条。正在刷新…';
+            setTimeout(function () { location.reload(); }, 900);
+          }
+        }, 3000);
+      } catch (err) {
+        hint.textContent = '失败：' + err.message;
+        first.disabled = false; first.textContent = '立即抓取';
+      }
+    });
+    return;
+  }
 
-      var timer = setInterval(async function () {
-        var s = await (await fetch('/api/run/status')).json();
-        if (s.running) {
-          hint.textContent = '还在抓…（完成后会自动刷新）';
-          return;
-        }
-        clearInterval(timer);
-        if (s.error) {
-          hint.textContent = '出错了：' + s.error;
-          btn.disabled = false;
-          btn.textContent = '重试';
-        } else {
-          hint.textContent = '抓完了，共 ' + s.total + ' 条。正在刷新…';
-          setTimeout(function () { location.reload(); }, 900);
-        }
-      }, 3000);
-    } catch (err) {
-      hint.textContent = '失败：' + err.message;
-      btn.disabled = false;
-      btn.textContent = '立即抓取';
-    }
+  if (!dataEl) return;
+  var items = JSON.parse(dataEl.textContent);
+  var list = document.getElementById('list');
+  var read = document.getElementById('read');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function sc(n) { return n >= 8 ? 'hi' : n >= 6 ? 'mid' : 'lo'; }
+
+  function paint(i) {
+    var it = items[i];
+    if (!it) return;
+    read.innerHTML =
+      '<div class="meta">' +
+        '<span class="src"><span class="dot ' + esc(it.dom) + '"></span>' + esc(it.src) + '</span>' +
+        '<span class="time">' + esc(it.t) + '</span>' +
+        '<span class="score ' + sc(it.heat) + '">热度 ' + Number(it.heat).toFixed(1) + '</span>' +
+        (it.ext ? '<span class="tag">外网</span>' : '') +
+        (it.same > 1 ? '<span class="time">同事件另有 ' + (it.same - 1) + ' 条</span>' : '') +
+      '</div>' +
+      '<h2><a href="' + esc(it.url) + '" target="_blank" rel="noreferrer">' + esc(it.zh) + '</a></h2>' +
+      (it.en ? '<div class="en">' + esc(it.en) + '</div>' : '') +
+      (it.sum ? '<p class="sum">' + esc(it.sum) + '</p>' : '') +
+      (it.body
+        ? '<div class="txt">' + esc(it.body) + '</div>'
+        : '<p class="hint-line">这条没抓到正文 —— 点上面的标题去原文看。</p>') +
+      '<div class="acts">' +
+        '<a class="btn" href="' + esc(it.url) + '" target="_blank" rel="noreferrer">打开原文</a>' +
+        (it.sum ? '<button class="btn" data-copy="' + i + '">复制摘要</button>' : '') +
+        (it.body ? '<span class="hint-line" style="margin:0;align-self:center">正文 ' + it.chars + ' 字，已存本地，离线可读</span>' : '') +
+      '</div>';
+
+    read.scrollTop = 0;
+    var nodes = list.querySelectorAll('.it');
+    for (var k = 0; k < nodes.length; k++) nodes[k].classList.toggle('on', k === i);
+  }
+
+  list.addEventListener('click', function (e) {
+    var a = e.target.closest('.it');
+    if (!a) return;
+    e.preventDefault();
+    paint(Number(a.dataset.i));
   });
+
+  read.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-copy]');
+    if (!b) return;
+    var it = items[Number(b.dataset.copy)];
+    var text = it.zh + '\n' + (it.sum || '') + '\n' + it.url;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .then(function () { dspToast('已复制'); })
+      .catch(function () { dspToast('复制失败，手动选中吧'); });
+  });
+
+  // 上下键 / j k 直接翻条目 —— 桌面软件该有的手感
+  document.addEventListener('keydown', function (e) {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+    var cur = list.querySelector('.it.on');
+    var i = cur ? Number(cur.dataset.i) : -1;
+    var next = null;
+    if (e.key === 'j' || e.key === 'ArrowDown') next = Math.min(items.length - 1, i + 1);
+    if (e.key === 'k' || e.key === 'ArrowUp') next = Math.max(0, i - 1);
+    if (next === null) return;
+    e.preventDefault();
+    paint(next);
+    var node = list.querySelector('.it.on');
+    if (node) node.scrollIntoView({ block: 'nearest' });
+  });
+
+  paint(0);
 })();
 </script>
 {% endblock %}

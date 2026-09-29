@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import threading
 from datetime import date as _date
@@ -73,6 +74,54 @@ def _shift_date(value: str | None, days: int) -> str:
 def _score_class(value: float | None) -> str:
     v = value or 0
     return "hi" if v >= 8 else "mid" if v >= 6 else "lo"
+
+
+def _items_payload(
+    rows: list[dict[str, Any]], source_map: dict[str, dict[str, Any]], body_limit: int = 4000
+) -> str:
+    """今日页右栏用的数据。
+
+    整页嵌进 HTML 让点选不用再请求 —— 本地软件，省一次往返比省几十 KB 值。
+    正文截到 4000 字，够读也够小；要看全文点标题去原文。
+    """
+    payload = []
+    for it in rows:
+        body = (it.get("content_text") or "").strip()
+        lang = str(it.get("lang") or "")
+        is_foreign = bool(lang and not lang.startswith("zh"))
+
+        # 只有外网条目才谈得上「原文」—— 中文源的 title 本来就是中文，
+        # 不能拿它当原文标题显示（之前就是这么错的）
+        original = ""
+        if is_foreign:
+            if it.get("title_cn") and it["title_cn"] != it.get("title"):
+                original = it.get("title") or ""
+            elif it.get("title_en") and it["title_en"] != it.get("title"):
+                original = it.get("title_en") or ""
+
+        heat = it.get("llm_score")
+        if heat is None:
+            heat = it.get("score") or 0
+
+        payload.append(
+            {
+                "zh": it.get("title_cn") or it.get("title") or "",
+                "en": original,
+                "sum": (it.get("summary_cn") or it.get("excerpt") or "")[:200],
+                "body": body[:body_limit],
+                "chars": len(body),
+                "src": source_map.get(it.get("source_id", ""), {}).get(
+                    "name", it.get("source_id", "")
+                ),
+                "dom": it.get("domain", ""),
+                "t": _hhmm(it.get("published_at")),
+                "heat": round(float(heat), 1),
+                "url": it.get("url", ""),
+                "ext": is_foreign,
+                "same": int(it.get("cluster_size") or 1),
+            }
+        )
+    return json.dumps(payload, ensure_ascii=False)
 
 
 templates.env.filters.update(
@@ -167,9 +216,9 @@ def create_app(config: Config | None = None) -> FastAPI:
                 view=view,
                 date=target,
                 is_today=(target == (to_local_date(now_utc_iso()) or "")),
-                lead=shown[0] if shown else None,
-                cards=shown[1:13],
+                rows=shown,
                 shown_count=len(shown),
+                items_json=_items_payload(shown, repo.sources_map()),
                 total_today=total_today,
                 is_empty=(repo.counts()["total"] == 0),
                 picks_count=picks_count,

@@ -198,6 +198,11 @@ def cmd_process(args: argparse.Namespace) -> int:
         if not trafilatura_available():
             print("[warn] 未安装 trafilatura，跳过正文抽取（pip install trafilatura）")
         else:
+            if getattr(args, "retry", False):
+                n = conn.execute("UPDATE items SET extract_at = NULL").rowcount
+                conn.commit()
+                print(f"已清除 {n} 条的重试标记，这轮会重新试一遍")
+
             rows = conn.execute(
                 """
                 SELECT i.id, i.url, LENGTH(i.content_text) AS n
@@ -205,6 +210,7 @@ def cmd_process(args: argparse.Namespace) -> int:
                 JOIN sources s ON s.id = i.source_id
                 WHERE LENGTH(i.content_text) < ?
                   AND s.extract = 1
+                  AND i.extract_at IS NULL
                 ORDER BY COALESCE(i.published_at, i.fetched_at) DESC
                 LIMIT ?
                 """,
@@ -232,6 +238,12 @@ def cmd_process(args: argparse.Namespace) -> int:
                         nothing += 1
                         if len(samples) < 3:
                             samples.append(row["url"])
+
+                    # 试过就记一笔 —— 无论抽到没有。不记的话这条永远满足
+                    # 「正文不足 N 字」，每轮都会重新占住队首，后面的条目永远轮不到。
+                    conn.execute(
+                        "UPDATE items SET extract_at = ? WHERE id = ?", (now_utc_iso(), row["id"])
+                    )
                     if i % 25 == 0:
                         conn.commit()
                         print(f"  … {i}/{len(rows)}（已补 {filled}）")
@@ -240,8 +252,7 @@ def cmd_process(args: argparse.Namespace) -> int:
             print(f"补到正文 {filled} 条")
             if nothing or shorter:
                 print(f"  （抓不到内容 {nothing} 条 · 抽出的比现有更短 {shorter} 条）")
-            for url in samples:
-                print(f"  ✗ {url[:88]}")
+                print("  这几类不会再重试；想重来一次跑 process --retry")
 
     if not args.no_cluster:
         stats = cluster_items(conn, window_days=args.window_days)
@@ -844,10 +855,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_doctor.set_defaults(func=cmd_doctor)
 
     p_process = sub.add_parser("process", help="补正文 + 去重聚类")
-    p_process.add_argument("--limit", type=int, default=60, help="本轮最多补多少条正文")
+    p_process.add_argument("--limit", type=int, default=200, help="本轮最多补多少条正文")
     p_process.add_argument("--min-chars", type=int, default=400, help="正文少于此字数才补抓")
     p_process.add_argument("--window-days", type=int, default=14, help="聚类回看天数")
     p_process.add_argument("--no-extract", action="store_true", help="跳过正文抽取")
+    p_process.add_argument("--retry", action="store_true", help="清掉「试过」标记，重新试一遍")
     p_process.add_argument("--no-cluster", action="store_true", help="跳过聚类")
     p_process.set_defaults(func=cmd_process)
 
@@ -880,7 +892,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_run = sub.add_parser("run", help="跑完整流水线：sync → fetch → process → digest")
     p_run.add_argument("--date", help="哪一天（默认今天）")
-    p_run.add_argument("--limit", type=int, default=40, help="本轮最多补多少条正文")
+    p_run.add_argument("--limit", type=int, default=200, help="本轮最多补多少条正文")
     p_run.add_argument("--no-sync", action="store_true", help="跳过海外 bundle 同步")
     p_run.add_argument("--no-fetch", action="store_true", help="跳过本地源抓取")
     p_run.add_argument("--no-process", action="store_true", help="跳过正文与聚类")
