@@ -45,6 +45,16 @@ def _date_label(value: str | None) -> str:
     return f"{d.year}年{d.month}月{d.day}日 星期{'一二三四五六日'[d.weekday()]}"
 
 
+def _date_short(value: str | None, with_year: bool = False) -> str:
+    """9月29日 周一 —— 顶栏用的紧凑写法，年份默认省掉。"""
+    try:
+        d = _date.fromisoformat(value or "")
+    except (ValueError, TypeError):
+        return value or ""
+    prefix = f"{d.year}年" if with_year else ""
+    return f"{prefix}{d.month}月{d.day}日 周{'一二三四五六日'[d.weekday()]}"
+
+
 def _excerpt(value: Any, limit: int = 800) -> str:
     text = (value or "").strip()
     if len(text) <= limit:
@@ -68,6 +78,7 @@ def _score_class(value: float | None) -> str:
 templates.env.filters.update(
     hhmm=_hhmm,
     date_label=_date_label,
+    date_short=_date_short,
     excerpt=_excerpt,
     shift_date=_shift_date,
     score_class=_score_class,

@@ -4,9 +4,9 @@
 {% block title %}{{ date|date_label }} · {{ site_name }}{% endblock %}
 
 {% block topbar %}
-  <h1>{{ '今天' if is_today else date|date_label }}</h1>
+  <h1>{{ '今天' if is_today else date|date_short }}</h1>
   <a class="btn sm" href="/?domain={{ domain }}&view={{ view }}&date={{ date|shift_date(-1) }}" title="前一天">‹</a>
-  <span class="time">{{ date }}</span>
+  <span class="time">{{ date|date_short }}</span>
   <a class="btn sm" href="/?domain={{ domain }}&view={{ view }}&date={{ date|shift_date(1) }}" title="后一天">›</a>
   <span class="time">当天 {{ total_today }} 条</span>
   <div class="sp"></div>
@@ -19,6 +19,9 @@
      href="/?domain={{ domain }}&view=picks&date={{ date }}">精选 {{ picks_count }}</a>
   <a class="chip {{ 'on' if view == 'all' else '' }}"
      href="/?domain={{ domain }}&view=all&date={{ date }}">全部</a>
+  <form method="get" action="/history" style="margin:0">
+    <input class="search" type="search" name="q" placeholder="搜全部历史…">
+  </form>
 {% endblock %}
 
 {% block content %}
