@@ -22,7 +22,18 @@
 {% endblock %}
 
 {% block content %}
-{% if not lead %}
+{% if is_empty %}
+  <div class="empty" style="max-width:540px;margin:0 auto;padding-top:50px">
+    <div style="font-size:17px;color:var(--fg);font-weight:700;margin-bottom:10px">还没有内容</div>
+    <p style="line-height:1.95">
+      这台机器上还没抓过新闻。<br>
+      点下面的按钮抓第一次 —— 同步海外 bundle、抓 25 个信息源、补正文、生成日报，约 1~2 分钟。<br>
+      之后每天 07:00 会自动抓；关机错过了，开机后也会补上。
+    </p>
+    <button class="btn pri" id="firstRun" style="margin-top:18px;padding:9px 24px;font-size:13.5px">立即抓取</button>
+    <div id="runHint" class="time" style="margin-top:14px;line-height:1.8"></div>
+  </div>
+{% elif not lead %}
   <div class="empty">
     这一天还没有内容。<br><br>
     {% if dates %}
@@ -61,4 +72,46 @@
   {% endif %}
 
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var btn = document.getElementById('firstRun');
+  if (!btn) return;
+  var hint = document.getElementById('runHint');
+
+  btn.addEventListener('click', async function () {
+    btn.disabled = true;
+    btn.textContent = '正在抓取…';
+    hint.textContent = '第一次抓取要 1~2 分钟，别关窗口。';
+    try {
+      var r = await fetch('/api/run', { method: 'POST' });
+      var data = await r.json();
+      if (!r.ok || data.ok === false) throw new Error(data.reason || data.detail || '启动失败');
+
+      var timer = setInterval(async function () {
+        var s = await (await fetch('/api/run/status')).json();
+        if (s.running) {
+          hint.textContent = '还在抓…（完成后会自动刷新）';
+          return;
+        }
+        clearInterval(timer);
+        if (s.error) {
+          hint.textContent = '出错了：' + s.error;
+          btn.disabled = false;
+          btn.textContent = '重试';
+        } else {
+          hint.textContent = '抓完了，共 ' + s.total + ' 条。正在刷新…';
+          setTimeout(function () { location.reload(); }, 900);
+        }
+      }, 3000);
+    } catch (err) {
+      hint.textContent = '失败：' + err.message;
+      btn.disabled = false;
+      btn.textContent = '立即抓取';
+    }
+  });
+})();
+</script>
 {% endblock %}

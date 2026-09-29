@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import os
+import threading
 from datetime import date as _date
 from datetime import timedelta
 from pathlib import Path
@@ -159,6 +160,7 @@ def create_app(config: Config | None = None) -> FastAPI:
                 cards=shown[1:13],
                 shown_count=len(shown),
                 total_today=total_today,
+                is_empty=(repo.counts()["total"] == 0),
                 picks_count=picks_count,
                 dates=dates,
                 has_later=any(d["date"] > target for d in dates),
@@ -328,5 +330,55 @@ def create_app(config: Config | None = None) -> FastAPI:
             detail = resp.text[:200]
             raise HTTPException(status_code=400, detail=f"API 返回 {resp.status_code}：{detail}")
         return {"ok": True, "model": model}
+
+    # ───────────────────────────── 首次抓取（界面上的按钮） ─────────────────────────────
+
+    run_state: dict[str, Any] = {"running": False, "started_at": "", "error": ""}
+
+    def _run_pipeline(root: Any) -> None:
+        """另起一个进程跑完整流水线。
+
+        为什么用子进程而不是直接调函数：抓取会跑好几分钟，
+        扔进服务进程里会把它拖住；而且分出去之后，界面进程崩了也不影响抓取。
+        """
+        import subprocess
+        import sys as _sys
+
+        try:
+            if getattr(_sys, "frozen", False):
+                cmd = [_sys.executable, "run"]          # 打包后：exe 自己带参数再跑一次
+            else:
+                cmd = [_sys.executable, "-m", "newspipe", "run"]
+            subprocess.run(
+                cmd,
+                cwd=str(root),
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=3600,
+            )
+        except Exception as exc:  # noqa: BLE001
+            run_state["error"] = f"{type(exc).__name__}: {exc}"
+        finally:
+            run_state["running"] = False
+
+    @app.post("/api/run")
+    def api_run() -> dict[str, Any]:
+        cfg, conn, _ = _open()
+        conn.close()
+        if run_state["running"]:
+            return {"ok": False, "reason": "已经在抓了"}
+        run_state.update(running=True, started_at=now_utc_iso(), error="")
+        threading.Thread(target=_run_pipeline, args=(cfg.root,), daemon=True).start()
+        return {"ok": True}
+
+    @app.get("/api/run/status")
+    def api_run_status() -> dict[str, Any]:
+        cfg, conn, repo = _open()
+        try:
+            total = repo.counts()["total"]
+        finally:
+            conn.close()
+        return {**run_state, "total": total}
 
     return app
