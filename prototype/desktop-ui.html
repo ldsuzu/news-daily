@@ -66,8 +66,11 @@ input,select{font:inherit}
 .A .nav a{display:flex;align-items:center;gap:9px;padding:8px 14px;font-size:13px;color:var(--fg2);border-left:2px solid transparent;text-decoration:none}
 .A .nav a:hover{background:var(--win2)}
 .A .nav a.on{background:var(--win);border-left-color:var(--brand);color:var(--fg);font-weight:600}
-.A .nav .ico{width:15px;text-align:center;display:inline-flex;align-items:center;justify-content:center}
-.A .nav .ico svg{width:15px;height:15px;display:block}
+.A .nav .ico{flex:1;display:inline-flex;align-items:center;gap:9px}
+.A .nav .ico svg{width:15px;height:15px;display:block;flex:none}
+.A .nav a.day{justify-content:space-between}
+.A .nav a.day .n{font-family:var(--mono);font-size:10.5px;color:var(--fg3)}
+.A .nav a.day.on .n{color:var(--fg2)}
 .A .list{width:330px;border-right:1px solid var(--line);overflow-y:auto;flex:none;background:var(--win)}
 .A .list .row{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .A .list .row:hover{background:var(--win2)}
@@ -224,6 +227,8 @@ const state = {
   view:new URLSearchParams(location.search).get('view')||'today',
   domain:'all', theme:'light', selected:1, llm:false,
 };
+// 相对时间：新闻里「2 小时前」比「23:15」自然，也不会在卡片右侧排成机械的一列
+const AGO = {1:'2 小时前',2:'2 小时前',3:'3 小时前',4:'12 小时前',5:'16 小时前',6:'8 小时前',7:'3 小时前',8:'8 小时前'};
 const NAMES = {A:'三栏工作台',B:'图标侧栏 + 卡片流',C:'报纸版式（现有）'};
 if(!NAMES[state.variant]) state.variant='A';
 
@@ -334,10 +339,12 @@ function viewA(){
       <a data-dom="all" class="${state.domain==='all'?'on':''}"><span class="ico"><span class="dot game"></span></span>全部</a>
       <a data-dom="game" class="${state.domain==='game'?'on':''}"><span class="ico"><span class="dot game"></span></span>游戏</a>
       <a data-dom="ai" class="${state.domain==='ai'?'on':''}"><span class="ico"><span class="dot ai"></span></span>AI</a>
-      <div class="sec" style="padding:16px 14px 4px">最近</div>
-      <a><span class="ico mini">09-30</span></a>
-      <a><span class="ico mini">09-29</span></a>
-      <a><span class="ico mini">09-28</span></a>
+      <div class="sec" style="padding:16px 14px 4px">历史</div>
+      <a class="day on"><span class="ico">今天</span><span class="n">263</span></a>
+      <a class="day"><span class="ico">9月29日</span><span class="n">335</span></a>
+      <a class="day"><span class="ico">9月28日</span><span class="n">263</span></a>
+      <a class="day"><span class="ico">9月27日</span><span class="n">157</span></a>
+      <a class="day"><span class="ico">更早…</span></a>
       <div style="flex:1;height:10px"></div>
       <a data-view="settings"><span class="ico">${ICON.gear}</span>设置</a>
     </nav>
@@ -392,7 +399,7 @@ function viewB(){
     <div class="main">
       <div class="topbar">
         <h1>今天</h1>
-        <span class="time">2026年9月29日 星期一 · ${list.length} 条</span>
+        <span class="time">9月29日 周一 · ${list.length} 条</span>
         <div class="sp"></div>
         <span data-dom="all" class="btn" style="${state.domain==='all'?'border-color:var(--brand);color:var(--brand)':''}">全部</span>
         <span data-dom="game" class="btn" style="${state.domain==='game'?'border-color:var(--brand);color:var(--brand)':''}">游戏</span>
@@ -403,22 +410,25 @@ function viewB(){
         <div class="hero">
           <div class="meta" style="display:flex;gap:10px;align-items:center">
             <span class="src"><span class="dot ${hero.dom}"></span>${esc(hero.src)}</span>
-            <span class="time">${hero.t}</span>
+            <span class="time">${AGO[hero.id]}</span>
             <span class="score ${sc(hero.heat)}">热度 ${hero.heat.toFixed(1)}</span>
+            ${hero.ext?'<span class="tag on">LLM 翻译</span>':''}
           </div>
           <h2>${esc(hero.zh)}</h2>
-          ${hero.en?`<div class="en">${esc(hero.en)}</div>`:''}
+          ${hero.en?`<div class="en" style="margin:-2px 0 8px">${esc(hero.en)}</div>`:''}
           <p style="font-size:14px;color:var(--fg2);margin:8px 0 0">${esc(hero.sum)}</p>
+          <p style="font-size:12.5px;color:var(--fg3);margin:10px 0 0;line-height:1.7">${esc(hero.body)}</p>
         </div>
         <div class="grid">
           ${cards.map(it=>`
             <div class="card" data-item="${it.id}">
-              <div style="display:flex;gap:8px;align-items:center">
+              <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
                 <span class="src"><span class="dot ${it.dom}"></span>${esc(it.src)}</span>
-                <span class="score ${sc(it.heat)}">${it.heat.toFixed(1)}</span>
-                <span class="time" style="margin-left:auto">${it.t}</span>
+                <span class="time">${AGO[it.id]}</span>
+                <span class="score ${sc(it.heat)}" style="margin-left:auto">${it.heat.toFixed(1)}</span>
               </div>
               <h3>${esc(it.zh)}</h3>
+              ${it.en?`<div class="en" style="margin:-3px 0 7px">${esc(it.en)}</div>`:''}
               <p>${esc(it.sum)}</p>
             </div>`).join('')}
         </div>

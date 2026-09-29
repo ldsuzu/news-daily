@@ -16,3 +16,8 @@ config/settings.local.yaml
 # 根目录的 bundles/ 是 GitHub Actions 采集分身的产出目录，本地 sync 要靠它拉数据；
 # 一旦被忽略，workflow 里的 `git add bundles` 就成了空操作，每天静默地"没有新内容"。
 # （本地那份副本在 data/bundles/，已经被上面的 data/* 覆盖掉了。）
+
+# 打包产物：几十 MB 的 exe 不该进版本库 —— 要分发就直接拷 dist/每日简报 这个文件夹。
+# 但 news-daily.spec 要留着，它是打包配方，别人 clone 下来能自己重建。
+build/
+dist/

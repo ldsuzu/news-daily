@@ -694,6 +694,14 @@ def cmd_remote(args: argparse.Namespace) -> int:
 
 # ───────────────────────────── serve ─────────────────────────────
 
+def cmd_desktop(args: argparse.Namespace) -> int:
+    """原生窗口：双击桌面图标走的就是这条命令。"""
+    from .desktop import run_desktop
+
+    config = load_config(Path(args.root).resolve() if args.root else None)
+    return run_desktop(config, port=args.port or None)
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     """起本地服务，浏览器打开就是阅读界面。没有网络也照常能读。"""
     try:
@@ -858,6 +866,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_serve.add_argument("--open", action="store_true", help="启动后自动打开浏览器")
     p_serve.set_defaults(func=cmd_serve)
 
+    p_desktop = sub.add_parser("desktop", help="打开原生窗口（双击图标走的就是它）")
+    p_desktop.add_argument("--port", type=int, default=0, help="0 = 自动挑一个空闲端口")
+    p_desktop.set_defaults(func=cmd_desktop)
+
     p_digest = sub.add_parser("digest", help="生成 Markdown 日报（archive/）")
     p_digest.add_argument("--date", help="哪一天（默认今天）")
     p_digest.set_defaults(func=cmd_digest)
@@ -899,8 +911,16 @@ def main(argv: list[str] | None = None) -> int:
     _force_utf8_stdout()
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    # 不带子命令时打印帮助，而不是抛 AttributeError。
+    # （打包成 exe 后双击没有参数，__main__.py 会先补上 desktop。）
+    func = getattr(args, "func", None)
+    if func is None:
+        parser.print_help()
+        return 0
+
     try:
-        return int(args.func(args) or 0)
+        return int(func(args) or 0)
     except KeyboardInterrupt:
         print("\n已中断。")
         return 130

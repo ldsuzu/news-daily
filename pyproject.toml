@@ -1,18 +1,21 @@
 [project]
 name = "newspipe"
-version = "0.0.1"
+version = "0.1.0"
 description = "每日简报 — 本地新闻聚合与阅读软件（游戏 / AI）"
 requires-python = ">=3.10"
 dependencies = [
     "httpx>=0.27",
     "feedparser>=6.0",
     "PyYAML>=6.0",
+    "keyring>=25.0",          # API Key 交给系统凭据管理器保管，不落明文文件
 ]
 
 [project.optional-dependencies]
 web = ["fastapi>=0.110", "uvicorn>=0.29", "jinja2>=3.1"]
+desktop = ["pywebview>=5.0"]     # 原生窗口（套在同一个界面上）
 extract = ["trafilatura>=1.8"]
 dev = ["pytest>=8"]
+build = ["pyinstaller>=6.0"]
 
 [project.scripts]
 newspipe = "newspipe.cli:main"
@@ -25,4 +28,4 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-newspipe = ["storage/*.sql"]
+newspipe = ["storage/*.sql", "web/templates/*.html", "web/static/*"]

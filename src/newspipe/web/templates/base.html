@@ -7,20 +7,46 @@
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-{% block content %}{% endblock %}
+{% from "macros.html" import icon %}
+<div class="app">
+
+  <nav class="rail">
+    <a href="/" class="{{ 'on' if nav == 'today' else '' }}" title="今日">{{ icon('today') }}</a>
+    <a href="/history" class="{{ 'on' if nav == 'history' else '' }}" title="历史与搜索">{{ icon('history') }}</a>
+    <div class="sp"></div>
+    <a href="/sources" class="{{ 'on' if nav == 'sources' else '' }}" title="信息源">{{ icon('source') }}</a>
+    <a href="/settings" class="{{ 'on' if nav == 'settings' else '' }}" title="设置">{{ icon('gear') }}</a>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">{% block topbar %}{% endblock %}</div>
+    <div class="content">{% block content %}{% endblock %}</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 (function () {
   var saved = localStorage.getItem('newspipe-theme');
   if (saved) document.documentElement.dataset.theme = saved;
 
+  window.dspToast = function (msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    clearTimeout(t._t);
+    t._t = setTimeout(function () { t.classList.remove('on'); }, 2200);
+  };
+
+  // 任何带 data-toast 的元素点了都会弹提示 —— 还没实现的按钮用它交代清楚
   document.addEventListener('click', function (e) {
-    if (!e.target.closest('[data-theme-toggle]')) return;
-    var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem('newspipe-theme', next);
+    var el = e.target.closest('[data-toast]');
+    if (el) dspToast(el.dataset.toast);
   });
 })();
 </script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

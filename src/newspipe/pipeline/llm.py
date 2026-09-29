@@ -19,6 +19,7 @@ import httpx
 
 from ..config import Config
 from ..models import RawItem
+from ..secrets import get_api_key
 
 SYSTEM_PROMPT = """你是新闻编辑，为中文读者筛选科技、游戏、AI 领域的资讯。
 
@@ -96,7 +97,8 @@ class LlmClient:
         self.enabled = bool(s.get("llm.enabled", False))
         self.model = s.get("llm.model") or "deepseek-flash"
         self.base_url = (s.get("llm.base_url") or "https://api.deepseek.com").rstrip("/")
-        self.api_key = s.get("llm.api_key") or os.environ.get("NEWSPIPE_LLM_KEY") or ""
+        # 配置文件里的明文优先（显式设置），否则去凭据管理器 / 环境变量找
+        self.api_key = (s.get("llm.api_key") or "").strip() or get_api_key()
         self.batch_size = max(1, int(s.get("llm.batch_size", 20)))
         self.summary_chars = int(s.get("llm.summary_chars", 400))
         self.daily_budget = float(s.get("llm.daily_budget_cny", 0) or 0)

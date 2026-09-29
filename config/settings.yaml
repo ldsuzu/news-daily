@@ -17,7 +17,7 @@ schedule:
 
 # 条数：精选 / 全部 两层（见技术框架 §4.1）
 selection:
-  picks_per_domain: 10   # 精选每领域条数：按重要度取前 N 条，随你调
+  picks_per_domain: 10  # 精选每领域条数：按重要度取前 N 条，随你调
   picks_min_score: 0     # 精选的分数下界；0 = 不设下界（只按 Top N 取）。
                          # 想更严一点就填 8（那需要 LLM 打分接进来后才有意义）
   max_per_source: 3      # 精选里单个来源最多占几条。没有这个，一家就能把
@@ -47,10 +47,10 @@ rsshub:
 llm:
   enabled: false            # ← 已关闭。想用时改成 true，再手动跑 `newspipe enrich`
   provider: deepseek
-  model: deepseek-flash     # DeepSeek-V4.1-Flash；贵一点的备选 deepseek-v4-pro
+  model: deepseek-flash  # DeepSeek-V4.1-Flash；贵一点的备选 deepseek-v4-pro
   base_url: https://api.deepseek.com
   api_key: ""               # 也可用环境变量 NEWSPIPE_LLM_KEY，免得写进文件
-  auto_in_run: false        # 定时任务里是否自动跑 enrich。
+  auto_in_run: false  # 定时任务里是否自动跑 enrich。
                             # 默认 false = **自动流程永远不花钱**：只有你手动跑
                             # `newspipe enrich` 时才会调用 LLM。想恢复全自动再改 true。
   batch_size: 20            # 一次请求塞多少条 —— 批量是省 token 的主要手段

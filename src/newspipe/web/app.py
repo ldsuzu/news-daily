@@ -6,19 +6,22 @@
 
 from __future__ import annotations
 
+import os
 from datetime import date as _date
 from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, Request
+import httpx
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from ..config import Config, load_config
+from ..config import Config, load_config, update_setting
 from ..pipeline.normalize import now_utc_iso, parse_iso, to_local_date
 from ..pipeline.select import select_picks
+from ..secrets import delete_api_key, get_api_key, has_api_key, set_api_key, where_is_it
 from ..storage.db import connect, init_db, sqlite_version
 from ..storage.repo import Repo
 
@@ -151,9 +154,9 @@ def create_app(config: Config | None = None) -> FastAPI:
                 domain=domain,
                 view=view,
                 date=target,
+                is_today=(target == (to_local_date(now_utc_iso()) or "")),
                 lead=shown[0] if shown else None,
-                secondary=shown[1:4],
-                more=shown[4:],
+                cards=shown[1:13],
                 shown_count=len(shown),
                 total_today=total_today,
                 picks_count=picks_count,
@@ -248,12 +251,82 @@ def create_app(config: Config | None = None) -> FastAPI:
                 db_path=str(cfg.settings.db_path),
                 root=str(cfg.root),
                 counts=repo.counts(),
-                dates=repo.available_dates(limit=7),
+                dates=repo.available_dates(limit=30),
                 bundle_repo=cfg.settings.get("bundle.repo") or "",
                 proxy=cfg.settings.proxy,
+                llm_auto=bool(cfg.settings.get("llm.auto_in_run", False)),
+                has_key=has_api_key(),
+                key_where=where_is_it(),
+                llm_budget=float(cfg.settings.get("llm.daily_budget_cny", 0) or 0),
+                budget_pct=min(100, round(
+                    (repo.llm_spend()["today"]["cost_cny"]
+                     / max(0.0001, float(cfg.settings.get("llm.daily_budget_cny", 0.5) or 0.5))) * 100
+                )),
+                daily_at=cfg.settings.get("schedule.daily_at", "07:00"),
+                max_per_source=int(cfg.settings.get("selection.max_per_source", 3)),
             )
             return templates.TemplateResponse(request, "settings.html", ctx)
         finally:
             conn.close()
+
+    # ───────────────────────────── 写配置（界面改设置） ─────────────────────────────
+
+    @app.post("/api/setting")
+    def api_setting(payload: dict[str, Any]) -> dict[str, Any]:
+        """把界面上的改动写回 settings.yaml —— 只允许白名单里的键，且保留注释。"""
+        cfg, conn, _ = _open()
+        conn.close()
+        try:
+            written = update_setting(cfg.root, str(payload.get("key", "")), payload.get("value"))
+        except (KeyError, ValueError, TypeError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return {"ok": True, "written": written}
+
+    # ───────────────────────────── API Key（凭据管理器） ─────────────────────────────
+
+    @app.post("/api/key")
+    def api_save_key(payload: dict[str, Any]) -> dict[str, Any]:
+        """把 Key 交给 Windows 凭据管理器。传空串等于删除。"""
+        value = str(payload.get("key", "")).strip()
+        if value and len(value) < 12:
+            raise HTTPException(status_code=400, detail="这个 Key 看起来太短了")
+        stored = set_api_key(value)
+        return {"ok": True, "stored": stored, "where": where_is_it()}
+
+    @app.delete("/api/key")
+    def api_delete_key() -> dict[str, Any]:
+        delete_api_key()
+        return {"ok": True, "where": where_is_it()}
+
+    @app.post("/api/key/test")
+    def api_test_key() -> dict[str, Any]:
+        """真发一次最小请求 —— 比只检查格式有意义得多。"""
+        cfg, conn, _ = _open()
+        conn.close()
+        key = get_api_key()
+        if not key:
+            raise HTTPException(status_code=400, detail="还没配置 API Key")
+
+        base = (cfg.settings.get("llm.base_url") or "https://api.deepseek.com").rstrip("/")
+        model = cfg.settings.get("llm.model") or "deepseek-flash"
+        try:
+            resp = httpx.post(
+                f"{base}/chat/completions",
+                headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": "回答一个字：好"}],
+                    "max_tokens": 8,
+                    "thinking": {"type": "disabled"},
+                },
+                timeout=25.0,
+            )
+        except Exception as exc:  # noqa: BLE001
+            raise HTTPException(status_code=502, detail=f"连不上 {base}：{type(exc).__name__}") from exc
+
+        if resp.status_code != 200:
+            detail = resp.text[:200]
+            raise HTTPException(status_code=400, detail=f"API 返回 {resp.status_code}：{detail}")
+        return {"ok": True, "model": model}
 
     return app

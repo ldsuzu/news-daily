@@ -1,145 +1,235 @@
 {% extends "base.html" %}
-{% from "macros.html" import masthead %}
+{% from "macros.html" import icon %}
 
 {% block title %}设置 · {{ site_name }}{% endblock %}
 
+{% block topbar %}
+  <h1>设置</h1>
+  <div class="sp"></div>
+  <span class="time" id="saveHint">改动即时保存</span>
+{% endblock %}
+
 {% block content %}
-<div class="A">
+<div class="set-grid">
 
-  {{ masthead(site_name, '设置 · 全部旋钮都在 config/*.yaml 里') }}
+  <!-- ── LLM ── -->
+  <div class="panel">
+    <h3>AI 摘要（LLM）</h3>
+    <p class="hint">
+      关着的时候：外网条目显示英文原标题、排序用规则分、同一件事可能重复出现。
+      <b>自动流程永远不会花钱</b> —— 只有「定时任务里也自动跑」打开时，早上那次才会调用。
+    </p>
 
-  <nav class="A-nav">
-    <a href="/">今日</a>
-    <a href="/history">历史</a>
-    <a href="/sources">信息源</a>
-    <a href="/settings" class="on">设置</a>
-    <span class="sp"></span>
-    <span class="dom"><span class="time">界面只读，配置文件才是唯一事实来源</span></span>
-  </nav>
-
-  <div class="S-grid">
-
-    <div class="S-card">
-      <h3>条数 · 精选 / 全部</h3>
-      <p class="hint">精选只是排序视图，不是过滤器 —— 没进精选的条目照常入库、照常可搜。</p>
-      <div class="S-knob">
-        <span class="v">{{ picks_per_domain }}</span>
-        <span class="l">精选每领域条数</span>
-        <span class="h">selection.picks_per_domain</span>
+    <div class="switch">
+      <div class="l">启用 LLM 翻译与热度
+        <small>打开后手动跑 <code>newspipe enrich</code> 才会调用</small>
       </div>
-      <div class="S-knob">
-        <span class="v">{{ picks_min_score if picks_min_score > 0 else '不设下界' }}</span>
-        <span class="l">精选的分数下界（只按 Top N 取）</span>
-        <span class="h">selection.picks_min_score</span>
+      <button class="toggle {{ 'on' if llm_on else '' }}" data-setting="llm.enabled"
+              data-value="{{ 'false' if llm_on else 'true' }}"><i></i></button>
+    </div>
+
+    <div class="switch">
+      <div class="l">定时任务里也自动跑
+        <small>关掉的话，每天 07:00 那次不会带 LLM 这一步</small>
       </div>
-      <div class="S-knob">
-        <span class="v">{{ counts.total }}</span>
-        <span class="l">库里总条目（永久保留）</span>
-        <span class="h">retention.keep_forever</span>
+      <button class="toggle {{ 'on' if llm_auto else '' }}" data-setting="llm.auto_in_run"
+              data-value="{{ 'false' if llm_auto else 'true' }}"><i></i></button>
+    </div>
+
+    <div class="field" style="margin-top:14px">
+      <label>DeepSeek API Key</label>
+      <input type="password" id="apiKey" placeholder="{{ 'sk-…（已保存，重新填写可覆盖）' if has_key else 'sk-…' }}">
+      <div class="note {{ 'ok' if has_key else '' }}">
+        {% if key_where == 'credential' %}✓ 已保存在 Windows 凭据管理器里，不写入任何配置文件
+        {% elif key_where == 'env' %}✓ 来自环境变量 NEWSPIPE_LLM_KEY
+        {% elif key_where == 'memory' %}⚠ 只存在内存里（这台机器上凭据管理器不可用），重启就没了
+        {% else %}保存到 Windows 凭据管理器，不会落到明文文件里{% endif %}
       </div>
     </div>
-
-    <div class="S-card">
-      <h3>LLM 花费</h3>
-      {% if llm_on %}
-        <p class="hint">翻译 + 热度评分。省 token 的三个手段：批量送、只给摘要不给全文、只处理新条目。</p>
-        <div class="S-knob">
-          <span class="v">¥{{ '%.4f'|format(llm_spend.today.cost_cny) }}</span>
-          <span class="l">今日花费</span>
-          <span class="h">{{ llm_spend.today.items }} 条</span>
-        </div>
-        <div class="S-knob">
-          <span class="v">¥{{ '%.4f'|format(llm_spend.total.cost_cny) }}</span>
-          <span class="l">累计花费</span>
-          <span class="h">{{ llm_spend.total.items }} 条 · {{ llm_spend.total.calls }} 次调用</span>
-        </div>
-        <div class="S-knob">
-          <span class="v">{{ '{:,}'.format(llm_spend.today.input_tokens + llm_spend.today.cached_tokens) }}</span>
-          <span class="l">今日输入 tokens</span>
-          <span class="h">缓存命中 {{ '{:,}'.format(llm_spend.today.cached_tokens) }}</span>
-        </div>
-        <div class="S-knob">
-          <span class="v">{{ '{:,}'.format(llm_spend.today.output_tokens) }}</span>
-          <span class="l">今日输出 tokens</span>
-          <span class="h">输出单价是输入的 4 倍</span>
-        </div>
-        {% if llm_spend.total.failures %}
-          <p class="S-empty">有 {{ llm_spend.total.failures }} 次调用失败（记在账本里了，不影响其它功能）</p>
-        {% endif %}
-      {% else %}
-        <p class="S-empty">
-          LLM 还没启用。<br><br>
-          在 <code>config/settings.yaml</code> 的 <code>llm</code> 段填上 <code>api_key</code>、
-          把 <code>enabled</code> 改成 <code>true</code>，再跑一次 <code>newspipe enrich</code>。<br><br>
-          开启之后：外网条目会有中文标题和中文摘要（原文标题保留在下面），
-          排序改用 LLM 判断的热度而不是关键词匹配，这里的数字就是真实花费。
-        </p>
-      {% endif %}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn pri" id="saveKey">{{ '清除 Key' if has_key else '保存 Key' }}</button>
+      <button class="btn" id="testKey">测试连通性</button>
     </div>
-
-    <div class="S-card">
-      <h3>数据在哪</h3>
-      <p class="hint">全部在你自己的机器上，没有任何第三方持有你的阅读记录。</p>
-      <dl>
-        <dt>项目根</dt><dd>{{ root }}</dd>
-        <dt>数据库</dt><dd>{{ db_path }}</dd>
-        <dt>SQLite</dt><dd>{{ sqlite }}</dd>
-        <dt>归档目录</dt><dd>{{ root }}\archive</dd>
-      </dl>
-    </div>
-
-    <div class="S-card">
-      <h3>海外采集分身</h3>
-      {% if bundle_repo %}
-        <dl>
-          <dt>仓库</dt><dd>{{ bundle_repo }}</dd>
-        </dl>
-        <p class="hint">
-          <code>newspipe sync</code> 按 jsDelivr → GitHub API → raw → 本地留存 的顺序回退，
-          全都走不通时用最近一次的 bundle 并在界面标注新鲜度。
-        </p>
-      {% else %}
-        <p class="S-empty">
-          还没配置 <code>bundle.repo</code>。<br><br>
-          在 <code>config/settings.yaml</code> 里填上你的 bundle 仓库（形如 <code>yourname/news-bundles</code>），
-          再把 <code>.github/workflows/collect.yml</code> 推到那个仓库，
-          <code>newspipe sync</code> 就能把墙外源的内容拉回来 —— 不开 VPN 也能读。
-        </p>
-      {% endif %}
-    </div>
-
-    <div class="S-card">
-      <h3>抓取与网络</h3>
-      <dl>
-        <dt>每日抓取</dt><dd>{{ settings.get('schedule', {}).get('daily_at', '07:00') }}</dd>
-        <dt>增量间隔</dt><dd>{{ settings.get('schedule', {}).get('incremental_hours', 2) }} 小时</dd>
-        <dt>代理</dt><dd>{{ proxy or '（直连）' }}</dd>
-        <dt>超时</dt><dd>{{ settings.get('network', {}).get('timeout_seconds', 20) }} 秒</dd>
-        <dt>单域限速</dt><dd>{{ settings.get('network', {}).get('rate_limit_per_host', 1.0) }} req/s</dd>
-      </dl>
-    </div>
-
-    <div class="S-card">
-      <h3>历史与检索</h3>
-      <dl>
-        <dt>全文索引</dt><dd>FTS5 · {{ counts.total }} 条</dd>
-        <dt>覆盖日期</dt><dd>{{ dates|length }} 天</dd>
-        <dt>最近日期</dt><dd>{{ dates[0].date if dates else '—' }}</dd>
-      </dl>
-      <p class="hint">不做滚动过期：条目、正文、摘要全部留在库里，随时可搜回来。</p>
-    </div>
-
-    <div class="S-card">
-      <h3>命令速查</h3>
-      <dl>
-        <dt>抓取</dt><dd>newspipe fetch</dd>
-        <dt>同步海外</dt><dd>newspipe sync</dd>
-        <dt>补正文+去重</dt><dd>newspipe process</dd>
-        <dt>体检</dt><dd>newspipe doctor</dd>
-        <dt>搜索</dt><dd>newspipe search 关键词</dd>
-      </dl>
-    </div>
-
   </div>
+
+  <!-- ── 花费 ── -->
+  <div class="panel">
+    <h3>花费</h3>
+    <p class="hint">只在 LLM 开启后才会增长。每天到上限自动停手。</p>
+    <div class="stat">
+      <span class="v">¥{{ '%.3f'|format(llm_spend.today.cost_cny) }}</span>
+      <span class="l">今日</span>
+      <span class="h">{{ llm_spend.today.items }} 条</span>
+    </div>
+    <div class="stat">
+      <span class="v">¥{{ '%.3f'|format(llm_spend.total.cost_cny) }}</span>
+      <span class="l">累计</span>
+      <span class="h">{{ llm_spend.total.calls }} 次调用</span>
+    </div>
+    <div class="stat">
+      <span class="v">{{ '{:,}'.format(llm_spend.today.output_tokens) }}</span>
+      <span class="l">今日输出 tokens</span>
+      <span class="h">输入 {{ '{:,}'.format(llm_spend.today.input_tokens + llm_spend.today.cached_tokens) }}</span>
+    </div>
+    <div class="bar"><i style="width:{{ budget_pct }}%"></i></div>
+    <div class="time" style="margin-top:7px">日预算 ¥{{ '%.2f'|format(llm_budget) }} · 今日已用 ¥{{ '%.3f'|format(llm_spend.today.cost_cny) }}</div>
+    {% if llm_spend.total.failures %}
+      <div class="time" style="margin-top:6px">有 {{ llm_spend.total.failures }} 次调用失败（记在账本里，不影响别的功能）</div>
+    {% endif %}
+  </div>
+
+  <!-- ── 抓取 ── -->
+  <div class="panel">
+    <h3>抓取</h3>
+    <div class="field">
+      <label>每天自动抓取时间</label>
+      <input id="dailyAt" value="{{ daily_at }}" placeholder="07:00">
+      <div class="note">任务计划程序里注册的是这个时间；改完点右边的按钮同步过去</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn" id="saveSchedule">重新注册定时任务</button>
+      <button class="btn" id="runNow">立即跑一次</button>
+    </div>
+    <div class="switch">
+      <div class="l">开机补跑
+        <small>关机错过时间点，开机后自动补一次</small>
+      </div>
+      <span class="badge ok">已开启</span>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label>代理（可选）</label>
+      <input id="proxy" value="{{ proxy }}" placeholder="http://127.0.0.1:7890">
+      <div class="note">留空 = 直连。只影响需要代理才能访问的源</div>
+    </div>
+  </div>
+
+  <!-- ── 界面与条数 ── -->
+  <div class="panel">
+    <h3>界面与条数</h3>
+    <div class="field">
+      <label>精选每领域条数</label>
+      <input id="picksPer" value="{{ picks_per_domain }}">
+      <div class="note">精选按重要度取前 N 条；不设硬上限，全部条目随时可看</div>
+    </div>
+    <div class="field">
+      <label>精选里单个来源最多占几条</label>
+      <input id="maxPerSource" value="{{ max_per_source }}">
+      <div class="note">防止一家媒体把名额占满</div>
+    </div>
+    <div class="switch">
+      <div class="l">主题</div>
+      <div style="display:flex;gap:6px">
+        <button class="chip" data-theme-set="light">浅色</button>
+        <button class="chip" data-theme-set="dark">深色</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 数据 ── -->
+  <div class="panel">
+    <h3>数据</h3>
+    <div class="stat"><span class="v">{{ counts.total }}</span><span class="l">条条目</span><span class="h">永久保留</span></div>
+    <div class="stat"><span class="v">{{ dates|length }}</span><span class="l">个日期有内容</span><span class="h">FTS5 全文可搜</span></div>
+    <div class="stat"><span class="v">{{ sqlite }}</span><span class="l">SQLite 版本</span><span class="h">单文件</span></div>
+    <div class="time" style="margin:10px 0 12px;word-break:break-all">{{ db_path }}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" id="openData">打开数据目录</button>
+      <button class="btn" data-toast="备份功能还没做，先手动复制 data 文件夹吧">立即备份</button>
+    </div>
+  </div>
+
+  <!-- ── 海外分身 ── -->
+  <div class="panel">
+    <h3>海外分身（可选）</h3>
+    {% if bundle_repo %}
+      <p class="hint">本地从 <code>cdn.jsdelivr.net</code> 拉 bundle，<code>raw</code> 与 API 作为回退。</p>
+      <div class="field"><label>仓库</label><input value="{{ bundle_repo }}" readonly></div>
+      <button class="btn" id="syncNow">立即同步</button>
+    {% else %}
+      <p class="hint">还没配置。13 个外网源本地直连就能抓到，海外分身只对剩下 7 个源（IGN / Hugging Face 等）有意义。</p>
+      <div class="field"><label>仓库（形如 用户名/仓库名）</label><input id="bundleRepo" placeholder="yourname/news-daily"></div>
+      <button class="btn" id="saveBundle">保存</button>
+    {% endif %}
+  </div>
+
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  // 开关：点一下就把新值写回 settings.yaml
+  document.addEventListener('click', async function (e) {
+    var btn = e.target.closest('[data-setting]');
+    if (!btn) return;
+    var key = btn.dataset.setting, value = btn.dataset.value === 'true';
+    btn.disabled = true;
+    try {
+      var r = await fetch('/api/setting', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: key, value: value })
+      });
+      if (!r.ok) throw new Error(await r.text());
+      btn.classList.toggle('on', value);
+      btn.dataset.value = String(!value);
+      dspToast(key + ' 已设为 ' + (value ? '开启' : '关闭'));
+    } catch (err) {
+      dspToast('保存失败：' + err.message);
+    } finally { btn.disabled = false; }
+  });
+
+  // 主题
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-theme-set]');
+    if (!t) return;
+    document.documentElement.dataset.theme = t.dataset.themeSet;
+    localStorage.setItem('newspipe-theme', t.dataset.themeSet);
+  });
+
+  // API Key：保存在 Windows 凭据管理器里，配置文件始终留空
+  var keyInput = document.getElementById('apiKey');
+  var saveBtn = document.getElementById('saveKey');
+  var testBtn = document.getElementById('testKey');
+
+  if (saveBtn && keyInput) {
+    saveBtn.addEventListener('click', async function () {
+      var isDelete = saveBtn.textContent.indexOf('清除') >= 0;
+      var value = isDelete ? '' : keyInput.value.trim();
+      if (!isDelete && !value) { dspToast('先填入 API Key'); return; }
+      saveBtn.disabled = true;
+      try {
+        var r = await fetch('/api/key', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: value })
+        });
+        var data = await r.json();
+        if (!r.ok) throw new Error(data.detail || '保存失败');
+        dspToast(isDelete ? 'Key 已清除'
+          : (data.stored ? '已存入 Windows 凭据管理器' : '⚠ 凭据管理器不可用，Key 只在本次运行有效'));
+        setTimeout(function () { location.reload(); }, 1000);
+      } catch (err) {
+        dspToast(err.message);
+      } finally { saveBtn.disabled = false; }
+    });
+  }
+
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      testBtn.disabled = true;
+      testBtn.textContent = '测试中…';
+      try {
+        var r = await fetch('/api/key/test', { method: 'POST' });
+        var data = await r.json();
+        if (!r.ok) throw new Error(data.detail || '测试失败');
+        dspToast('连通正常 · ' + data.model);
+      } catch (err) {
+        dspToast('失败：' + err.message);
+      } finally {
+        testBtn.disabled = false;
+        testBtn.textContent = '测试连通性';
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

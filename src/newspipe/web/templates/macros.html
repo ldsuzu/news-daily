@@ -1,56 +1,42 @@
-{# 共用片段：条目元信息行、本地正文展开 #}
+{# 通用宏：图标、条目元信息、标题与摘要 #}
+
+{# 线性 SVG 图标，统一 24 视框、stroke 1.7。用 currentColor，选中态自动跟随主题色。 #}
+{% macro icon(name) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">{% if name == 'today' %}<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.2 9.4V20a1 1 0 0 0 1 1h11.6a1 1 0 0 0 1-1V9.4"/><path d="M9.6 21v-6.2h4.8V21"/>{% elif name == 'history' %}<rect x="3.2" y="4.6" width="17.6" height="16" rx="2.2"/><path d="M8 2.6v4M16 2.6v4M3.2 10.2h17.6"/><path d="M7.6 14h3M7.6 17.2h7"/>{% elif name == 'star' %}<path d="m12 3.6 2.6 5.3 5.8.84-4.2 4.1 1 5.8-5.2-2.74-5.2 2.74 1-5.8-4.2-4.1 5.8-.84z"/>{% elif name == 'search' %}<circle cx="11" cy="11" r="7.2"/><path d="m20.6 20.6-4.1-4.1"/>{% elif name == 'gear' %}<path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h8M16 17h4"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="14" cy="17" r="2.2"/>{% elif name == 'source' %}<circle cx="12" cy="12" r="2.6"/><path d="M5.6 5.6a9 9 0 0 0 0 12.8M18.4 18.4a9 9 0 0 0 0-12.8M8.5 8.5a5 5 0 0 0 0 7M15.5 15.5a5 5 0 0 0 0-7"/>{% endif %}</svg>
+{%- endmacro %}
 
 {% macro meta_line(item, source_map) %}
 <div class="meta">
   <span class="src"><span class="dot {{ item.domain }}"></span>{{ source_map.get(item.source_id, {}).get('name', item.source_id) }}</span>
-  {% if item.lang and not item.lang.startswith('zh') %}
-    <span class="badge foreign">外网</span>
-  {% endif %}
   <span class="time">{{ item.published_at|hhmm }}</span>
-  <span class="score {{ item.score|score_class }}" title="{{ 'LLM 热度分' if item.llm_score is not none else '规则分（源权重+时效+关键词）' }}">{{ '%.1f'|format(item.llm_score if item.llm_score is not none else (item.score or 0)) }}</span>
-  {% if item.cluster_size and item.cluster_size > 1 %}
-    <span class="cluster-note">同事件另有 {{ item.cluster_size - 1 }} 条已折叠</span>
-  {% endif %}
+  <span class="score {{ item.score|score_class }}" title="{{ 'LLM 热度分' if item.llm_score is not none else '规则分（源权重 + 时效 + 关键词）' }}">{{ '%.1f'|format(item.llm_score if item.llm_score is not none else (item.score or 0)) }}</span>
+  {% if item.lang and not item.lang.startswith('zh') %}<span class="tag">外网</span>{% endif %}
+  {% if item.cluster_size and item.cluster_size > 1 %}<span class="time">同事件另有 {{ item.cluster_size - 1 }} 条</span>{% endif %}
 </div>
 {% endmacro %}
 
-{# 标题：有中文翻译就用它当主标题，原文降为副标题 —— 这正是「中文为主、保留原文」 #}
-{% macro headline(item) %}
-  {{ item.title_cn or item.title }}
-{% endmacro %}
+{# 标题：有中文翻译就用它当主标题 #}
+{% macro headline(item) %}{{ item.title_cn or item.title }}{% endmacro %}
 
+{# 原文标题：中文标题与原文不同时，把原文降为副标题保留 #}
 {% macro original_title(item) %}
-  {% set original = item.title %}
-  {% if item.title_cn and item.title_cn != original %}
-    <div class="en">{{ original }}</div>
-  {% elif item.title_en and item.title_en != original %}
-    <div class="en">{{ item.title_en }}</div>
-  {% endif %}
+{%- set original = item.title -%}
+{%- if item.title_cn and item.title_cn != original -%}
+<div class="en">{{ original }}</div>
+{%- elif item.title_en and item.title_en != original -%}
+<div class="en">{{ item.title_en }}</div>
+{%- endif -%}
 {% endmacro %}
 
-{% macro summary_of(item, limit=200) %}
-  {% set text = item.summary_cn or item.excerpt or '' %}
-  {{ text|excerpt(limit) }}
-{% endmacro %}
+{% macro summary_of(item, limit=200) %}{{ (item.summary_cn or item.excerpt or '')|excerpt(limit) }}{% endmacro %}
 
+{# 本地正文：抓取时就落在库里，所以离线也能展开读 #}
 {% macro local_body(item, label='本地正文 · 离线可读') %}
-  {% set text = item.content_text or '' %}
-  {% if text|length > 80 %}
-    <details class="local-body">
-      <summary>{{ label }}（{{ text|length }} 字）</summary>
-      <div class="text">{{ text|excerpt(5000) }}</div>
-    </details>
-  {% elif item.excerpt %}
-    <div class="en" style="margin-top:6px">{{ item.excerpt|excerpt(220) }}</div>
-  {% endif %}
-{% endmacro %}
-
-{% macro masthead(site_name, subtitle) %}
-<header class="A-mast">
-  <h1><a href="/">{{ site_name }}</a></h1>
-  <div class="date">{{ subtitle }}</div>
-  <div class="mast-actions">
-    <button class="icon-btn" data-theme-toggle title="切换主题">◐</button>
-  </div>
-</header>
+{%- set text = item.content_text or '' -%}
+{%- if text|length > 80 -%}
+<details class="body-box">
+  <summary>{{ label }}（{{ text|length }} 字）</summary>
+  <div class="txt">{{ text|excerpt(5000) }}</div>
+</details>
+{%- endif -%}
 {% endmacro %}
