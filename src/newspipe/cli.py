@@ -503,13 +503,17 @@ def cmd_schedule(args: argparse.Namespace) -> int:
     config, conn, repo, _ = _open(args)
     root = config.root
     at = args.at or config.settings.get("schedule.daily_at", "07:00")
-    python = sys.executable
+    frozen = bool(getattr(sys, "frozen", False))
+    program = sys.executable
+    # 打包成 exe 之后 sys.executable 就是「每日简报.exe」自己 ——
+    # 这时该写 `"…\每日简报.exe" run`，而不是 `python -m newspipe run`。
+    invoke = f'"{program}" run' if frozen else f'"{program}" -m newspipe run'
     action = args.action
 
     if os.name != "nt":
         hh, _, mm = at.partition(":")
         line = (
-            f"{int(hh)} {int(mm or 0)} * * * cd {root} && {python} -m newspipe run "
+            f"{int(hh)} {int(mm or 0)} * * * cd {root} && {invoke} "
             f">> {root}/data/run.log 2>&1"
         )
         print("非 Windows 平台：把下面这行加进 `crontab -e` 即可")
@@ -531,7 +535,7 @@ def cmd_schedule(args: argparse.Namespace) -> int:
         (
             "@echo off\r\n"
             f'cd /d "{root}"\r\n'
-            f'"{python}" -m newspipe run >> "{root}\\data\\run.log" 2>&1\r\n'
+            f'{invoke} >> "{root}\\data\\run.log" 2>&1\r\n'
         ).encode("gbk", errors="replace")
     )
 
