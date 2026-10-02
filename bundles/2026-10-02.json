@@ -1,0 +1,3040 @@
+{
+ "version": 1,
+ "date": "2026-10-02",
+ "generated_at": "2026-10-02T01:46:49Z",
+ "mode": "collector",
+ "sources": [
+  {
+   "id": "ign",
+   "ok": true,
+   "count": 20,
+   "error": null
+  },
+  {
+   "id": "deepmind",
+   "ok": true,
+   "count": 60,
+   "error": null
+  },
+  {
+   "id": "hf_blog",
+   "ok": true,
+   "count": 60,
+   "error": null
+  },
+  {
+   "id": "google_research",
+   "ok": true,
+   "count": 60,
+   "error": null
+  },
+  {
+   "id": "importai",
+   "ok": false,
+   "count": 0,
+   "error": "HTTPStatusError: Client error '403 Forbidden' for url 'https://importai.substack.com/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+  }
+ ],
+ "items": [
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/fast-furious-tv-show-greenlit-at-peacock-with-vin-diesel-as-executive-producer",
+   "title": "Fast & Furious TV Show Greenlit at Peacock, With Vin Diesel as Executive Producer",
+   "published_at": "2026-10-01T23:37:56Z",
+   "excerpt": "The Fast & Furious films are getting their own television series, with none other than Vin Diesel himself serving as executive producer.",
+   "content_text": "The Fast & Furious films are getting their own television series, with none other than Vin Diesel himself serving as executive producer. As reported by Deadline on October 1, 2026, Peacock has officially given the green light for a Fast & Furious show. The series is slated to premier in 2028, the same year that the very last movie in the franchise is also set to release. Vin Diesel first mentioned the show in May 2026 during a talk at NBCUniversal’s Upfront event, where he explained that fan demand drove Universal Pictures to consider expanding its high-octane IP. “As you all know, we are very precious about these movies but over the last decade, we’ve realized that the fans have wanted more, they wanted us to expand the legacy characters, their stories,” he said at the event. “And for the last decade, the desire has been for us to enter the TV space.” Oh and of course, family was part of that decision: “That’s when I knew that the integrity of the characters, the international appeal, what makes us all feel like family will be protected in the TV space,” he added. Mike Daniels (Sons of Anarchy, PONIES) and Wolfe Coleman (9-1-1: Lone Star) are both writers and co-runners for the show, which is one of four series planned for the Fast & Furious universe. As told by Deadline, one of these shows will be helmed by Nick Wooton (The Endgame) and Charmaine DeGraté (House of the Dragon), while the other two will be handled by Joe Henderson (Lucifer) and Ingrid Escajeda (Griselda). With this in mind, it doesn’t look like the Fast & Furious world is set to end anytime soon, although its final film is on the horizon. This last movie, titled Fast Forever , is slated to release on March 17, 2028. It will mark the eleventh entry in the film franchise. Vin Diesel spoke about the movie at Fuel Fest in June, where he detailed how he negotiated with Universal Pictures to bring its last adventure back to Los Angeles. “The studio said to me, ‘Vin, can we please have the finale of Fast and Furious [in] April 2027?'” he told fans at the event. “I said, ‘Under three conditions.’ First, is to bring the franchise back to L.A.! The second thing was to return to the car culture, to the street racing! The third thing was reuniting Dom and Brian O’Conner.” Given that O’Conner was played by the late Paul Walker, this statement led fans to wonder how the character will return. Walker’s brother was firmly against the idea of portraying his sibling in in Fast Forever, suggesting that AI could be used to bring him back to the franchise, instead. Image Credits: Earl Gibson III/Deadline via Getty Images",
+   "title_en": "Fast & Furious TV Show Greenlit at Peacock, With Vin Diesel as Executive Producer",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 7.1
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/viral-short-horror-film-portrait-of-god-gets-feature-length-movie-starring-chase-infiniti",
+   "title": "Viral Short Horror Film Portrait of God Gets Feature Length Movie Starring Chase Infiniti",
+   "published_at": "2026-10-01T23:09:57Z",
+   "excerpt": "Viral internet short film Portrait of God is getting the Hollywood treatment, with Chase Infiniti set to star in a feature length adaptation of the YouTube-famous horror video.",
+   "content_text": "Viral internet short film Portrait of God is getting the Hollywood treatment, with Chase Infiniti set to star in a feature length adaptation of the YouTube-famous horror video. If you’re an avid horror fan, chances are you’ve watched Dylan Clark’s viral horror short Portrait of God on YouTube at some point. The seven-and-a-half-minute video centers on college student Mia Reilly as she rehearses a presentation; her topic discusses a mysterious painting — or rather, a photograph of a painting — that, some say, shows a portrait of God. The photo of said portrait is simply a black image, but testimonies from viewers tell a different story. Reilly says that “some insist they see a person in the darkness,” with subjects claiming in audio recordings that they see a “wrinkled, skinny” man — or at least, something that’s “close to a man.” I won’t spoil the rest of the short for you, but I highly recommend checking it out if you haven’t seen it yet. Clark packed quite a punch in such a short amount of time, with his video racking up over 10 million views since being uploaded four years ago, and it seems like major studios took notice. As shared by The Hollywood Reporter , the film has been greenlit by Lionsgate Studios, with Sam Raimi for Ghost House Pictures and Jordan Peele for Monkeypaw set to produce. This is the first time these two have collaborated on a project together. They aren’t the first to get their hands on Clark’s IP, though; Portrait of God was previously snagged by Universal, but the project fell through in early 2026. Things seem substantially more stable now, given the producers attached, as well as a major actress set to star in the film: Chase Infiniti, who gained wide acclaim for her breakout role in One Battle After Another . “We’re delighted to deepen our creative partnership with Dylan Clark, whose remarkable talent and distinctive perspective make him one of the most exciting emerging voices in horror,” Lionsgate film’s Adam Fogelson said in a statement. “With Sam and Jordan, two of the genre’s most influential producers, the extraordinary Chase Infiniti starring, and Dylan at the helm, this is an exceptional creative team. We believe they have all the ingredients for a film that is haunting, thought-provoking, and scary as hell.” “With Blair Witch, I’m experiencing firsthand the trust Lionsgate places in its filmmakers, and I couldn’t be happier that Portrait of God has found a home there, as well,” Clark added. “I’m also thrilled to welcome Chase Infiniti to our team. She blew me away in One Battle After Another and is one of the most exciting young actors working today.” It’s a big time for indie horror flicks, especially where YouTubers are concerned; Kane Parsons’ Backrooms and Curry Barker’s Obsession were smash hits at the box office, opening the way for adaptations of other popular internet creepypastas like Siren Head (to be produced by Zach Cregger), The Mandela Catalogue , and even The SCP Foundation. Image Credits: Monica Schipper/Getty Images",
+   "title_en": "Viral Short Horror Film Portrait of God Gets Feature Length Movie Starring Chase Infiniti",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/x-tech-executive-chair-aims-to-upend-premium-models-from-herman-miller-steelcase",
+   "title": "The X-Tech Executive Chair Aims to Upend Premium Models from Herman Miller, Steelcase at a Better Price",
+   "published_at": "2026-10-01T22:45:00Z",
+   "excerpt": "Battle of the super premium tier chairs.",
+   "content_text": "Editor's Note: This article is sponsored by X-Chair. X-Chair's \"top-of-the-line\" office chair - the X-Tech Executive - is in the super premium tier category of office chairs. As far as ergonomic chairs go, the rule of \"you get what you pay for\" is fairly accurate, most of the time. High quality chairs are more expensive for a reason, and this one's no exception. For people who spend several hours per day sitting, whether it be for work or for gaming marathons, the investment is justifiable here (backed by very positive reviews). Keep reading to find out why this specific chair seems worth the investment and what makes it stand out in 2026. Quick facts Current Price: $1,845 (and free shipping) Weight Capacity : 275 lbs Payment Options : Monthly payments with Affirm, as low as 0% APR or $77/mo (see if you qualify) Warranty : 5 years Avg. rating : 4.5/5 (278 total reviews) Meet X-Tech's top-of-the-line office chair Notable add-on: Optional X-HMT heat massager At first glance, the X-Tech Executive looks like a typical office chair. It's not gaudy like some of the racing-styled gaming chairs out there. However, this is actually X-Chair's roomiest chair, with a 22\" seat width and up to 275 pound weight capacity. X-Chair states on its page that the chair is best suited for medium to large-framed people. The seat is made of a supportive cooling memory foam that contours to your body. The seat and upper back section are upholstered in Brisa performance faux-leather fabric that's both breathable and easily washable. The lower back is made of a flexible mesh material which X-Chair calls \"adaptive thermoregulating (ATR)\". Ergonomics In terms of ergonomics, the X-Tech Executive features a dynamic variable lumbar system. The lower back is disconnected from the rest of the chair and adjusts automatically based on your movement. That way, your back is supported no matter what position you might be in. This dynamic lumbar foregoes your need to manually adjust the settings. If you're going to spend this much for a chair, then you should definitely pay an extra $50 for the optional X-HMT heat massager. This add-on is seamlessly incorporated into the lower back section for some much welcomed therapy. This upgrade isn't available in most ergonomic chairs and when it is, it can cost upwards of $300. For just 3% of the cost of the entire chair, I see no reason why anyone would opt out of the upgrade. Features Dynamic Variable Lumbar (DVL®) Support intuitively adjusts to your body every time you move. Premium Fabric Duo includes soft-touch vegan leather Brisa, combined with water-resistant A.T.R. Premium Seat Foam includes Cooling Gel Memory Foam 4-Dimensional armrests come standard (up, down, side-to-side, front-to-back) and with the option to upgrade to FS 360 rotational armrests. SciFloat Infinite Recline + Tilt Lock and Tension allows you to recline and lock into position or increase tension in your recline motion for more fluid movement. Height Adjustable Backrest independently adjusts allowing you to raise the DVL® to fit the curve of your back. Seat depth and seat height are also adjustable features. How does it compare to other chair brands? The X-Tech Executive is clearly targeted towards professionals who are looking at premium options from brands like Herman Miller, Steelcase, and Haworth, among others. The best chairs from these brands, however, are priced even higher. For example, the Herman Miller Embody is listed at $2,000. Compared to these options, the X-Tech Executive is actually a more reasonably priced high-end alternative that promises the same level of both comfort and ergonomics. How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Follow us on social media IGN Deals on X IGN Deals on Instagram IGN Deals on Facebook Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "The X-Tech Executive Chair Aims to Upend Premium Models from Herman Miller, Steelcase at a Better Price",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/lanterns-rakes-in-more-than-18-million-views-per-episode-globally-as-season-finale-approaches",
+   "title": "Lanterns Rakes In More Than 18 Million Views Per Episode Globally As Season Finale Approaches",
+   "published_at": "2026-10-01T22:33:40Z",
+   "excerpt": "It’s safe to say that Lanterns is burning bright. The DCU series is raking in millions of views globally, competing with other HBO juggernauts like Euphoria and The Pitt.",
+   "content_text": "It’s safe to say that Lanterns is burning bright. The DCU series is raking in millions of views globally, competing with other HBO juggernauts like Euphoria and The Pitt. As shared by Variety , statistics compiled by media research firm Nielsen show that Lanterns’ seventh episode accrued seven million views within the United States during its first three days, combined across HBO’s cable channels and its streaming service, HBO Max. In the US, Lanterns is reportedly averaging more than 12 million views per episode; that number increases to 19 million when taking global viewership into account. Variety notes that it’s highly likely these numbers will continue to rise, as 1.5 million new viewers reportedly watched Lanterns’ premier episode just last week. This is good news for fans of the newly-rebooted DCU, but it’s not surprising; Lanterns has been a big hit with audiences and critics alike, though it’s caused no end of debate among hardcore Lanterns fans, given the fate of one of its central characters. (There’s still hope that this particular person might still be around, though, thanks to some convincing theories making the rounds online.) With these latest stats in mind, Lanterns is rubbing elbows with other uber-popular HBO releases; DC’s previous series on the streamer, The Penguin , averaged 27 million views per episode back in 2024, while shows like Euphoria averaged 25 million per episode by the end of its third and final season. Award-winning medical drama The Pitt averaged 15.4 million views on Season 2, the finale of which garnered 9.7 million views. Lanterns is gearing up for its season finale, which airs on HBO Max this coming Sunday, October 4. We have a few burning questions that still need to be answered, and its latest episode has fueled oodles of fan theories, not to mention memes (mostly about Mogo and John Stewart). IGN’s Jesse Schedeen scored its latest episode an eight out of 10 , praising it for regaining the series lost momentum from episode seven and reconnecting with the “core Hal/John dynamic we love so much.\"",
+   "title_en": "Lanterns Rakes In More Than 18 Million Views Per Episode Globally As Season Finale Approaches",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/new-gta-6-age-rating-confirms-game-will-feature-sex-scenes",
+   "title": "New GTA 6 Age Rating Confirms Game Will Feature Sex Scenes",
+   "published_at": "2026-10-01T22:14:08Z",
+   "excerpt": "GTA 6 will have sex scenes, according to a new listing from international ratings boards.",
+   "content_text": "GTA 6 will have sex scenes, according to a new listing from international ratings boards. In New Zealand and Australia, GTA 6's store page on PlayStation was updated to include the game's official age rating. A similar thing happened this morning with the UK and American versions of the game , but the New Zealand and Australia versions offer one distinct difference: the mention of sex scenes. Yes, it's true: there will be intercourse in GTA 6. If you're asking yourself, \"Is that different from GTA 5?\" Yes, it appears to be. GTA 5's rating makes no mention of sex scenes, despite there being at least one. Midway through the game, Trevor can be seen getting freaky with Johnny Klebitz's girlfriend (granted, it's pretty brief). GTA 6's sex scenes may be much more detailed and graphic, especially since the story revolves around the romantic relationship between Jason and Lucia. Various trailers have shown sensual, intimate scenes between the two characters, so it's possible that the full game will feature some pretty spicy material. Ultimately, it looks like Rockstar isn't pulling any punches with GTA 6. Rating descriptions have mentioned blood and gore, intense violence, drug use, and more, so it looks like we're in for yet another edgy GTA game. The developer has managed to keep a lot under wraps, but recently revealed that it visited strip clubs in Florida for \"research purposes.\" We're officially just a month away from GTA 6's release date, so there are sure to be many more marketing beats in the coming weeks. Whether that brings a new trailer or other forms of marketing remains to be seen, but Rockstar has shelled out serious dough for an ad on top of the Miami Heat's arena in Florida and has begun placing ads in New York as of today.",
+   "title_en": "New GTA 6 Age Rating Confirms Game Will Feature Sex Scenes",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/miami-vice-85-casts-walton-goggins-in-villain-role",
+   "title": "Miami Vice '85 Casts Walton Goggins in Villain Role",
+   "published_at": "2026-10-01T22:01:43Z",
+   "excerpt": "Walton Goggins has joined the cast of Miami Vice '85. The actor will play a henchman/assassin acting on behalf of John Leguizamo's character, who is a cartel king and the lead villain in the film.",
+   "content_text": "Walton Goggins will play a villain in Miami Vice '85 . Deadline reports that Goggins, who has made a name for himself in recent years via Fallout and The White Lotus, will leverage his nefarious qualities on the big screen in 2028. The actor will play a henchman/assassin acting on behalf of John Leguizamo's character , who is a cartel king and the lead villain in the film. The two villains will be contending with characters played by Michael B. Jordan and Austin Butler, who will play Ricardo Tubbs and Sonny Crockett, respectively. Not much is known about the film right now, but it is expected to be a period reboot of the iconic TV series. It's not a sequel to Michael Mann's own film adaptation of the TV series or an extension of the original source material. The film will be helmed by F1 and Top Gun: Maverick director Joseph Kosinski. The project was initially slated for a 2027 release, but was pushed back to May 2028 . It is expected to begin filming sometime this year, so expect more casting announcements in the coming weeks as production ramps up. Walton Goggins has made a name for himself by playing treacherous characters. He made the rounds as a variety of shady TV characters on shows like Justified, The Shield, and more. He has also starred in films like The Hateful Eight, Ant-Man and the Wasp, and Tomb Raider. He's arguably best known these days for playing The Ghoul, a sort of anti-hero in Fallout that has been corrupted by the Wasteland while searching for his long-lost family. Photo by Kevin Mazur/Getty Images for W Magazine",
+   "title_en": "Miami Vice '85 Casts Walton Goggins in Villain Role",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/asus-rog-ally-x-z1-extreme-handheld-gaming-pc-deal",
+   "title": "Save $200 Off the Asus ROG Ally X Z1 Extreme Handheld Gaming PC With a Whopping 2TB of Storage",
+   "published_at": "2026-10-01T21:32:40Z",
+   "excerpt": "Also features 24GB of DDR5 RAM, dual USB ports, and a massive 80Wh battery.",
+   "content_text": "Don't miss out on this rare deal for a premium handheld gaming PC. For a limited time, Best Buy is offering a brand new Asus ROG Ally X for $799.99 after a $200 off instant discount. This is the successor to the original ROG Ally Z1 Extreme featuring more system memory, more internal storage, dual USB ports and, most importantly, double the battery life. Update: It only appears to be available in certain zip codes. Save $200 Off the Asus ROG Ally X Z1 Extreme Gaming Handheld The ROG Ally X was released at the tail end of 2025 and is still one of most powerful handhelds you can get. It features an AMD Zen 4 based Z1 Extreme CPU with a whopping 24GB of LPDDR5X-7500 RAM and a generously sized 2TB SSD. It's more powerful than the Ryzen Z2, Ryzen Z2 Go and Ryzen Z2A APUs you'll find on similarly priced handhelds like the Steam Deck, Xbox Ally and Legion Go S. The only APU that's more powerful is the Z2 Extreme, which is found in gaming handhelds that cost $1,000 or more . It boasts a 7\" screen size with a sharp 1080p resolution and 120Hz refresh rate. The Ally X has three major upgrades over its predecessor. First, the Ally X boasts a massive 80Wh battery that's double the size of the original Ally. You can now get up to 5-6 hours of playtime on a single charge. This particular model also comes with 2TB of built-in storage, which is nearly unheard of in handheld gaming PCs, especially considering how expensive flash storage is nowadays. The Ally X also has a second USB port, which now allows you to connect to peripherals (or a bigger display) while simulataneously charging through your first port. I wouldn't be surprised if this deal sells out shortly. How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Shop on our Amazon Storefront Follow us on social media IGN Finds on X IGN Finds on Instagram IGN Finds on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "Save $200 Off the Asus ROG Ally X Z1 Extreme Handheld Gaming PC With a Whopping 2TB of Storage",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/amazon-launches-a-new-line-of-kindles-and-accessories-october-2026",
+   "title": "Amazon Launches New Line of Kindles and Accessories Right Before Prime Big Deal Days",
+   "published_at": "2026-10-01T21:19:57Z",
+   "excerpt": "",
+   "content_text": "Amazon has revealed its 2026 line of Kindle devices just a few days before its Prime Big Deal Days sale. The refresh includes a brand new Kindle, Kindle Paperwhite, and Kindle Colorsoft, along with new accessories and Kids Editions of these tablets. All of the new devices and accessories are now available to buy or preorder on Amazon, and you can check out the official press release for specifics on each device. With the release of new models, older Kindle devices are getting discounted as part of Amazon's sale as well. New Kindle Device Pricing and Details Amazon releases new Kindle devices pretty much every year, and in the past, the improvements were incremental. The biggest changes to the 2026 models include Amazon making them thinner, lighter, and faster than previous iterations of the e-readers. It also introduced aluminum hardware options and other highly requested features like cover page turning for their new Signature Editions of the Paperwhite and Colorsoft models. According to Amazon's press release, the new standard Kindle will be 30% faster when opening books and will have edge-to-edge color across the full lineup. The Kindle is still arguably the best reading tablet on the market. With Amazon removing support for older device models earlier this year, it's worth considering an upgrade to a newer version. It's important to note that all Kindle devices released after 2024 will include most of the latest features and will be compatible with newer accessories via Bluetooth. The Kindle Click Is the Best New Accessory A Kindle is already pretty convenient, but what if it could be even more convenient? Amazon has announced a remote that will turn the pages for you. Third-party Kindle page-turners have been available for years now, but this is the first time Amazon has made a Bluetooth-compatible version that doesn't actually need to physically touch the screen to get the page to turn. At $34.99, the new Amazon Kindle Click will work with any Kindle model released in 2024 or later. It's currently set to release on October 28 alongside most of the new 2026 Kindles. In addition to the remote, Amazon is also releasing new Kindle covers that include physical page-turning buttons. Both of these new accessories are bringing back a physical experience to an otherwise digital product.",
+   "title_en": "Amazon Launches New Line of Kindles and Accessories Right Before Prime Big Deal Days",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 7.7
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/danny-mcbrides-gi-joe-movie-casts-bradley-cooper-as-duke",
+   "title": "Danny McBride's G.I. Joe Movie Casts Bradley Cooper as Duke",
+   "published_at": "2026-10-01T21:05:00Z",
+   "excerpt": "Bradley Cooper will star as Duke in the upcoming G.I. Joe movie, directed by Danny McBride.",
+   "content_text": "Bradley Cooper will star as Duke in the upcoming G.I. Joe movie, directed by Danny McBride. McBride has been developing a new G.I. Joe movie for Paramount for some time, and it appears to be gaining some steam. After months of rumors, Deadline reports that Bradley Cooper will star as Duke, the leader of the titular group. McBride has reportedly had Cooper at the top of his wishlist for the film's cast, but there were questions over whether or not it was feasible. Cooper is currently starring in and directing an Ocean's 11 prequel in Europe, so he's got his hands full. However, Deadline claims that Cooper liked the script so much that he signed on and committed to the film. As of right now, it's unclear when the film will shoot, but presumably it won't be sometime until next summer at the earliest. Cooper's Ocean's prequel is slated to hit theaters in June 2027, and he will likely oversee post-production and go on an extensive press tour, which would likely prevent him from leading an action-heavy film until he fulfills his prior obligations. Nevertheless, it's a big win and solid star power for McBride's film. Details are scarce, but McBride has stated that the film will take place in Springfield , a town that is secretly populated by members of Cobra. He also confirmed that the film will be a suspenseful action movie, rather than a comedy, which is where McBride's roots mainly lie. He has proven himself capable outside of comedy, however. McBride co-wrote the recent trilogy of Halloween films, and while divisive by the end of their run, those movies showed McBride doesn't lean on unnecessary humor to get through a script. McBride will co-write the G.I. Joe film with Jeff Fradley and John Carcieri. As of right now, we're not sure who else will end up in the film's cast, but if Cooper is leading, it certainly shows that there's a level of prestige backing the project. The last attempt at a series of G.I. Joe films featured the likes of Channing Tatum and The Rock, but were critically panned. Cooper has elevated himself to a higher caliber in recent years after directing and starring in Oscar-nominated films like A Star Is Born , so it'll be interesting to see who else he gets paired with. Photo by Samir Hussein/WireImage",
+   "title_en": "Danny McBride's G.I. Joe Movie Casts Bradley Cooper as Duke",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/new-pokemon-x-esa-collection-includes-the-astronaut-pikachu-plush-that-went-to-space",
+   "title": "New Pokémon x ESA Collection Includes the Astronaut Pikachu Plush That Went to Space",
+   "published_at": "2026-10-01T20:59:12Z",
+   "excerpt": "",
+   "content_text": "Pokémon's collaboration with the European Space Agency has officially led to a merch drop. The new collection includes two new Pikachu plushies, listed at $29.99, which feature the electric-type Pokemon in two versions of the ESA space suit. Recognize the design? The new plush is modelled after the Pikachu plush ESA astronaut Sophie Adenot took on her flight to the International Space Station earlier this year . The collection also includes apparel, pins, and plenty of TCG accessories, now available directly from The Pokémon Center . Pokemon x ESA Collection Drops Ahead of World Space Week The collaboration between Pokémon and ESA kicked off on April 11, when the original astronaut Pikachu plush was launched into space. The plush spent a grand total of 67 days in orbit at the International Space Station, circling Earth over 1,000 times. Now, the partnership is coming back to Earth. The Pokémon Center's new collection is dropping ahead of World Space Week, which kicks off on October 4. That date will also see the launch of a new space-themed event in Pokémon GO and interactive “Space and Pokémon” exhibitions in select museums across Europe. For those of us on the other side of the pond? Well, at least we get merch. The new TCG accessories, led by a binder, deck box, and playmat, all show illustrations of astronaut Pikachu floating alongside Lunatone, Cosmog, and Minior. Fans can also get their hands on T-shirts and hoodies with the same cosmic Pokémon graphic. The most expensive item in the drop is a full bomber jacket, listed at $129.99, which features individual Pokémon patches and a Poké Ball zipper. The Pokémon franchise is marking its 30th anniversary this year, and there have been plenty of partnerships to celebrate. Here’s TPC’s statement on the ethos behind this particular collaboration: “The European Space Agency (ESA) is Europe’s gateway to space. Its mission is to shape the development of Europe’s space capability and ensure that investment in space continues to deliver benefits to the citizens of Europe and the world. Together, ESA and Pokémon aim to inspire and delight with endless cosmic possibility!” While most of the collection is available for purchase now, one \"delightful and inspiring\" item that still doesn't have a release date is a new figure of Pikachu in his astronaut outfit. Just another thing for fans to look forward to during the long wait for Gen 10 .",
+   "title_en": "New Pokémon x ESA Collection Includes the Astronaut Pikachu Plush That Went to Space",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/riot-games-co-founder-says-2xko-needed-hundreds-of-thousands-if-not-millions-of-monthly-active-players-to-survive",
+   "title": "Riot Games Co-Founder Says 2XKO Needed ‘Hundreds of Thousands, if Not Millions’ of Monthly Active Players to Survive",
+   "published_at": "2026-10-01T20:54:48Z",
+   "excerpt": "The co-founder, co-chairman, and chief product officer of Riot Games, Marc Merrill, revealed the number of monthly active users 2XKO would have needed to justify its budget, and the eye-popping amount has sparked an animated debate within the fighting game community.",
+   "content_text": "The co-founder, co-chairman, and chief product officer of Riot Games, Marc Merrill, revealed the number of monthly active users 2XKO would have needed to justify its budget, and the eye-popping amount has sparked an animated debate within the fighting game community. Speaking on The Lemonade Stand , Merrill went into detail about what happened behind the scenes at Riot to cause 2XKO’s catastrophic failure, and provided a ballpark figure of monthly active users the game would have needed in order to justify how much money and time was spent on its development. It’s no surprise that this figure was, to put it lightly, pretty unrealistic for a fighting game; Merrill said that, considering its cost structure, 2XKO would have needed a player count “in the high hundreds of thousands, if not millions” to rationalize its continued support. Merrill also mentioned Street Fighter 6, saying the 2023 release of Capcom’s juggernaut title threw off their plans to take a big chunk of the fighting game community’s interest off the back of Street Fighter V. “I think we had a window to do some great things to really help the fighting game community, and then Street Fighter 6 came out, which was something like eight years after we started working on 2XKO,” Merrill explained. “We had an awesome development team of really talented people that did great work, that made a beautiful game. We’d already communicated all this stuff to players, and so we were like, ‘You know what? Let’s just keep going. Let’s give it to the community. Let’s see what happens, right?’ …I think if we came out, ideally when we should’ve, years before Street Fighter, I think we would have made a really significant impact on the community.” Merrill explained that Riot didn’t have internal “alignment” on the strategy for 2XKO, which caused “managerial fracturing” and confusion within the team. Ultimately, not enough players hopped on the game in order to justify the time and money spent on it, so Riot did what they thought was best — issued full refunds to players and canceled further content updates. “We’ve got nobody to blame but ourselves,” he said. “[2XKO] resonated with some players, but not nearly enough players in order to justify the sort of live service, long-tail approach that the game was designed to do. And so we were like, let’s just pivot, let’s create this box, give everybody a refund, say, ‘Hey, sorry we weren't able to achieve this incredibly high aspiration that we were trying to do for the fighting game community, but we love you guys, appreciate [you], hope they’ll play this game, like many other box games, for years to come, and here you go. Sorry we let you down,’ is sort of the orientation of what happened there.” For comparison, Street Fighter 6 — which is indisputably the biggest fighting game on the market right now — boasts an average of anywhere between 16,000 and 20,000 monthly active users on Steam (not including PlayStation, which doesn't share these statistics publicly). It’s understandable that Riot, the maker of massively popular MOBA League of Legends, might expect more than that — but even Riot themselves knew there was no way they could reach “millions” of monthly active users to justify keeping their tag fighter alive. Unsurprisingly, Merrill’s comments have sparked a swath of heated reactions within the fighting game community. Most players were left stunned that Riot felt such a high player count was necessary to keep 2XKO afloat, given how relatively \"niche\" the genre is. “It seems like they figured the game wasn't going to last long, but they spent so much money on it, so instead of immediately canning it, they released it to see if it would do anything,” one player mused . “Unfortunately, what it needed to do goes way beyond what any fighting game has ever done in existence lol.” “The way [Merrill said], ‘Then Street Fighter 6 came out,’ like that wasn't going to happen. SFV had one of the best comeback stories in fighting games. Did he really not think 6 was going to happen?” another asked . 2XKO was first revealed to the public as ‘Project L’ in 2019, though rumors of a fighting game based on the League of Legends IP had been swirling around long beforehand. Its confusing release (from a closed beta to extended early access) on the back of a lengthy development period essentially killed most of the hype around the game, and Riot officially announced plans to end active development after December 2026, though online play will still be supported.",
+   "title_en": "Riot Games Co-Founder Says 2XKO Needed ‘Hundreds of Thousands, if Not Millions’ of Monthly Active Players to Survive",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/flashforge-ad5x-3d-printer-deal-october-2026",
+   "title": "The FlashForge AD5X Multi-Color 3D Printer Drops to Just $220 Shipped at AliExpress",
+   "published_at": "2026-10-01T20:30:00Z",
+   "excerpt": "The same printer is $350 on Amazon.",
+   "content_text": "An excellent 3D printer with multi-color print capability just got a huge price drop that will probably be better than Amazon's upcoming Prime Day sale. AliExpress is offering the FlashForge AD5X 3D Printer with integrated multi-material printing system for just $220 after you apply coupon code \" VUSHS23 \". The exact same printer sells for $349 on Amazon . Make sure you're signed into your account to see the shipping options (you may have to refresh the page twice ). You're buying it from FlashForge's official store on AliExpress. It ships free from the United States and arrives within 1 to 2 weeks. Flashforge AD5X Multi-Color 3D Printer for Just $220 Make sure you're signed into your account to see the shipping options (may need to refresh twice ) The AD5X is the least expensive FlashForge printer that offers multi material printing, which basically allows you to use multiple colors or multiple filament types on a single 3D print. It also features a CoreXY structure, which is rare for a printer in this price range. In a CoreXY printer, only the print head moves while the motors are permanently fixed. Since the motors are generally the heaviest component, this improves print speed and precision. The AD5X features an open bed design with a working space measuring approximately 8.7\" cubed. For those of you who are looking to enclose the chamber in order to create a more stable environment for your prints, you can purchase the official $50 kit . Alternatively, you can save the money simply by putting a box over the printer. The AD5X boasts a print speed of up to 600mm/s with 20,000mm/s² acceleration and can print a benchy in 12 minutes. Other features including solid build quality (all structural components are made of metal), a 4.3\" color touchscreen with intuitive controls, auto leveling, and vibration compensation. Assembly is quick and easy and you should be able to make your first test print in a matter of minutes. No camera is included but, again, there's an official kit to add one . The multi-filament module fleshes out the 3D printing capabilities and is one of the most important features for any mid to pro level enthusiast. With it you can print using up to four different colored filaments or filament materials simultaneously. It features an intelligent filament system that can identify and manage all four spools seamlessly and independently. Multi-filament add-ons in general cost $200-$300 by themselves, so having an integrated solution will save you a lot of money. TL;DR: Open chamber 8.7\" cubed working space CoreXY 3D printer (more stable than other types) 600mm/s print speed with 20,000mm/s² acceleration Includes multi-filament printing module Automatic filament switching Auto leveling and vibration compensation Easy assembly How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Shop on our Amazon Storefront Follow us on social media IGN Finds on X IGN Finds on Instagram IGN Finds on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "The FlashForge AD5X Multi-Color 3D Printer Drops to Just $220 Shipped at AliExpress",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/we-build-lego-spongebob-squarepants-bikini-bottom-11386",
+   "title": "We Build LEGO SpongeBob SquarePants Bikini Bottom: a F.U.N. Build for Nostalgic Adults",
+   "published_at": "2026-10-01T20:03:39Z",
+   "excerpt": "We build the SpongeBob SquarePants: Bikini Bottom LEGO set, which offers a massive dose of nostalgia for millennial adults.",
+   "content_text": "As a millenial, I grew up during what I consider the golden era of cartoons – the 1990's. Some of my favorites included Rugrats, The Angry Beavers, Hey Arnold!, and Rocko's Modern Life. But, just as the 90's came to a close, Nickelodeon dropped another certified classic on my young, impressionable mind. I knew there was something special about SpongeBob SquarePants from the very first episode, and now, more than 25 years later (wow, I feel old), it's one of the most popular children's cartoons of all time, and is still going strong with over 300 episodes. LEGO SpongeBob SquarePants: Bikini Bottom (available now exclusively from the LEGO Store ) is the first new SpongeBob-themed set since 2012, and the first designed for adults with an 18+ age rating. It includes plenty of references and gags from the series, making it an excellent set for longtime fans to put together. Set: #11386 Ages: 18+ Pieces: 1,794 Dimensions: 10\" (H) x 22\" (W) x 6\" (D) Price: $219.99 The original set featuring the iconic homes and denizens of Bikini Bottom released in 2006 , composed of just 579 pieces, and included a rather horrifying Squidward minifigure. Now, 20 years later, the set is much larger and has been completely reimagined for an older audience. At 1,794 pieces, more than three times the number of the original, this is also the largest LEGO SpongeBob SquarePants set released by far . The contents of the massive box are split across 14 bags. This is the second set I've built that uses LEGO's new eco-friendly packaging, which replaces the transparent polyethylene bags with paper bags, an initiative that began back in 2021 . While I appreciate the positive environmental impact these new bags promise, I've found that they are prone to having small pieces get stuck in the seams. If you're building a set that includes these new bags, be sure to double-check each one if you're potentially missing a piece. One aspect I really like about this set is just how good the minifigs look. Each one has been redesigned from the previous iterations, with more accurate colors and improved moldings. SpongeBob, in particular, looks great. The color is spot-on, and he finally has a proper pair of printed pants instead of looking like he's standing on a pair of brown stilts. SpongeBob also comes with his trusty jellyfish net. Patrick's minifig received a substantial redesign compared to his originals as his head and stomach are now one large piece that fit over the torso like a sort-of reverse cape that more accurately depicts his food-loving physique. He even comes with one of his favorite junk foods – a Neopolitan ice cream cone. Squidward got the biggest glow-up compared to his original minifig. Although later iterations fixed this by giving him a proper head mold, the version included in this set features a more accurate face, improved coloring, and little tentacles printed on the feet. While not minifigs per se, the set also comes with a buildable DoodleBob (complete with the Magic Pencil) and a buildable Gary the Snail, although it hasn't changed much from early LEGO iterations aside from having better coloring. He still doesn't have eyes, though. This set is divided into two instruction books, with the first book covering Patrick and Squidward's houses, and the second book dedicated entirely to SpongeBob's famous \"Pineapple Under the Sea,\" which employs some unique tactics to get its shape – more on that later. There are also a number of smaller builds to round out the scenery, including the crooked Bikini Bottom sign, a Boatmobile, SpongeBob's Bubblestand, and small diorama of the Jellyfish Fields, with a small rotating platter to make the jellyfish swim around. Patrick's house doesn't take long to put together, as all of its contents fit in a single bag. After all, it is just a large rock covering a hole in the ground. Thankfully, LEGO didn't just stop there. The lid of Patrick's house can be opened to reveal all of his sand furniture, including his chair, lamp, rug, and CRT TV. It even includes a space for him to \"sleep\" under the lid. Squidward's house, split across six bags, is a little more involved to assemble as it's comprised of four floors: the bottom floor which features his clarinet and music sheet; the second floor with his canopy bed; and the third floor bathroom, complete with his toilet, shower, and bubble bath. There's also a shower curtain with what appears to be a silhouette of SpongeBob hiding behind it - a reference to the episode \"Squid's Day Off,\" where Squidward becomes paranoid after leaving SpongeBob in charge of the Krusty Krab. Finally, the top floor of the house features Squidward's tanning bed that he frequently sets up in front of his house, along with a mirror and a flower-topped cocktail drink. The interior of the house repurposes some LEGO pieces in interesting ways, such as a pink-colored crown as a sea anemone plant and an upside down cupcake piece as the lampshades for Squidward's nightstands. LEGO absolutely nailed the exterior of Squidward's house. The dark blue pieces look fantastic, and the chunky geometry of the large nose, ears, and thick brow come through great. The window \"eyes\" are also a unique printed piece, of which this set has a surprising amount. I was pleased to find only two small sticker sheets overall. The highlight of this set is undoubtedly SpongeBob's pineapple house, though, which comes together across the remaining seven bags. The bottom floor features plenty of references to the show, including a hidden Mermaid Man and Barnacle Boy Easter egg inside the TV set, the shellphone, the photo of Gary on the wall, and even SpongeBob's \"friends\" Penny, Chip, and Used Napkin. Upstairs, SpongeBob's bedroom includes his bed, complete with ladder and diving board, of course, as well as his alarm clock and Gary's dessert in the corner. Don't worry, he's gonna finish it , and he's gonna like it! The designers at LEGO took a very interesting approach to recreate the rounded nature of the pineapple's exterior and its criss-crossed diamond pattern. Each one of the pinapple panels is attached to a rigid internal frame built out of Technics pieces, allowing them to sit on an angle and pivot a bit to create the rounded look. Individual panels are attached to the exterior, leaving a small gap around the edges to make the diamond pattern. While they don't fit together perfectly, the overall shape and finished house looks fantastic. Finally bringing all three houses together to recreate the Bikini Bottom landscape is a blast. Each of the bases can be connected to save space, or you can display them all freely. There's so much character to this set with endless scenes that can be recreated that it's a must-have for SpongeBob SquarePants fans. LEGO SpongeBob SquarePants: Bikini Bottom, Set #11386, retails for $219.99 and is composed of 1,794 pieces. It is available to purchase exclusively from the LEGO Store . Matthew Adler has written for IGN since 2019 covering all things gaming, tech, tabletop games, and more. You can follow him on the site formerly known as Twitter @MatthewAdler and watch him stream on Twitch .",
+   "title_en": "We Build LEGO SpongeBob SquarePants Bikini Bottom: a F.U.N. Build for Nostalgic Adults",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/wd-black-1tb-playstation-5-ssd-deal-october-2026",
+   "title": "The Officially Licensed WD Black 1TB PlayStation 5 SSD Just Dropped to the Lowest Price of the Year",
+   "published_at": "2026-10-01T19:50:00Z",
+   "excerpt": "Overpriced but still a deal in today's market.",
+   "content_text": "Good deals on PlayStation storage are practically non-existent in 2026... until today, sort of. For a limited time, Woot!, which is owned by Amazon, is offering the officially licensed 1TB WD Black SN850P PlayStation 5 solid state drive (SSD) for $179.99 after you apply 10% off coupon code \" APPLETEN \". This is still very expensive for a high-speed 1TB SSD, but you'd be hard pressed to find a better deal on a comparable SSD at this point in time. Amazon Prime members get free shipping, otherwise add $5 delivery fee. This is a brand new item with the original 5 year WD warranty. Officially Licensed WD SN850P 1TB PS5 SSD for $179.99 The WD SN850P was made specifically for the PS5 console. That means it fulfills all of Sony's requirements, like a minimum read speed of 5,500MB/s, a PCI-Express Gen4x4 interface, and a slim yet effective heatsink that fits within the confines of the PS5 bay. It's officially licensed by Sony which means WD paid to have the PS5 logo gloriously emblazoned on its stick. No, you'll never see it once it's installed and no, it won't make your PS5 any more special, but it's there. Of course the SN850P is also a great option as a boot drive for your gaming PC. It's one of the faster PCI-E Gen4 SSDs on the market with transfer speeds of up to 7,300MB/s read and 6,600MB/s write. The SN850P also has a dedicated LDDR4 DRAM cache. Pretty much every other SSD at this price point is DRAM-less and relies on HMB, or system memory, as a less expensive alternative. It doesn't make much of a difference in a PS5 console but PC users might notice it. The built-in heatsink means you don't have to go out and buy one and install it yourself, even though it's not that hard and not too expensive to do so. There are a few other SSD drives at a similar price, but most of them are from brands that you've probably never heard of. How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Shop on our Amazon Storefront Follow us on social media IGN Finds on X IGN Finds on Instagram IGN Finds on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "The Officially Licensed WD Black 1TB PlayStation 5 SSD Just Dropped to the Lowest Price of the Year",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.5
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/aovopro-48v-500w-adult-electric-scooter-deal-october-2026",
+   "title": "The 2026 AOVOPRO 48V 500W Electric Scooter with 22-Mile Range and 22mph Top Speed Drops to $130",
+   "published_at": "2026-10-01T19:20:00Z",
+   "excerpt": "The most powerful e-scooter I've seen for under $150.",
+   "content_text": "There are many reasons why an electric scooter might be a better fit for you than an electric bike. They're lighter, more compact, and usually less expensive. Electric assisted scooters give you more range and speed for less effort, and the brushless motor is pretty quiet. You'd think upgrading to one would cost you a lot of money, but that's not the case with one of AOVOPRO's more powerful models. 48V 500W Electric Scooter With 10.5Ah Battery for Just $130 Log in to your account and refresh (maybe 2X) to see the shipping options AliExpress is offering the new 2026 AOVOPRO 48V 500W electric scooter with 10.5Ah battery for just $129.81 with free shipping after coupon: \" VUSHS15 \". AliExpress marketplace vendor AOVOPRO is the official manufacturer of this scooter. It's stocked in a local US warehouse and usually delivers within a week with no additional import fees. The AOVOPRO scooter has nearly the same amount of power as entry-level electric bikes. For starters, it's equipped with a powerful 500W brushless motor that can push the scooter at speeds of up to 22mph and a 48V 10.5Ah battery that lasts up to 22 miles on a single charge and the torque to climb steep inclines. The 10\" tires and dual suspension allows the AOVOPRO to tackle rougher terrain versus the single suspension models with 8\" tires that are restricted to smooth paved surfaces. The scooter weighs about 35 pounds and can be folded for easier transport and storage. There's not much more you could ask for from an e-scooter that costs significantly less than $200. Other popular brands like the Segway Ninebot E2 and the Niu KQi 100P scooters have less powerful 300W motors and cost 2X the price, despite the fact that they're also built overseas. How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Follow us on social media IGN Deals on X IGN Deals on Instagram IGN Deals on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "The 2026 AOVOPRO 48V 500W Electric Scooter with 22-Mile Range and 22mph Top Speed Drops to $130",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/how-gta-6s-jason-and-lucia-have-evolved-since-2023-in-pictures",
+   "title": "How GTA 6's Jason and Lucia Have Evolved Since 2023 in Pictures",
+   "published_at": "2026-10-01T19:09:58Z",
+   "excerpt": "GTA 6 officially releases next month, so we're taking a look at how the game's two protagonists, Jason and Lucia, have evolved since their 2023 reveal.",
+   "content_text": "GTA 6 officially releases next month, so we're taking a look at how the game's two protagonists, Jason and Lucia, have evolved since their 2023 reveal. If there's one thing Rockstar has consistently managed to achieve, it's that its finished games often look better than the reveal trailers. That isn't the case for many game studios. In fact, a lot of games have been slammed for being downgraded between their reveals and launches. Watch Dogs, Cyberpunk 2077, and BioShock Infinite are all solid games, but they looked even better when they were initially revealed. GTA 6 appears to have only visually improved over time, and that is most evident in the level of detail on protagonists Jason and Lucia. In 2023, we got our first official look at GTA 6 with the first trailer. There had been some leaks prior to this, but this was the first time Rockstar showed the game itself. The game looked stunning with gorgeous lighting effects, vivid colors, and realistic-looking characters. Rockstar would then go dark for a year and a half before re-revealing the game, and the graphical leap was absurdly impressive. Compared to the 2023 trailer, GTA 6's visuals have drastically changed. The overall art direction remained the same, but the level of detail presented in the character models changed massively during this period. In the first trailer, Lucia's skin looks less textured, more flat, and less nuanced. Her hair also doesn't move much; there's a bit of bounce to her ponytail, but it's more limited. She also has the same hairstyle throughout the entire trailer, outside of some loose strands of hair on the sides of her face in the opening shots. Jason only gets a few seconds to shine, but he largely looks like a generic white guy with his shaved head and stubble. Trailer 2, however, provides a lot more depth. Both characters sport a variety of hairstyles, with Lucia rocking wavy hair and a golden dress. Jason's brown hair flows out of the back of his hat. His skin glistens after sweating in the Vice City heat, his veins outline his arms, and his facial hair appears to be somewhat uneven, with certain strands of hair poking out slightly further than others. These human imperfections are perfections in the world of a video game trying to emulate realistic people. The light also bounces off of their skin in a more natural way. It's a clear showcase of not only the level of detail, but also the amount of customization the player will have. That mindset carried into the recent extended look for GTA 6. The visual leap wasn't as large as the one between trailer 1 and 2, but it does feel like a world of difference from trailer 1 itself. There's infinitely more customization options and Jason and Lucia are clearly at their final level of polish. Rockstar North co-studio head Rob Nelson recently stated that trailer 1 was a \"mission statement\" for the team, as the game wasn't \"fully formed.\" It was a north star for the team to follow and something they could point to as a way of understanding the overall vision for the game. As a result, it makes sense that the game has only improved since then. GTA 6 is just weeks away from release now and the finishing touches are being added to the game. The ESRB officially rated the game M for Mature this morning and Rockstar is starting to ramp up its marketing efforts with physical ads in places like Miami and New York. After years of waiting, GTA 6 will finally be here on November 19.",
+   "title_en": "How GTA 6's Jason and Lucia Have Evolved Since 2023 in Pictures",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 7.8
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/urlife-e20-1000w-48v-adult-electric-bike-deal-october-2026",
+   "title": "Get a UrLife E20 1,000W Peak 48V Adult Electric Bike With 28mph Top Speed and 80 Mile Range for $297",
+   "published_at": "2026-10-01T19:05:00Z",
+   "excerpt": "The upgrade to assisted electric tech is more affordable than you think.",
+   "content_text": "Looking for a powerful ebike with the speed and range to meet your ambitious needs? Nowadays you can find a decent ebike for well under $500 if you know where to look (hint: it's not necessarly Amazon). For a limited time, AliExpress is offering the UrLife E20 750W 48V Electric Bike for a low price of $280.97 after you apply $40 off coupon code \" AFFUS40 \". You will need to be logged in (and may refresh the page a couple of times) to see the shipping options. The AliExpress marketplace seller \"urlifeglobal\" is the official manufacturer of these scooters and has plenty of reviews and sales to back up its reputation. Since they've already been shipped from overseas, any tariffs have already been paid for and you also don't need to worry about egregiously long shipping times. Get a 1,000W (Peak) 48V Adult Electric Bike for $280 The UrLife E20 is an adult electric bike featuring a 750W (1,000W peak) motor that can get up to speeds of 28mph. Unlike most bikes in this price range that use a 36V battery, the E20 includes a powerful 48V battery which offer more power, acceleration, and torque, perfect for tackling steep hills. The 13Ah battery offers up to 80 miles of range under ideal conditions. The actual distance is dependent on other factors like your speed, terrain, elevation, and so forth. It's also removable in case you want to store the battery in a separate location from the bike. The frame is made of carbon steel so it's on the heavier side at about 60 pounds, but it also has a decent weight capacity of 265 pounds. It's equipped with 20\" fat tires with front fork shock-absorbing suspension, which makes it better suited for unpaved terrain compared to other bikes at this price. There are bikes out there that offer high-quality components, a more powerful motor, better upgradeability, and/or domestic customer support, but only if you're willing to shell out hundreds or thousands of dollars more. The UrLife E20 bike will likely stay within your budget. It offers a perfectly respectable assisted ride that will satisfy most bikers. How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Shop on our Amazon Storefront Follow us on social media IGN Finds on X IGN Finds on Instagram IGN Finds on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "Get a UrLife E20 1,000W Peak 48V Adult Electric Bike With 28mph Top Speed and 80 Mile Range for $297",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/ahead-of-metro-2039-metro-2033-and-metro-last-light-are-getting-next-gen-updates",
+   "title": "Ahead of Metro 2039, Metro 2033 and Metro Last Light Are Getting Next-Gen Updates",
+   "published_at": "2026-10-01T19:01:55Z",
+   "excerpt": "Metro 2039 is not too far away, launching on February 4, 2027. While that game will truly bring the franchise into the current generation, developer 4A Games is launching next-gen updates for the first two games.",
+   "content_text": "Metro 2039 is not terribly far away now, launching on February 4, 2027. While that game will truly bring the franchise to current generation consoles, developer 4A Games is launching next-gen updates for the first two games. Both Metro 2033 and Metro Last Light were incredible tech showcases for their time, but they haven't exactly aged gracefully. Despite getting an intial remaster all the way back in 2014, Metro 2033 doesn't play super well with modern hardware, and I've needed to tweak it every time I've gone back to play it. Luckily, these next-gen updates should bring some long-needed bug fixes to the game. The update will look different on console and on PC. For PS5 and Xbox Series X , the Metro games will run at either native 4K at 60 fps or an upscaled 4K at 120 fps, with PSSR on PS5 Pro and traditional temporal upscaling on the Xbox consoles. Over on PC, though, the game will finally have DLSS support, along with some unnamed quality-of-life improvements. 4A Games hasn't shared a lot of details on the updates coming to Metro 2033 and Metro Last Light, but it does promise to share full patch notes ahead of its October 22 release on PC and October 29 release on consoles. Either way, as long as the games are more stable, I'm all in. As a lifelong PC gamer, all three of the Metro games hold a special place in my heart, for all the torture they've put my graphics cards through in the past. Luckily, if you don't like putting your hardware through the wringer, it doesn't sound like 4A is going to add ray tracing or anything crazy to 2033 or Last Light, so they should be significantly easier to run at high settings than they were when they launched in 2010 and 2013. We've already gone hands-on with Metro 2039 , and it seems like an incredible and brutal post-apocalyptic shooter — just like I'd want out of the franchise. The visuals we've seen so far look incredible too, so I can only imagine that it's going to stay true to its roots of pushing PC hardware to its limits. Although, it is launching in the middle of an ongoing RAM crisis, which is going to limit its already niche appeal a bit when the benchmarks start rolling out. Here's to hoping 4A Games finds a way to make a Metro game scalable at launch for once.",
+   "title_en": "Ahead of Metro 2039, Metro 2033 and Metro Last Light Are Getting Next-Gen Updates",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 7.2
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/amazons-3-for-33-sale-on-4k-uhd-movies-october-2026",
+   "title": "Amazon’s 3 for $33 Sale on 4K UHD Movies Is Back",
+   "published_at": "2026-10-01T18:30:08Z",
+   "excerpt": "Amazon's ultra-popular 3 for $33 sale on 4K UHD movies is back, and it's live until October 10.",
+   "content_text": "It’s back, friends. One of the most popular Amazon sales among IGN readers is on once again ahead of Prime Big Deal Days. It’s the 3 for $33 sale on 4K movies . These are new and classic movies on physical discs you can buy and keep on your shelf. Many of them come with Blu-ray and digital copies as well, and many of the digital copies are compatible with Movies Anywhere, so you can stream them from your platform of choice. Better yet, this is not part of Amazon's Prime Big Deal Days , which means anyone can take advantage of the deals, whether or not you're a Prime member. What movies are on sale? Let’s take a look. Note : some movies in these sales always sell out. Amazon doesn’t have unlimited stock, so the most popular movies will inevitably go out of stock. If you want the best selection too choose from, buy sooner rather than later. There’s something for everyone in this sale, whether you’re into timeless classics like All the President’s Men and The Wizard of Oz or action-packed thrillers like Twisters, Jurassic Park Rebirth, and Mission Impossible 6: Fallout. Waterworld is in here, too, if you want to see what an exceptionally expensive movie looked like in the ‘90s. With Halloween coming up, it’s a good time to fill out the horror movie offerings in your collections. You can get movies like Smile, The Ring, It, and Friday the 13th on sale for $11 apiece in this sale. Shutter Island is a dark psychological thriller from Martin Scorsese that has plenty of spookiness as well. To lighten the mood after watching a fright-fest, you can turn on a comedy like The 40-Year-Old Virgin or American Pie. Or classics like Eddy Murphy’s Coming to America or the SNL skit-inspired Wayne’s World. Beyond those are Watchmen and Warcraft, Hot Fuzz and Tár. Superman’s in there. Again, whichever movies you want, grab them soon ( here's the full sale again ). You never know when Amazon will run out of stock and you’ll be stuck paying full price. If you want to see what upcoming physical releases for movies and TV shows are coming up, check out our freshly updated list of 4K Blu-ray release dates .",
+   "title_en": "Amazon’s 3 for $33 Sale on 4K UHD Movies Is Back",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "ign",
+   "domain": "game",
+   "url": "https://www.ign.com/articles/legend-of-zelda-mini-backpack-deal",
+   "title": "Save 44% Off the Officially Licensed The Legend of Zelda Mini Backpack",
+   "published_at": "2026-10-01T18:20:00Z",
+   "excerpt": "Rep the Kingdom of Hyrule.",
+   "content_text": "Zelda fans, check out this pretty cool piece of officially licensed merch. Bullseye Deals via eBay is offering The Legend of Zelda Mini Backpack for just $27.99 with free shipping after a 44% off discount (it's normally $50). \"Bullseye Deals\" is Target's authorized liquidator. Many assume that it's actually just Target since the products ship from Upper Marlboro, Maryland, the same location as Target's distribution center. The account has over 1.5 million reviews with a 99.5% rating. 44% Off The Legend of Zelda Mini Backpack The Zelda backpack is mini-sized, measuring 11.25\" high, 8.5\" wide, and 6 inches deep. It would probably look great on chibi Link from Link's Awakening . It's made of sage green faux leather with saddle brown accents. A large golden Hyrule Royal Crest adorns the backpack face along with a smaller gold Triforce metal zipper pull. This is a tastefully designed backpack that looks good even if you're not a Zelda fan and a worthy addition to your collection if you are. Don't forget to preorder Zelda: Ocarina of Time for Switch 2 Ocarina of Time for Switch 2 is out on October 5. You can preorder it on Amazon for $59.95, which is probably going to be $10 less than the official retail price once it's out. This is a complete remake, not remaster, of the 1998 original and if you haven't already seen the trailer, this game is shaping out to become yet another Zelda masterpiece . How to Follow IGN Deals Recommendations The IGN Deals team has over 30 years of combined experience finding the best discounts and preorders available online. If you want the latest updates from our trusted team, here’s how to follow our coverage: Sign up for our IGN Deals Newsletter Set IGN as a preferred source in Google Shop on our Amazon Storefront Follow us on social media IGN Finds on X IGN Finds on Instagram IGN Finds on Facebook IGN Deals on Tiktok Eric Song is the IGN commerce manager in charge of finding the best gaming and tech deals every day. When Eric isn't hunting for deals for other people at work, he's hunting for deals for himself during his free time.",
+   "title_en": "Save 44% Off the Officially Licensed The Legend of Zelda Mini Backpack",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.6
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+   "title": "Gemini 4 Argon: our next era of frontier intelligence",
+   "published_at": "2026-09-30T20:01:45Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Gemini 4 Argon: our next era of frontier intelligence",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-synthid-bio/",
+   "title": "Introducing SynthID Bio",
+   "published_at": "2026-09-30T15:03:07Z",
+   "excerpt": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+   "content_text": "",
+   "title_en": "Introducing SynthID Bio",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-38-live-with-live-avatar/",
+   "title": "Introducing Gemini 3.8 Live with Live Avatar",
+   "published_at": "2026-09-24T16:20:39Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.8 Live with Live Avatar",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/advancing-private-ai-compute-with-secure-server-side-memory/",
+   "title": "Advancing Private AI Compute with secure, server-side memory",
+   "published_at": "2026-09-23T16:00:57Z",
+   "excerpt": "Introducing private, server-side memory to Private AI Compute for personal AI.",
+   "content_text": "",
+   "title_en": "Advancing Private AI Compute with secure, server-side memory",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/say-hello-to-gemini-38-text-to-speech/",
+   "title": "Gemini 3.8 text-to-speech says hello",
+   "published_at": "2026-09-23T15:25:14Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Gemini 3.8 text-to-speech says hello",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
+   "title": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+   "published_at": "2026-09-15T17:05:57Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.8 Live and 3.8 Live Extended Thinking",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
+   "title": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+   "published_at": "2026-09-08T14:00:15Z",
+   "excerpt": "AlphaGenome Atlas maps the molecular effects of 9 billion single-letter DNA variants across the human genome.",
+   "content_text": "",
+   "title_en": "AlphaGenome Atlas: A predictive map of every possible DNA letter change in the human genome",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-weathernext-3-our-most-advanced-and-accurate-global-weather-ai-model/",
+   "title": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+   "published_at": "2026-09-03T15:02:08Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing WeatherNext 3, our most advanced and accurate global weather AI model",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/proactive-cyber-defense-for-governments-and-enterprises/",
+   "title": "Proactive cyber defense for governments and enterprises",
+   "published_at": "2026-09-02T16:24:24Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Proactive cyber defense for governments and enterprises",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+   "title": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+   "published_at": "2026-09-02T16:18:31Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.8 Flash and 3.8 Flash Cyber",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-agentic-video-in-gemini/",
+   "title": "Introducing agentic video understanding with Gemini",
+   "published_at": "2026-09-01T17:08:51Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing agentic video understanding with Gemini",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-omni-1-1-flash-lets-you-build-with-more-control/",
+   "title": "Gemini Omni 1.1 Flash lets you build with more control",
+   "published_at": "2026-08-27T16:11:32Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Gemini Omni 1.1 Flash lets you build with more control",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/piloting-the-worlds-first-double-blind-ai-evaluations/",
+   "title": "Piloting the world's first double-blind AI evaluations",
+   "published_at": "2026-08-27T12:59:16Z",
+   "excerpt": "Piloting the world's first double-blind AI evaluations",
+   "content_text": "",
+   "title_en": "Piloting the world's first double-blind AI evaluations",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/intelligent-transcription-with-gemini-3-5-transcribe/",
+   "title": "Intelligent transcription with Gemini 3.5 Transcribe",
+   "published_at": "2026-08-26T17:01:00Z",
+   "excerpt": "Now you can get more intelligent speech-to-text transcription with Gemini 3.5 Transcribe.",
+   "content_text": "",
+   "title_en": "Intelligent transcription with Gemini 3.5 Transcribe",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/from-atari-to-eve-online-building-on-15-years-of-ai-research-in-games/",
+   "title": "From Atari to EVE Online: Building on 15 Years of AI Research in Games",
+   "published_at": "2026-08-21T11:59:48Z",
+   "excerpt": "Google DeepMind partners with game studios to prototype breakthrough AI gameplay.",
+   "content_text": "",
+   "title_en": "From Atari to EVE Online: Building on 15 Years of AI Research in Games",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
+   "title": "Introducing Gemini 3.7 Flash",
+   "published_at": "2026-08-13T17:04:18Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.7 Flash",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/putting-sign-language-ai-into-users-hands/",
+   "title": "Putting sign language AI into users’ hands",
+   "published_at": "2026-08-12T14:01:59Z",
+   "excerpt": "Introducing sign-language-to-text (SL2T), our breakthrough model powering new sign language features for Deaf and hard of hearing users.",
+   "content_text": "",
+   "title_en": "Putting sign language AI into users’ hands",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/",
+   "title": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+   "published_at": "2026-08-06T15:06:15Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "WeatherNext: AI model achieves breakthrough in forecasting cyclones",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-robotics-er-2-powering-robotics-with-video-understanding-task-orchestration-and-multi-robot-collaboration/",
+   "title": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+   "published_at": "2026-07-30T15:00:59Z",
+   "excerpt": "Gemini Robotics ER 2 helps robots reason, collaborate, and solve real-world tasks. It represents a step change in video understanding, tool orchestration, and multi-robot collaboration for robotic applications.",
+   "content_text": "",
+   "title_en": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/were-launching-lyria-35-in-google-flow-music-with-advances-across-musicality-lyrics-vocals-and-creative-control/",
+   "title": "We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control",
+   "published_at": "2026-07-29T16:02:10Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "We’re launching Lyria 3.5 in Google Flow Music, with advances across musicality, lyrics, vocals, and creative control",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/",
+   "title": "Gemini Robotics 2 brings whole body intelligence to robots",
+   "published_at": "2026-07-28T13:21:37Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Gemini Robotics 2 brings whole body intelligence to robots",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/accelerating-the-frontiers-of-scientific-discovery-googles-40m-commitment-to-the-genesis-mission/",
+   "title": "Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission",
+   "published_at": "2026-07-22T13:38:54Z",
+   "excerpt": "Google commits $40M in AI tokens and credits for the Genesis Mission",
+   "content_text": "",
+   "title_en": "Accelerating the frontiers of scientific discovery: Google’s $40M commitment to the Genesis Mission",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber/",
+   "title": "Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber",
+   "published_at": "2026-07-21T15:16:30Z",
+   "excerpt": "We’re introducing new Gemini models, including Gemini 3.6 Flash, 3.5 Flash-Lite and 3.5 Flash Cyber.",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-3-5-flash-cyber/",
+   "title": "Introducing Gemini 3.5 Flash Cyber",
+   "published_at": "2026-07-17T15:00:11Z",
+   "excerpt": "Google introduces Gemini 3.5 Flash Cyber, a lightweight cybersecurity model to find and patch vulnerabilities.",
+   "content_text": "",
+   "title_en": "Introducing Gemini 3.5 Flash Cyber",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/our-approach-to-bioresilience/",
+   "title": "Our approach to bioresilience",
+   "published_at": "2026-07-16T09:30:42Z",
+   "excerpt": "Google DeepMind and Isomorphic Labs are sharing our joint approach to bioresilience and AI models.",
+   "content_text": "",
+   "title_en": "Our approach to bioresilience",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/empowering-indias-next-generation-of-innovators-with-atl-saathi/",
+   "title": "Empowering India’s next generation of innovators with ATL Saathi",
+   "published_at": "2026-07-13T12:37:28Z",
+   "excerpt": "Google and AIM launched ATL Saathi, a Gemini-powered AI tool empowering Indian educators in robotics labs.",
+   "content_text": "",
+   "title_en": "Empowering India’s next generation of innovators with ATL Saathi",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/",
+   "title": "Google DeepMind and A24 announce first-of-its-kind research partnership",
+   "published_at": "2026-07-03T14:25:43Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Google DeepMind and A24 announce first-of-its-kind research partnership",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/",
+   "title": "Start building with Nano Banana 2 Lite and Gemini Omni Flash",
+   "published_at": "2026-06-30T16:02:40Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Start building with Nano Banana 2 Lite and Gemini Omni Flash",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
+   "title": "Introducing computer use in Gemini 3.5 Flash",
+   "published_at": "2026-06-24T16:30:01Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing computer use in Gemini 3.5 Flash",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
+   "title": "Unlocking UK house-building with AI-accelerated planning",
+   "published_at": "2026-06-16T21:29:50Z",
+   "excerpt": "UK government partners with Google DeepMind to build a new AI-powered prototype aimed at faster housing decisions.",
+   "content_text": "",
+   "title_en": "Unlocking UK house-building with AI-accelerated planning",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
+   "title": "Securing the future of AI agents",
+   "published_at": "2026-06-16T15:46:31Z",
+   "excerpt": "Securing internal systems with an AI Control Roadmap, combining traditional safeguards and real-time monitoring.",
+   "content_text": "",
+   "title_en": "Securing the future of AI agents",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/diffusiongemma-4x-faster-text-generation/",
+   "title": "DiffusionGemma: 4x faster text generation",
+   "published_at": "2026-06-10T16:24:11Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "DiffusionGemma: 4x faster text generation",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
+   "title": "Investing in multi-agent AI safety research",
+   "published_at": "2026-06-10T10:21:19Z",
+   "excerpt": "Google DeepMind and partners announce a $10M funding call for multi-agent safety research.",
+   "content_text": "",
+   "title_en": "Investing in multi-agent AI safety research",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
+   "title": "Fluid, natural voice translation with Gemini 3.5 Live Translate",
+   "published_at": "2026-06-09T15:16:25Z",
+   "excerpt": "Gemini 3.5 Live Translate brings near real-time, natural speech translation to Google AI Studio, Google Translate and Google Meet.",
+   "content_text": "",
+   "title_en": "Fluid, natural voice translation with Gemini 3.5 Live Translate",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
+   "title": "Introducing Gemma 4 12B: a unified, encoder-free multimodal model",
+   "published_at": "2026-06-09T14:10:19Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemma 4 12B: a unified, encoder-free multimodal model",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.6
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/powering-the-future-of-robotics-in-europe/",
+   "title": "Powering the future of robotics in Europe",
+   "published_at": "2026-06-09T14:02:33Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Powering the future of robotics in Europe",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/measuring-the-impact-of-learning-with-ai-in-sierra-leone-and-beyond/",
+   "title": "Measuring the impact of learning with AI in Sierra Leone and beyond",
+   "published_at": "2026-06-08T13:04:59Z",
+   "excerpt": "Results from a randomized controlled trial show the potential of Gemini’s Guided Learning feature to boost engagement and accelerate learning.",
+   "content_text": "",
+   "title_en": "Measuring the impact of learning with AI in Sierra Leone and beyond",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/were-launching-the-google-deepmind-accelerator-program-in-asia-pacific-to-tackle-environmental-risks/",
+   "title": "We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks",
+   "published_at": "2026-05-21T19:46:42Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "We’re launching the Google DeepMind Accelerator program in Asia Pacific to tackle environmental risks",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/fast-tracking-genetic-leads-to-reverse-cellular-aging/",
+   "title": "Fast-tracking genetic leads to reverse cellular aging",
+   "published_at": "2026-05-18T18:21:39Z",
+   "excerpt": "Biologists use Co-Scientist to find novel factors that successfully rejuvenate human cells.",
+   "content_text": "",
+   "title_en": "Fast-tracking genetic leads to reverse cellular aging",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/",
+   "title": "Simulate real-world places with Project Genie and Street View",
+   "published_at": "2026-05-17T19:53:18Z",
+   "excerpt": "We’re expanding access to Google AI Ultra subscribers globally and introducing a new capability powered by Street View.",
+   "content_text": "",
+   "title_en": "Simulate real-world places with Project Genie and Street View",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-gemini-omni/",
+   "title": "Introducing Gemini Omni",
+   "published_at": "2026-05-17T19:50:57Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Gemini Omni",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/introducing-google-antigravity-2-0/",
+   "title": "Introducing Google Antigravity 2.0",
+   "published_at": "2026-05-17T19:43:45Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Google Antigravity 2.0",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-for-science-ai-experiments-and-tools-for-a-new-era-of-discovery/",
+   "title": "Gemini for Science: AI experiments and tools for a new era of discovery",
+   "published_at": "2026-05-17T13:50:34Z",
+   "excerpt": "A collection of science tools and experiments to expand the scale and precision of scientific exploration.",
+   "content_text": "",
+   "title_en": "Gemini for Science: AI experiments and tools for a new era of discovery",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/making-it-easier-to-understand-how-content-was-created-and-edited/",
+   "title": "Making it easier to understand how content was created and edited",
+   "published_at": "2026-05-17T13:43:50Z",
+   "excerpt": "We're expanding our tools to help you understand how content was created and edited across the web.",
+   "content_text": "",
+   "title_en": "Making it easier to understand how content was created and edited",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/strengthening-singapores-ai-future-a-new-national-partnership/",
+   "title": "Strengthening Singapore’s AI Future: A New National Partnership",
+   "published_at": "2026-05-16T09:13:34Z",
+   "excerpt": "Google DeepMind and Singapore partner to apply frontier AI to address complex challenges across health, education, and sustainability and more.",
+   "content_text": "",
+   "title_en": "Strengthening Singapore’s AI Future: A New National Partnership",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/finding-the-molecular-switches-behind-new-infectious-diseases/",
+   "title": "Finding the molecular switches behind new infectious diseases",
+   "published_at": "2026-05-16T08:16:06Z",
+   "excerpt": "Clare Bryant uses Co-Scientist to identify genetic triggers in emerging infectious diseases.",
+   "content_text": "",
+   "title_en": "Finding the molecular switches behind new infectious diseases",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/opening-new-paths-in-aging-research/",
+   "title": "Opening new paths in aging research",
+   "published_at": "2026-05-16T08:08:44Z",
+   "excerpt": "Calico Life Sciences uses Co-Scientist to connect scattered findings and generate new leads in aging research.",
+   "content_text": "",
+   "title_en": "Opening new paths in aging research",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/accelerating-discovery-of-liver-disease-mechanisms/",
+   "title": "Accelerating discovery of liver disease mechanisms",
+   "published_at": "2026-05-16T08:00:15Z",
+   "excerpt": "Filippo Menolascina uses Co-Scientist to identify new liver disease treatments and explain why existing drugs only help certain patients.",
+   "content_text": "",
+   "title_en": "Accelerating discovery of liver disease mechanisms",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/uniting-biological-toolkits-for-a-new-approach-to-als/",
+   "title": "Uniting biological toolkits for a new approach to ALS",
+   "published_at": "2026-05-16T07:53:11Z",
+   "excerpt": "Co-Scientist unites Boston Children’s Hospital and MIT’s labs to explore new RNA-based treatments for ALS.",
+   "content_text": "",
+   "title_en": "Uniting biological toolkits for a new approach to ALS",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/uncovering-repurposed-medicines-to-fight-liver-fibrosis/",
+   "title": "Uncovering repurposed medicines to fight liver fibrosis",
+   "published_at": "2026-05-16T07:40:27Z",
+   "excerpt": "Stanford geneticist uses Co-Scientist to help find new treatments for chronic liver disease and liver fibrosis.",
+   "content_text": "",
+   "title_en": "Uncovering repurposed medicines to fight liver fibrosis",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/how-weathernext-helped-the-national-hurricane-center-better-predict-hurricane-melissas-historic-landfall-in-jamaica/",
+   "title": "How WeatherNext helped the National Hurricane Center better predict Hurricane Melissa’s historic landfall in Jamaica",
+   "published_at": "2026-05-16T03:14:17Z",
+   "excerpt": "Learn how our WeatherNext AI model help forecasters give communities unprecedented time to prepare ahead of the historic Hurricane Melissa.",
+   "content_text": "",
+   "title_en": "How WeatherNext helped the National Hurricane Center better predict Hurricane Melissa’s historic landfall in Jamaica",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-3-5-frontier-intelligence-with-action/",
+   "title": "Gemini 3.5: frontier intelligence with action",
+   "published_at": "2026-05-15T22:50:12Z",
+   "excerpt": "Gemini 3.5 is built to help you execute complex, agentic workflows.",
+   "content_text": "",
+   "title_en": "Gemini 3.5: frontier intelligence with action",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/",
+   "title": "Co-Scientist: A multi-agent AI partner to accelerate research",
+   "published_at": "2026-05-12T14:40:07Z",
+   "excerpt": "Introducing Co-Scientist, a collaborative AI partner built with Gemini to help researchers accelerate scientific breakthroughs.",
+   "content_text": "",
+   "title_en": "Co-Scientist: A multi-agent AI partner to accelerate research",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/alphaevolve-impact/",
+   "title": "AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields",
+   "published_at": "2026-05-06T10:43:49Z",
+   "excerpt": "Explore how AlphaEvolve's Gemini-powered algorithms are driving impact across business, infrastructure, and science.",
+   "content_text": "",
+   "title_en": "AlphaEvolve: How our Gemini-powered coding agent is scaling impact across fields",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.6
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/ai-co-clinician/",
+   "title": "Enabling a new model for healthcare with AI co-clinician",
+   "published_at": "2026-04-30T12:14:15Z",
+   "excerpt": "Researching the path to AI-augmented care and development of an AI co-clinician.",
+   "content_text": "",
+   "title_en": "Enabling a new model for healthcare with AI co-clinician",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/announcing-our-partnership-with-the-republic-of-korea/",
+   "title": "Announcing our partnership with the Republic of Korea",
+   "published_at": "2026-04-27T07:00:06Z",
+   "excerpt": "Google DeepMind and Korea partner to accelerate scientific breakthroughs using frontier AI models",
+   "content_text": "",
+   "title_en": "Announcing our partnership with the Republic of Korea",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/decoupled-diloco/",
+   "title": "Decoupled DiLoCo: A new frontier for resilient, distributed AI training",
+   "published_at": "2026-04-22T10:20:03Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Decoupled DiLoCo: A new frontier for resilient, distributed AI training",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/partnering-with-industry-leaders-to-accelerate-ai-transformation/",
+   "title": "Partnering with industry leaders to accelerate AI transformation",
+   "published_at": "2026-04-21T14:54:15Z",
+   "excerpt": "Google DeepMind partners with global consultancies to bring the power of frontier AI to organizations around the world.",
+   "content_text": "",
+   "title_en": "Partnering with industry leaders to accelerate AI transformation",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-3-1-flash-tts-the-next-generation-of-expressive-ai-speech/",
+   "title": "Gemini 3.1 Flash TTS: the next generation of expressive AI speech",
+   "published_at": "2026-04-15T16:03:19Z",
+   "excerpt": "Our newest audio model introduces granular audio tags that give you precise control to direct AI speech for expressive audio generation.",
+   "content_text": "",
+   "title_en": "Gemini 3.1 Flash TTS: the next generation of expressive AI speech",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "deepmind",
+   "domain": "ai",
+   "url": "https://deepmind.google/blog/gemini-robotics-er-1-6/",
+   "title": "Gemini Robotics-ER 1.6: Powering real-world robotics tasks through enhanced embodied reasoning",
+   "published_at": "2026-04-13T15:52:13Z",
+   "excerpt": "Gemini Robotics ER 1.6: Enhancing spatial reasoning and multi-view understanding for autonomous robotics.",
+   "content_text": "",
+   "title_en": "Gemini Robotics-ER 1.6: Powering real-world robotics tasks through enhanced embodied reasoning",
+   "lang": "en",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/allenai/olmocore3",
+   "title": "Introducing Olmo-core 3: Open, scalable training infrastructure for large MoEs",
+   "published_at": "2026-10-01T15:01:43Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Olmo-core 3: Open, scalable training infrastructure for large MoEs",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 7.2
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/open-tts-leaderboard",
+   "title": "Open TTS Leaderboard: Scalable Evaluation for Multilingual Text-to-Speech and Voice Cloning",
+   "published_at": "2026-09-30T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Open TTS Leaderboard: Scalable Evaluation for Multilingual Text-to-Speech and Voice Cloning",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/nvidia/kumo-tabular",
+   "title": "NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction",
+   "published_at": "2026-09-29T15:30:38Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.0
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/MultiverseComputingCAI/getting-the-source-right-not-just-the-fact-source",
+   "title": "Getting the Source Right, Not Just the Fact: Source-Aware Verification for MCP Agents",
+   "published_at": "2026-09-29T13:07:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Getting the Source Right, Not Just the Fact: Source-Aware Verification for MCP Agents",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.6
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Hcompany/holo4",
+   "title": "Holo4: powering generalist computer-use agents",
+   "published_at": "2026-09-28T09:44:05Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Holo4: powering generalist computer-use agents",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark",
+   "title": "Accelerating vision-language models with LFM2.5-VL-DSpark",
+   "published_at": "2026-09-24T14:08:57Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Accelerating vision-language models with LFM2.5-VL-DSpark",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/evaleval-aisi",
+   "title": "How UK AISI and EvalEval Are Making Benchmark Results Reproducible",
+   "published_at": "2026-09-22T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "How UK AISI and EvalEval Are Making Benchmark Results Reproducible",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/transformers-llama-cpp-quants",
+   "title": "Transformers now runs llama.cpp quants",
+   "published_at": "2026-09-22T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Transformers now runs llama.cpp quants",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/omlx",
+   "title": "Jun Kim, oMLX creator and maintainer, joins Hugging Face to support the MLX community",
+   "published_at": "2026-09-22T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Jun Kim, oMLX creator and maintainer, joins Hugging Face to support the MLX community",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/tokenizers-v1",
+   "title": "tokenizers v1: encode, decode and scaling, measured",
+   "published_at": "2026-09-21T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "tokenizers v1: encode, decode and scaling, measured",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
+   "title": "Your Agent Aced the Task. Will It Do It Again?",
+   "published_at": "2026-09-15T16:00:44Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Your Agent Aced the Task. Will It Do It Again?",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/asyncgrpo-lora-hfjobs",
+   "title": "Async GRPO with LoRA across HF Jobs: a bucket, a proxy, and no NCCL",
+   "published_at": "2026-09-10T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Async GRPO with LoRA across HF Jobs: a bucket, a proxy, and no NCCL",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/gradio-workflow-1111",
+   "title": "Rebuilding AUTOMATIC1111 with Gradio Workflow",
+   "published_at": "2026-09-10T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Rebuilding AUTOMATIC1111 with Gradio Workflow",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Hcompany/neomme",
+   "title": "NeoMME: an efficient Multimodal-native and Multilingual Encoder",
+   "published_at": "2026-09-03T13:13:48Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "NeoMME: an efficient Multimodal-native and Multilingual Encoder",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct",
+   "title": "Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps",
+   "published_at": "2026-09-03T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Fine-tuning a 350M Model for Better Structured Outputs in 100 GRPO Steps",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/funes",
+   "title": "Give Your Coding Agents a Memory You Own",
+   "published_at": "2026-09-03T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Give Your Coding Agents a Memory You Own",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/train-to-paint-with-code",
+   "title": "Training a coding model to paint watercolours with TRL and OpenEnv",
+   "published_at": "2026-09-03T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Training a coding model to paint watercolours with TRL and OpenEnv",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/allenai/benchmirt",
+   "title": "BenchMIRT: What are LLM benchmarks actually measuring?",
+   "published_at": "2026-09-01T21:39:07Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "BenchMIRT: What are LLM benchmarks actually measuring?",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/webgpu-kernels",
+   "title": "Introducing @huggingface/kernels: 200+ WebGPU Kernels for Local AI",
+   "published_at": "2026-09-01T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing @huggingface/kernels: 200+ WebGPU Kernels for Local AI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/open-asr-leaderboard-global-south",
+   "title": "The Open ASR Leaderboard Adds Its First Global South Language",
+   "published_at": "2026-08-28T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "The Open ASR Leaderboard Adds Its First Global South Language",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/train-multi-vector-encoder",
+   "title": "Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers",
+   "published_at": "2026-08-26T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Training and Finetuning Multi-Vector Embedding Models with Sentence Transformers",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-granite/granite-4-2",
+   "title": "Granite 4.2 LLMs: How They're Built",
+   "published_at": "2026-08-25T15:14:14Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Granite 4.2 LLMs: How They're Built",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/MultiverseComputingCAI/quantization-aware-healing",
+   "title": "Quantization-Aware Healing: a compressed, 4-bit model that outperforms its full-precision original",
+   "published_at": "2026-08-25T11:39:24Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Quantization-Aware Healing: a compressed, 4-bit model that outperforms its full-precision original",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/gradio-workflow-guide",
+   "title": "Wire It, Run It, Deploy It: AI Workflows in Gradio",
+   "published_at": "2026-08-25T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Wire It, Run It, Deploy It: AI Workflows in Gradio",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/pwc-search",
+   "title": "How Hugging Face Inference Endpoints, Jobs, and Buckets Power Search on Papers with Code",
+   "published_at": "2026-08-21T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "How Hugging Face Inference Endpoints, Jobs, and Buckets Power Search on Papers with Code",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/asr-benchmark-optimization",
+   "title": "Measuring benchmark optimization in speech recognition",
+   "published_at": "2026-08-21T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Measuring benchmark optimization in speech recognition",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/LiquidAI/lfm25-dspark",
+   "title": "Up to 3.2x Faster Inference with LFM2.5-DSpark",
+   "published_at": "2026-08-20T16:52:57Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Up to 3.2x Faster Inference with LFM2.5-DSpark",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-research/altk-evolve-hmm",
+   "title": "How Much Memory Does Your Agent Actually Need?",
+   "published_at": "2026-08-18T18:09:38Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "How Much Memory Does Your Agent Actually Need?",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/multi-vector-encoder",
+   "title": "Multi-Vector (Late Interaction) Embedding Models with Sentence Transformers",
+   "published_at": "2026-08-18T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Multi-Vector (Late Interaction) Embedding Models with Sentence Transformers",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Dharma-AI/gpu-management-pt2",
+   "title": "Same Cluster, 33 Points More Utilization: What Changed Was the Order",
+   "published_at": "2026-08-17T19:46:21Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Same Cluster, 33 Points More Utilization: What Changed Was the Order",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/state-of-open-models-summer-2026",
+   "title": "State of Open Models: Summer 2026 Observations",
+   "published_at": "2026-08-14T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "State of Open Models: Summer 2026 Observations",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/amazon/strands-lerobot-streaming-data-loop",
+   "title": "Record, train, and deploy from one place with Strands Agents, LeRobot, and Hugging Face Storage Buckets",
+   "published_at": "2026-08-13T17:16:04Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Record, train, and deploy from one place with Strands Agents, LeRobot, and Hugging Face Storage Buckets",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/icml-2026-open-reproductions",
+   "title": "What We Learned by Reproducing 2,200 papers from ICML",
+   "published_at": "2026-08-13T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "What We Learned by Reproducing 2,200 papers from ICML",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/allenai/olmoearth-embeddings",
+   "title": "Introducing OlmoEarth embeddings: Custom embedding exports from OlmoEarth Studio for downstream analysis",
+   "published_at": "2026-08-12T16:14:36Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing OlmoEarth embeddings: Custom embedding exports from OlmoEarth Studio for downstream analysis",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-research/altk-evolve-sldd",
+   "title": "Thinking of ACE? We Can Do It with Fewer Tokens",
+   "published_at": "2026-08-11T13:37:10Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Thinking of ACE? We Can Do It with Fewer Tokens",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/nvidia/magpie-tts-multilingual-voice-agents",
+   "title": "Build Low-Latency Multilingual Voice Agents: Open Weights & Full Deployment Control with NVIDIA Magpie TTS",
+   "published_at": "2026-08-10T16:25:36Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Build Low-Latency Multilingual Voice Agents: Open Weights & Full Deployment Control with NVIDIA Magpie TTS",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/MultiverseComputingCAI/efficient-knowledge-distillation",
+   "title": "Making Knowledge Distillation Cheap Enough to Run at Scale",
+   "published_at": "2026-08-10T10:05:36Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Making Knowledge Distillation Cheap Enough to Run at Scale",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/muse-glimmer",
+   "title": "Meta is back with Muse Glimmer: local, agentic, multimodal, and open source",
+   "published_at": "2026-08-10T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Meta is back with Muse Glimmer: local, agentic, multimodal, and open source",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.9
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/baseten",
+   "title": "Baseten on Hugging Face Inference Providers 🔥",
+   "published_at": "2026-08-06T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Baseten on Hugging Face Inference Providers 🔥",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Dharma-AI/gpu-management",
+   "title": "GPU Management: Why Idle GPUs Are the New Grounded Aircraft",
+   "published_at": "2026-07-30T15:09:09Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "GPU Management: Why Idle GPUs Are the New Grounded Aircraft",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/nvidia/cosmos-h-dreams",
+   "title": "NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics",
+   "published_at": "2026-07-27T09:32:20Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/agent-intrusion-technical-timeline",
+   "title": "Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident",
+   "published_at": "2026-07-27T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/nunchaku-diffusers",
+   "title": "Bringing Nunchaku 4-bit Diffusion Inference to Diffusers",
+   "published_at": "2026-07-23T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Bringing Nunchaku 4-bit Diffusion Inference to Diffusers",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/grabette",
+   "title": "Grabette: an open system to record robot-manipulation data",
+   "published_at": "2026-07-21T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Grabette: an open system to record robot-manipulation data",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Dharma-AI/newer-models-same-advantages",
+   "title": "Newer Models, Same Advantage",
+   "published_at": "2026-07-16T11:49:48Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Newer Models, Same Advantage",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/security-incident-july-2026",
+   "title": "Security incident disclosure — July 2026",
+   "published_at": "2026-07-16T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Security incident disclosure — July 2026",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-research/model-routing-is-simple-until-it-isnt",
+   "title": "Model Routing Is Simple. Until It Isn’t.",
+   "published_at": "2026-07-15T17:27:01Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Model Routing Is Simple. Until It Isn’t.",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/thinkingmachines-inkling",
+   "title": "Welcome Inkling by Thinking Machines",
+   "published_at": "2026-07-15T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Welcome Inkling by Thinking Machines",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/real-world-voiceeq",
+   "title": "Introducing Real World VoiceEQ: Measuring the human quality of voice AI",
+   "published_at": "2026-07-15T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Introducing Real World VoiceEQ: Measuring the human quality of voice AI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/torch-attention-profile",
+   "title": "Profiling in PyTorch (Part 3): Attention is all you profile",
+   "published_at": "2026-07-10T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Profiling in PyTorch (Part 3): Attention is all you profile",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/native-speed-vllm-transformers-backend",
+   "title": "Native-speed vLLM transformers modeling backend",
+   "published_at": "2026-07-08T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Native-speed vLLM transformers modeling backend",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio",
+   "title": "From Hugging Face to Amazon SageMaker Studio in one click",
+   "published_at": "2026-07-07T21:15:33Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "From Hugging Face to Amazon SageMaker Studio in one click",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/microsoft/foundry-managed-compute",
+   "title": "Hugging Face Models on Foundry Managed Compute",
+   "published_at": "2026-07-07T15:20:06Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Hugging Face Models on Foundry Managed Compute",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/skypilot-hf-storage",
+   "title": "Run AI workloads on any cloud, store on Hugging Face: zero-egress storage with SkyPilot",
+   "published_at": "2026-07-07T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Run AI workloads on any cloud, store on Hugging Face: zero-egress storage with SkyPilot",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/lerobot-release-v060",
+   "title": "LeRobot v0.6.0: Imagine, Evaluate, Improve",
+   "published_at": "2026-07-07T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "LeRobot v0.6.0: Imagine, Evaluate, Improve",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Photoroom/prx-part4-data",
+   "title": "PRX Part 4: Our Data Strategy",
+   "published_at": "2026-07-06T15:30:55Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "PRX Part 4: Our Data Strategy",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/revamped-kernels",
+   "title": "🤗 Kernels: Major Updates",
+   "published_at": "2026-07-06T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "🤗 Kernels: Major Updates",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/cerebras-gemma4-voice-ai",
+   "title": "Hugging Face and Cerebras bring Gemma 4 to real-time voice AI",
+   "published_at": "2026-07-01T00:00:00Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Hugging Face and Cerebras bring Gemma 4 to real-time voice AI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/ibm-research/scarfbench",
+   "title": "ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration",
+   "published_at": "2026-06-30T18:32:50Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 6.3
+   }
+  },
+  {
+   "source_id": "hf_blog",
+   "domain": "ai",
+   "url": "https://huggingface.co/blog/Dharma-AI/why-specialization-is-inevitable",
+   "title": "Why Specialization Is Inevitable",
+   "published_at": "2026-06-30T14:39:11Z",
+   "excerpt": "",
+   "content_text": "",
+   "title_en": "Why Specialization Is Inevitable",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.1
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/how-diffusion-controller-unifies-and-simplifies-ai-image-generation/",
+   "title": "How Diffusion Controller unifies and simplifies AI image generation",
+   "published_at": "2026-09-29T18:38:27Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "How Diffusion Controller unifies and simplifies AI image generation",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.7
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/coherent-long-form-video-generation/",
+   "title": "Automating coherent long-form video generation",
+   "published_at": "2026-09-24T19:40:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Automating coherent long-form video generation",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/millemiglia-a-realistic-instance-generator-for-middle-mile-logistics/",
+   "title": "MilleMiglia: A realistic instance generator for middle-mile logistics",
+   "published_at": "2026-09-18T17:46:09Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "MilleMiglia: A realistic instance generator for middle-mile logistics",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/the-future-of-practice-enabling-teachers-to-create-learning-interactives-with-generative-ui/",
+   "title": "The future of practice: Enabling teachers to create learning interactives with generative UI",
+   "published_at": "2026-09-17T20:45:00Z",
+   "excerpt": "Education Innovation",
+   "content_text": "",
+   "title_en": "The future of practice: Enabling teachers to create learning interactives with generative UI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/bypassing-inference-bottlenecks-accelerating-complex-ai-search-with-retrieve-for-train/",
+   "title": "Bypassing inference bottlenecks: Accelerating complex AI search with Retrieve-for-Train",
+   "published_at": "2026-09-15T20:00:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Bypassing inference bottlenecks: Accelerating complex AI search with Retrieve-for-Train",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/toolgrad-efficient-tool-use-dataset-generation-with-textual-gradients/",
+   "title": "ToolGrad: Efficient tool-use dataset generation with textual \"gradients\"",
+   "published_at": "2026-09-10T22:50:22Z",
+   "excerpt": "Machine Intelligence",
+   "content_text": "",
+   "title_en": "ToolGrad: Efficient tool-use dataset generation with textual \"gradients\"",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/transfer-learning-for-genomic-prediction-in-underrepresented-populations/",
+   "title": "Transfer learning for genomic prediction in underrepresented populations",
+   "published_at": "2026-09-03T18:20:31Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "Transfer learning for genomic prediction in underrepresented populations",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/",
+   "title": "A connectomics milestone: Mapping the complete male fruit fly brain",
+   "published_at": "2026-09-03T16:00:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "A connectomics milestone: Mapping the complete male fruit fly brain",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/mapping-global-methane-emissions-from-space-with-deep-learning/",
+   "title": "Mapping global methane emissions from space with deep learning",
+   "published_at": "2026-09-01T18:40:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "Mapping global methane emissions from space with deep learning",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/",
+   "title": "TimesFM-3: A zero-shot foundation model for multivariate forecasting",
+   "published_at": "2026-08-31T17:19:40Z",
+   "excerpt": "Data Management",
+   "content_text": "",
+   "title_en": "TimesFM-3: A zero-shot foundation model for multivariate forecasting",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/planetary-prediction-engine-automating-global-models-via-earth-ai/",
+   "title": "Planetary prediction engine: Automating global models via Earth AI",
+   "published_at": "2026-08-27T17:37:00Z",
+   "excerpt": "Earth AI",
+   "content_text": "",
+   "title_en": "Planetary prediction engine: Automating global models via Earth AI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/glucofm-foundation-model-for-continuous-glucose-monitoring/",
+   "title": "GlucoFM: Foundation model for continuous glucose monitoring",
+   "published_at": "2026-08-26T18:42:43Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "GlucoFM: Foundation model for continuous glucose monitoring",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/agenthands-generating-interactive-hand-gestures-for-spatially-grounded-agent-conversations-in-xr/",
+   "title": "AgentHands: Generating interactive hand gestures for spatially grounded agent conversations in XR",
+   "published_at": "2026-08-25T19:10:59Z",
+   "excerpt": "Human-Computer Interaction and Visualization",
+   "content_text": "",
+   "title_en": "AgentHands: Generating interactive hand gestures for spatially grounded agent conversations in XR",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/an-ai-tool-for-prioritizing-candidate-biomarkers-from-wearable-sensor-data/",
+   "title": "An AI tool for prioritizing candidate biomarkers from wearable sensor data",
+   "published_at": "2026-08-21T17:02:24Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "An AI tool for prioritizing candidate biomarkers from wearable sensor data",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/how-mobility-gives-language-models-a-deeper-understanding-of-place/",
+   "title": "How mobility gives language models a deeper understanding of place",
+   "published_at": "2026-08-21T10:54:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "How mobility gives language models a deeper understanding of place",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/seeing-beyond-bmi-estimating-cardiometabolic-risk-with-smartphone-imagery/",
+   "title": "Seeing beyond BMI: Estimating cardiometabolic risk with smartphone imagery",
+   "published_at": "2026-08-17T10:34:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "Seeing beyond BMI: Estimating cardiometabolic risk with smartphone imagery",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/empty-shelves-or-lost-keys-recall-is-the-bottleneck-for-parametric-factuality/",
+   "title": "Empty shelves or lost keys? Recall is the bottleneck for parametric factuality",
+   "published_at": "2026-08-12T09:51:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Empty shelves or lost keys? Recall is the bottleneck for parametric factuality",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/advancing-amie-towards-expert-level-audio-visual-clinical-consultations/",
+   "title": "Advancing AMIE towards expert-level audio-visual clinical consultations",
+   "published_at": "2026-08-11T17:04:00Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "Advancing AMIE towards expert-level audio-visual clinical consultations",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/",
+   "title": "Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence",
+   "published_at": "2026-07-30T20:36:36Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/symptomai-towards-a-conversational-ai-agent-for-everyday-symptom-assessment/",
+   "title": "SymptomAI: Towards a conversational AI agent for everyday symptom assessment",
+   "published_at": "2026-07-22T21:32:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "SymptomAI: Towards a conversational AI agent for everyday symptom assessment",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/towards-a-quantum-computer-that-learns-from-its-errors/",
+   "title": "Towards a quantum computer that learns from its errors",
+   "published_at": "2026-07-22T18:40:21Z",
+   "excerpt": "Machine Intelligence",
+   "content_text": "",
+   "title_en": "Towards a quantum computer that learns from its errors",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/towards-demystifying-the-creativity-of-diffusion-models/",
+   "title": "Towards demystifying the creativity of diffusion models",
+   "published_at": "2026-07-15T18:06:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Towards demystifying the creativity of diffusion models",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/sensorfm-towards-a-general-intelligence-and-interface-for-wearable-health-data/",
+   "title": "SensorFM: Towards a general intelligence and interface for wearable health data",
+   "published_at": "2026-07-09T09:56:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "SensorFM: Towards a general intelligence and interface for wearable health data",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/the-power-of-collaboration-how-we-can-reduce-traffic-congestion/",
+   "title": "The power of collaboration: How we can reduce traffic congestion",
+   "published_at": "2026-07-07T16:42:08Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "The power of collaboration: How we can reduce traffic congestion",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/expanding-our-heat-resilience-data-to-50-global-cities/",
+   "title": "Expanding our Heat Resilience data to 50+ global cities",
+   "published_at": "2026-06-30T17:03:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "Expanding our Heat Resilience data to 50+ global cities",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/",
+   "title": "Introducing TabFM: A zero-shot foundation model for tabular data",
+   "published_at": "2026-06-30T10:26:00Z",
+   "excerpt": "Data Management",
+   "content_text": "",
+   "title_en": "Introducing TabFM: A zero-shot foundation model for tabular data",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/accelerating-gemini-nano-models-on-pixel-with-frozen-multi-token-prediction/",
+   "title": "Accelerating Gemini Nano models on Pixel with frozen Multi-Token Prediction",
+   "published_at": "2026-06-26T18:30:00Z",
+   "excerpt": "Machine Intelligence",
+   "content_text": "",
+   "title_en": "Accelerating Gemini Nano models on Pixel with frozen Multi-Token Prediction",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/optimizing-cloud-economics-with-linear-elastic-caching/",
+   "title": "Optimizing cloud economics with linear elastic caching",
+   "published_at": "2026-06-25T10:03:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Optimizing cloud economics with linear elastic caching",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/thinking-to-recall-how-reasoning-unlocks-parametric-knowledge-in-llms/",
+   "title": "Thinking to recall: How reasoning unlocks parametric knowledge in LLMs",
+   "published_at": "2026-06-24T16:51:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Thinking to recall: How reasoning unlocks parametric knowledge in LLMs",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/from-pixels-to-planning-earth-ai-for-nature-restoration/",
+   "title": "From pixels to planning: Earth AI for nature restoration",
+   "published_at": "2026-06-16T17:30:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "From pixels to planning: Earth AI for nature restoration",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/research-into-how-ai-can-help-users-understand-skin-conditions/",
+   "title": "Research into how AI can help users understand skin conditions",
+   "published_at": "2026-06-12T17:52:00Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "Research into how AI can help users understand skin conditions",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/a-low-carbon-computing-platform-from-your-retired-phones/",
+   "title": "A low-carbon computing platform from your retired phones",
+   "published_at": "2026-06-12T17:37:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "A low-carbon computing platform from your retired phones",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/new-framework-for-auditing-machine-unlearning/",
+   "title": "New framework for auditing machine unlearning",
+   "published_at": "2026-06-10T17:34:55Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "New framework for auditing machine unlearning",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/unlocking-dependable-responses-with-gemini-enterprise-agent-platforms-agentic-rag/",
+   "title": "Unlocking dependable responses with Gemini Enterprise Agent Platform’s Agentic RAG",
+   "published_at": "2026-06-05T11:26:00Z",
+   "excerpt": "Data Management",
+   "content_text": "",
+   "title_en": "Unlocking dependable responses with Gemini Enterprise Agent Platform’s Agentic RAG",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/towards-passive-heart-health-monitoring-via-smartphone-camera/",
+   "title": "Towards passive heart health monitoring via smartphone camera",
+   "published_at": "2026-06-04T19:47:00Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "Towards passive heart health monitoring via smartphone camera",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/the-next-chapter-in-flood-resilience-open-sourcing-googles-hydrology-framework/",
+   "title": "The next chapter in flood resilience: Open sourcing Google’s hydrology framework",
+   "published_at": "2026-06-03T18:37:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "The next chapter in flood resilience: Open sourcing Google’s hydrology framework",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/a-new-era-of-innovation-google-research-at-io-2026/",
+   "title": "A New Era of Discovery: Google Research at I/O 2026",
+   "published_at": "2026-05-28T20:58:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "A New Era of Discovery: Google Research at I/O 2026",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/private-analytics-via-zero-trust-aggregation/",
+   "title": "Private analytics via zero-trust aggregation",
+   "published_at": "2026-05-27T16:56:00Z",
+   "excerpt": "Security, Privacy and Abuse Prevention",
+   "content_text": "",
+   "title_en": "Private analytics via zero-trust aggregation",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/empirical-research-assistance-era-from-nature-publication-to-catalyzing-computational-discovery/",
+   "title": "Empirical Research Assistance (ERA): From Nature publication to catalyzing Computational Discovery",
+   "published_at": "2026-05-19T17:52:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "Empirical Research Assistance (ERA): From Nature publication to catalyzing Computational Discovery",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/catalyzing-scientific-impact-through-global-partnerships-and-open-resources/",
+   "title": "Catalyzing scientific impact through global partnerships and open resources",
+   "published_at": "2026-05-01T16:37:00Z",
+   "excerpt": "Data Mining & Modeling",
+   "content_text": "",
+   "title_en": "Catalyzing scientific impact through global partnerships and open resources",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/four-ways-google-research-scientists-have-been-using-empirical-research-assistance/",
+   "title": "Four ways Google Research scientists have been using Empirical Research Assistance",
+   "published_at": "2026-04-29T21:07:00Z",
+   "excerpt": "Data Mining & Modeling",
+   "content_text": "",
+   "title_en": "Four ways Google Research scientists have been using Empirical Research Assistance",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/its-all-about-the-angle-your-photos-re-composed/",
+   "title": "It's all about the angle: Your photos, re-composed",
+   "published_at": "2026-04-22T17:00:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "It's all about the angle: Your photos, re-composed",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/reasoningbank-enabling-agents-to-learn-from-experience/",
+   "title": "ReasoningBank: Enabling agents to learn from experience",
+   "published_at": "2026-04-21T16:42:22Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "ReasoningBank: Enabling agents to learn from experience",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/designing-synthetic-datasets-for-the-real-world-mechanism-design-and-reasoning-from-first-principles/",
+   "title": "Designing synthetic datasets for the real world: Mechanism design and reasoning from first principles",
+   "published_at": "2026-04-16T14:41:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Designing synthetic datasets for the real world: Mechanism design and reasoning from first principles",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/ai-generated-synthetic-neurons-speed-up-brain-mapping/",
+   "title": "AI-generated synthetic neurons speed up brain mapping",
+   "published_at": "2026-04-16T12:18:00Z",
+   "excerpt": "General Science",
+   "content_text": "",
+   "title_en": "AI-generated synthetic neurons speed up brain mapping",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/towards-developing-future-ready-skills-with-generative-ai/",
+   "title": "Towards developing future-ready skills with generative AI",
+   "published_at": "2026-04-13T18:15:59Z",
+   "excerpt": "Education Innovation",
+   "content_text": "",
+   "title_en": "Towards developing future-ready skills with generative AI",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/convapparel-measuring-and-bridging-the-realism-gap-in-user-simulators/",
+   "title": "ConvApparel: Measuring and bridging the realism gap in user simulators",
+   "published_at": "2026-04-09T11:22:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "ConvApparel: Measuring and bridging the realism gap in user simulators",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/improving-the-academic-workflow-introducing-two-ai-agents-for-better-figures-and-peer-review/",
+   "title": "Improving the academic workflow: Introducing two AI agents for better figures and peer review",
+   "published_at": "2026-04-08T20:01:33Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Improving the academic workflow: Introducing two AI agents for better figures and peer review",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/evaluating-alignment-of-behavioral-dispositions-in-llms/",
+   "title": "Evaluating alignment of behavioral dispositions in LLMs",
+   "published_at": "2026-04-03T08:00:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Evaluating alignment of behavioral dispositions in LLMs",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/building-better-ai-benchmarks-how-many-raters-are-enough/",
+   "title": "Building better AI benchmarks: How many raters are enough?",
+   "published_at": "2026-03-31T16:16:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Building better AI benchmarks: How many raters are enough?",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 5.4
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/safeguarding-cryptocurrency-by-disclosing-quantum-vulnerabilities-responsibly/",
+   "title": "Safeguarding cryptocurrency by disclosing quantum vulnerabilities responsibly",
+   "published_at": "2026-03-31T02:03:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Safeguarding cryptocurrency by disclosing quantum vulnerabilities responsibly",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/vibe-coding-xr-accelerating-ai-xr-prototyping-with-xr-blocks-and-gemini/",
+   "title": "Vibe Coding XR: Accelerating AI + XR prototyping with XR Blocks and Gemini",
+   "published_at": "2026-03-25T09:14:00Z",
+   "excerpt": "Human-Computer Interaction and Visualization",
+   "content_text": "",
+   "title_en": "Vibe Coding XR: Accelerating AI + XR prototyping with XR Blocks and Gemini",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/",
+   "title": "TurboQuant: Redefining AI efficiency with extreme compression",
+   "published_at": "2026-03-24T19:54:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "TurboQuant: Redefining AI efficiency with extreme compression",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/mapping-the-modern-world-how-s2vec-learns-the-language-of-our-cities/",
+   "title": "Mapping the modern world: How S2Vec learns the language of our cities",
+   "published_at": "2026-03-24T17:42:00Z",
+   "excerpt": "Algorithms & Theory",
+   "content_text": "",
+   "title_en": "Mapping the modern world: How S2Vec learns the language of our cities",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/google-research-at-the-check-up-from-healthcare-innovation-to-real-world-care-settings/",
+   "title": "Google Research at The Check Up: from healthcare innovation to real-world care settings",
+   "published_at": "2026-03-17T19:47:00Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "Google Research at The Check Up: from healthcare innovation to real-world care settings",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/improving-breast-cancer-screening-workflows-with-machine-learning/",
+   "title": "Improving breast cancer screening workflows with machine learning",
+   "published_at": "2026-03-17T16:57:00Z",
+   "excerpt": "Health & Bioscience",
+   "content_text": "",
+   "title_en": "Improving breast cancer screening workflows with machine learning",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/testing-llms-on-superconductivity-research-questions/",
+   "title": "Testing LLMs on superconductivity research questions",
+   "published_at": "2026-03-16T17:31:00Z",
+   "excerpt": "Education Innovation",
+   "content_text": "",
+   "title_en": "Testing LLMs on superconductivity research questions",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/protecting-cities-with-ai-driven-flash-flood-forecasting/",
+   "title": "Protecting cities with AI-driven flash flood forecasting",
+   "published_at": "2026-03-12T13:03:15Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "Protecting cities with AI-driven flash flood forecasting",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/introducing-groundsource-turning-news-reports-into-data-with-gemini/",
+   "title": "Introducing Groundsource: Turning news reports into data with Gemini",
+   "published_at": "2026-03-12T10:42:00Z",
+   "excerpt": "Climate & Sustainability",
+   "content_text": "",
+   "title_en": "Introducing Groundsource: Turning news reports into data with Gemini",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  },
+  {
+   "source_id": "google_research",
+   "domain": "ai",
+   "url": "https://research.google/blog/exploring-the-feasibility-of-conversational-diagnostic-ai-in-a-real-world-clinical-study/",
+   "title": "Exploring the feasibility of conversational diagnostic AI in a real-world clinical study",
+   "published_at": "2026-03-11T16:58:00Z",
+   "excerpt": "Generative AI",
+   "content_text": "",
+   "title_en": "Exploring the feasibility of conversational diagnostic AI in a real-world clinical study",
+   "lang": "en-us",
+   "fetched_at": null,
+   "extra": {
+    "score": 4.8
+   }
+  }
+ ]
+}
